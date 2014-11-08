@@ -8,7 +8,7 @@ typedef int indeks;
 #define BrsMax 100
 #define KolMin 1
 #define KolMax 100
-typedef double el_type;
+typedef char el_type;
 typedef struct {
     el_type Mem[BrsMax+1][KolMax+1];
     int NBrsEff;

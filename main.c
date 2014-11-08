@@ -7,27 +7,52 @@
 
 //KAMUS GLOBAL
 MATRIKS boards[10];
-
+typedef char * word;
+word *dictionary;
 
 void ReadBoards()
+//I.S sembarang
+//F.S MATRIKS boards berisi semua board yang ada di folder boards.
 {
-    char filename[6];
-    int i;
+    char filename[13];
+    int i,j,k;
+
+    strcpy(filename, "boards/");
+    strcat(filename, " .txt");
+
     for (i=0;i<=9;i++)
     {
-        strcpy(filename, "");
-        strcat(filename,(char)i);
-        strcat(filename, ".txt");
+        filename[7]=(char)i+48;
         STARTKATA(filename);
 
-        return
+        MakeMATRIKS(4,4,&boards[i]);
+        for (j=FirstIdxBrs(boards[i]);j<=LastIdxBrs(boards[i]);j++)
+        {
+            for (k=FirstIdxKol(boards[i]);k<=LastIdxKol(boards[i]);k++)
+            {
+                SetEl(&boards[i],j,k,CKata.TabKata[1]);
+                ADVKATA();
+            }
+        }
     }
+}
+
+void ReadDictionary()
+//I.S sembarang
+//F.S MATRIKS boards berisi semua board yang ada di folder boards.
+{
+
 }
 
 int main()
 {
+    int i;
+
     ReadBoards();
-    ReadDictionary();
+    for (i=0;i<=9;i++)
+    {
+        TulisMATRIKS(boards[i]);
+    }
 
     return 0;
 }

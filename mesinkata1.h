@@ -3,6 +3,7 @@
 #include "mesinkar.h"
 #define NMax 50
 #define BLANK ' '
+#define ENTER '\n'
 typedef struct {
     char TabKata[NMax+1];
     int Length;

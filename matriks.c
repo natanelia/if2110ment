@@ -187,9 +187,9 @@ void TulisMATRIKS(MATRIKS M)
     {
         for (j=FirstIdxKol(M);j<LastIdxKol(M);j++)
         {
-            printf("%.4lf ",GetElmt(M,i,j));
+            printf("%c ",GetElmt(M,i,j));
         }
-        printf("%.4lf\n",GetElmt(M,i,j));
+        printf("%c\n",GetElmt(M,i,j));
     }
     printf("\n");
 }

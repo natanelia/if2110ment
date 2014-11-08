@@ -1,0 +1,34 @@
+# depslib dependency file v1.0
+1415430413 source:d:\college\2014-2015\algoritma dan struktur data\wordament\if2110ment\matriks.c
+	<stdio.h>
+	<math.h>
+	"boolean.h"
+	"matriks.h"
+
+1409753723 d:\college\2014-2015\algoritma dan struktur data\wordament\if2110ment\boolean.h
+
+1415429583 d:\college\2014-2015\algoritma dan struktur data\wordament\if2110ment\matriks.h
+	<stdio.h>
+	"boolean.h"
+
+1415427621 source:d:\college\2014-2015\algoritma dan struktur data\wordament\if2110ment\mesinkar.c
+	<stdio.h>
+	"mesinkar.h"
+
+1415428161 d:\college\2014-2015\algoritma dan struktur data\wordament\if2110ment\mesinkar.h
+	"boolean.h"
+
+1415431014 source:d:\college\2014-2015\algoritma dan struktur data\wordament\if2110ment\mesinkata1.c
+	"mesinkata1.h"
+
+1415430906 d:\college\2014-2015\algoritma dan struktur data\wordament\if2110ment\mesinkata1.h
+	"mesinkar.h"
+
+1415431306 source:d:\college\2014-2015\algoritma dan struktur data\wordament\if2110ment\main.c
+	<stdio.h>
+	<string.h>
+	"boolean.h"
+	"matriks.h"
+	"mesinkar.h"
+	"mesinkata1.h"
+

@@ -8,7 +8,7 @@ F.S. : CC
 ≠ BLANK atau CC = MARK */
 { /* Kamus Lokal */
 /* Algoritma */
-    while ((CC == BLANK) && (CC != MARK)) {
+    while (((CC == BLANK) || (CC == ENTER)) && (CC != MARK)) {
         ADV();
     } /* CC != BLANK or CC = MARK */
 }
@@ -23,7 +23,7 @@ CC karakter pertama sesudah karakter terakhir kata */
     /* Algoritma*/
     START(filename);
     IgnoreBlank();
-    if (CC == MARK) {
+    if ((CC == MARK) || (CC == ENTER)) {
     EndKata = true;
     } else /* CC != MARK */ {
         EndKata = false;
@@ -40,7 +40,7 @@ Proses : Akuisisi kata menggunakan procedure SalinKata */
 { /* Kamus Lokal */
 /* Algoritma*/
     IgnoreBlank();
-    if (CC == MARK) {
+    if ((CC == MARK) || (CC == ENTER)) {
         EndKata = true;
     } else /* CC != MARK */ {
         SalinKata();
@@ -60,7 +60,7 @@ diakuisisi */
     for (;;) {
         CKata.TabKata[i] = CC;
         ADV();
-        if ((CC == MARK) || (CC == BLANK)) {
+        if ((CC == MARK) || (CC == ENTER) || (CC == BLANK)) {
             break;
         } else {
             i++;
