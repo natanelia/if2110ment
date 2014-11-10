@@ -34,18 +34,18 @@ typedef struct {
 
 
 /**** Prototype manajemen memori ****/
-void Alokasi (address *P, infotype X, int Pr);
+void AlokasiPrio (address *P, infotype X, int Pr);
 /* I.S. P sembarang, X terdefinisi */
 /* F.S. Alamat P dialokasi, jika berhasil maka Info(P) = X dan Next(P) = Nil */
 /* P = Nil jika alokasi gagal */
-void Dealokasi (address P);
+void DealokasiPrio (address P);
 /* I.S. P adalah hasil alokasi, P <> Nil */
 /* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 
 /**** Predikat Pemeriksaan Kondisi Queue ****/
 boolean IsPrioQueueEmpty (Queue Q);
 /* Mengirim true jika Q kosong: HEAD(Q) = Nil and TAIL(Q) = Nil */
-int NBElmt (Queue Q);
+int NBElmtPrio (Queue Q);
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
 
 /**** Konstruktor ****/
@@ -68,7 +68,7 @@ X berisi elemen dengan prioritas tertinggi */
 HEAD "maju" */
 
 /**** PROSES SEMUA ELEMEN QUEUE *****/
-void PrintInfo (Queue Q);
+void PrintInfoPrio (Queue Q);
 /* I.S. queue mungkin kosong */
 /* F.S. Jika queue tidak kosong, */
 /* Semua info yg disimpan pada elemen queue diprint */

@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 /**** Prototype manajemen memori ****/
-void Alokasi (address *P, infotype X, int Pr)
+void AlokasiPrio (address *P, infotype X, int Pr)
 /* I.S. P sembarang, X terdefinisi */
 /* F.S. Alamat P dialokasi, jika berhasil maka Info(P) = X dan Next(P) = Nil */
 /* P = Nil jika alokasi gagal */
@@ -25,7 +25,7 @@ void Alokasi (address *P, infotype X, int Pr)
 		P = Nil;
 }
 
-void Dealokasi (address P)
+void DealokasiPrio (address P)
 /* I.S. P adalah hasil alokasi, P <> Nil */
 /* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 { /* Kamus Lokal */
@@ -41,7 +41,7 @@ boolean IsPrioQueueEmpty (Queue Q)
 	return(Head(Q)==Nil);
 }
 
-int NBElmt (Queue Q)
+int NBElmtPrio (Queue Q)
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
 { /* Kamus Lokal */
 	int count;
@@ -76,7 +76,7 @@ Q tetap terurut mengecil sesuai prioritas */
 	address P,Pt,Prec;
 	boolean found;
 /* Algoritma */
-	Alokasi(&Pt,X,Pr);	
+	AlokasiPrio(&Pt,X,Pr);	
 	if(Pt!=Nil) {
 		P=Head(*Q);
 		Prec=Nil;
@@ -116,7 +116,7 @@ HEAD "maju" */
 	*Pr=Prio(Pt);
 	Head(*Q)=Next(Pt);
 	Next(Pt)=Nil;
-	Dealokasi(Pt);
+	DealokasiPrio(Pt);
 }
 
 /**** PROSES SEMUA ELEMEN QUEUE *****/
