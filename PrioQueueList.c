@@ -120,7 +120,7 @@ HEAD "maju" */
 }
 
 /**** PROSES SEMUA ELEMEN QUEUE *****/
-void PrintInfo (Queue Q)
+void PrintInfoPrio (Queue Q)
 /* I.S. queue mungkin kosong */
 /* F.S. Jika queue tidak kosong, */
 /* Semua info yg disimpan pada elemen queue diprint */
