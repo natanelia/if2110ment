@@ -18,4 +18,8 @@ I.S. : Karakter pada jendela = CC, CC != MARK
 F.S. : CC adalah karakter berikutnya dari CC yang lama,
 CC mungkin = MARK
 Jika CC = MARK maka EOP akan menyala (true) */
+int charToInteger(char num);
+char integerToChar(int num);
+
+
 #endif

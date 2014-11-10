@@ -7,7 +7,7 @@ Topik :multilist untuk highscore*/
 #define ADT_MultiList_h
 #include "boolean.h"
 #include <stdlib.h>
-#include "ADT_Tanggal.h"
+#include "tanggal.h"
 
 
 /* Representasi address dengan pointer */
@@ -28,7 +28,7 @@ typedef struct
 	Tanggal Tgl;
 } InfoRecord;
 
-typedef struct tRecord 
+typedef struct tRecord
 {
 	InfoRecord Info;
 	AdrRecord NextRecord;
@@ -37,7 +37,7 @@ typedef struct tRecord
 
 typedef struct tUser *AdrUser;
 typedef char[15] UserName;
-typedef struct tUser 
+typedef struct tUser
 {
 	UserName User;
 	AdrRecord FirstRecord;
@@ -155,7 +155,7 @@ void InsertAfterRecord (AdrUser Z, AdrRecord P, AdrRecord Prec);
 /* P sudah dialokasi */
 /* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec,
  * jika Prec bernilai Nil, artinya P diinsert sebagai elemen pertama*/
- 
+
 void DeleteAfterRecord (AdrUser Z,AdrRecord *Pdel,AdrRecord Prec);
 /* I.S. FirstRecord(Z) bukan Nil,  Prec adalah AdrRecord pada User Z. */
 /* F.S. Menghapus NextRecord(Prec) : Pdel adalah AdrRecord yang dihapus */
