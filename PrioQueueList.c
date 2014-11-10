@@ -8,14 +8,14 @@
 #include <stdio.h>
 
 /**** Prototype manajemen memori ****/
-void AlokasiPrio (address *P, infotype X, int Pr)
+void AlokasiPrio (addressprio *P, infotype X, int Pr)
 /* I.S. P sembarang, X terdefinisi */
 /* F.S. Alamat P dialokasi, jika berhasil maka Info(P) = X dan Next(P) = Nil */
 /* P = Nil jika alokasi gagal */
 {/* Kamus Lokal */
 /* Algoritma */
 	//Algortima
-	*P = (address)malloc(sizeof(ElmtQ));
+	*P = (addressprio)malloc(sizeof(ElmtQ));
 	if (P != Nil) {
 		Info(*P) = X;
 		Next(*P) = Nil;
@@ -25,7 +25,7 @@ void AlokasiPrio (address *P, infotype X, int Pr)
 		P = Nil;
 }
 
-void DealokasiPrio (address P)
+void DealokasiPrio (addressprio P)
 /* I.S. P adalah hasil alokasi, P <> Nil */
 /* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 { /* Kamus Lokal */
@@ -34,18 +34,18 @@ void DealokasiPrio (address P)
 }
 
 /**** Predikat Pemeriksaan Kondisi Queue ****/
-boolean IsPrioQueueEmpty (Queue Q)
+boolean IsPrioQueueEmpty (PrioQueue Q)
 /* Mengirim true jika Q kosong: HEAD(Q) = Nil*/
 { /* Kamus Lokal */
 /* Algoritma */
 	return(Head(Q)==Nil);
 }
 
-int NBElmtPrio (Queue Q)
+int NBElmtPrio (PrioQueue Q)
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
 { /* Kamus Lokal */
 	int count;
-	address P;
+	addressprio P;
 /* Algoritma */
 	count=0;
 	P=Head(Q);
@@ -57,7 +57,7 @@ int NBElmtPrio (Queue Q)
 }
 
 /**** Konstruktor ****/
-void CreatePrioQueueEmpty (Queue *Q)
+void CreatePrioQueueEmpty (PrioQueue *Q)
 /* I.S. sembarang */
 /* F.S. Sebuah Q kosong terbentuk */
 {/* Kamus Lokal */
@@ -66,14 +66,14 @@ void CreatePrioQueueEmpty (Queue *Q)
 }
 
 /***** Primitif Add/Delete *****/
-void AddPrio (Queue *Q, infotype X, int Pr)
+void AddPrio (PrioQueue *Q, infotype X, int Pr)
 /* Proses : Mengalokasi X dan menambahkan X pada bagian TAIL dari Q jika alokasi
 berhasil dengan memperhatikan prioritas; jika alokasi gagal Q tetap */
 /* I.S. Q mungkin kosong, X terdefinisi */
 /* F.S. X menjadi elemen Q sesuai prioritas Pr,
 Q tetap terurut mengecil sesuai prioritas */
 { /* Kamus Lokal */
-	address P,Pt,Prec;
+	addressprio P,Pt,Prec;
 	boolean found;
 /* Algoritma */
 	AlokasiPrio(&Pt,X,Pr);	
@@ -102,14 +102,14 @@ Q tetap terurut mengecil sesuai prioritas */
 	}	
 }
 
-void DelPrio (Queue *Q, infotype *X, int *Pr)
+void DelPrio (PrioQueue *Q, infotype *X, int *Pr)
 /* Proses : Menghapus X pada bagian HEAD dari Q dan mendealokasi elemen HEAD,
 X berisi elemen dengan prioritas tertinggi */
 /* I.S. Q tidak kosong */
 /* F.S. X = nilai elemen HEAD dan Pr = nilai elemen prioritas HEAD pd I.S.,
 HEAD "maju" */
 { /* Kamus Lokal */
-	address Pt;
+	addressprio Pt;
 /* Algoritma */
 	Pt=Head(*Q);
 	*X=InfoHead(*Q);
@@ -120,13 +120,13 @@ HEAD "maju" */
 }
 
 /**** PROSES SEMUA ELEMEN QUEUE *****/
-void PrintInfoPrio (Queue Q)
+void PrintInfoPrio (PrioQueue Q)
 /* I.S. queue mungkin kosong */
 /* F.S. Jika queue tidak kosong, */
 /* Semua info yg disimpan pada elemen queue diprint */
 /* Jika queue kosong, hanya menuliskan "queue kosong" */
 {/*Kamus Lokal */
-	address P;
+	addressprio P;
 /* Algoritma */
 	if(IsPrioQueueEmpty(Q)) printf("Queue kosong\n");
 	else {
