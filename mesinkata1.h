@@ -37,4 +37,7 @@ I.S. : CC adalah karakter pertama dari kata
 F.S. : CKata berisi kata yang sudah diakuisisi;
 CC = BLANK atau CC = MARK; CC adalah karakter sesudah karakter terakhir yang diakuisisi */
 
+void CopyKata(Kata Kata1,Kata *Kata2);
+/* Mengkopi kata yang ada pada Kata1 ke Kata2*/
+
 #endif
