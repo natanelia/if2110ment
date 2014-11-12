@@ -2,6 +2,7 @@
 
 #ifndef TANGGAL_C
 #define TANGGAL_C
+#define "boolean.h"
 
 /*** DEFINISI DAN SPESIFIKASI TYPE TANGGAL ***/
 typedef struct {
