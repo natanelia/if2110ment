@@ -195,11 +195,7 @@ void ReadDictionary()
     STARTKATA("Dictionary.txt");
     while (!EndKata)
     {
-        for (j=1;j<=CKata.Length;j++)
-        {
-            kamusKata[i].TabKata[j] = CKata.TabKata[j];
-        }
-        kamusKata[i].Length = CKata.Length;
+        CopyKata(CKata,kamusKata[i])
         i++;
         ADVKATA();
     }
