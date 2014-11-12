@@ -1,6 +1,7 @@
 /* ADT TANGGAL */
 
 #include "tanggal.h"
+#include "boolean.h"
 
 /*** KONSTRUKTOR ***/
 TANGGAL MakeTANGGAL (int h, int b, int t)
