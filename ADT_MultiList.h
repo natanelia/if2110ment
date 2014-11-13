@@ -20,37 +20,32 @@ Topik :multilist untuk highscore*/
 
 
 /* *** Definisi Type List *** */
-typedef int Score;
+typedef int BoardType;
+typedef int ScoreType;
+typedef Tanggal DateType;
+typedef char[15] UserNameType;
+
 typedef struct tRecord *AdrRecord;
 typedef struct
 {
-	Score Nilai;
-	Tanggal Tgl;
-} InfoRecord;
+	UserNameType UserName;
+	ScoreType Score;
+	DateType Date;
+} RecordType;
 
 typedef struct tRecord 
 {
-	InfoRecord Info;
+	RecordType InfoRecord;
 	AdrRecord NextRecord;
 } ElmRecord;
 
 
-typedef struct tUser *AdrUser;
-typedef char[15] UserName;
-typedef struct tUser 
-{
-	UserName User;
-	AdrRecord FirstRecord;
-	AdrUser NextUser;
-} ElmUser;
 
-
-typedef structt tBoard *AdrBoard;
-typedef int BoardNb;
+typedef struct tBoard *AdrBoard;
 typedef struct tBoard
 {
-	BoardNb Nb;
-	AdrUser FirstUser;
+	BoardType InfoBoard;
+	AdrRecord FirtsRecord;
 	AdrBoard NextBoard;
 } ElmBoard;
 
@@ -61,40 +56,34 @@ typedef struct
 } List;
 
 
+typedef struct {
+	RecordType *TR;
+	int Size;
+} TabRecord;
+
+
 /* Selektor */
-#define Head(L) ((L).FirstBoard)
-#define NextBoard(P) ((P).NextBoard))
-#define InfoBoard(P) ((P).Nb)
-#define FirstUser(P) ((P).FirstUser)
-#define InfoUser (P) ((P).User)
-#define NextUser(P) ((P).NextUser)
+#define FirstBoard(L) ((L).FirstBoard)
+#define InfoBoard(P) ((P).InfoBoard)
+#define NextBoard(P) ((P).NextBoard)
 #define FirstRecord(P) ((P).FirstRecord)
-#define Info(P) ((P).Info)
+#define InfoRecord(P) ((P).InfoRecord)
 #define NextRecord(P) ((P).NextRecord)
 
 
+
 //fungsi2 alokasi dan dealokasi
-AdrBoard AlokasiBoard(BoardNb Nb);
+AdrBoard AlokasiBoard(BoardType X);
 /* Mengirimkan address hasil alokasi sebuah elemen */
 /* Jika alokasi berhasil, maka address tidak Nil, dan misalnya menghasilkan P */
 /* Jika alokasi gagal, mengirimkan Nil */
 
-AdrUser AlokasiUser(UserName User);
-/* Mengirimkan address hasil alokasi sebuah elemen */
-/* Jika alokasi berhasil, maka address tidak Nil, dan misalnya menghasilkan P */
-/* Jika alokasi gagal, mengirimkan Nil */
-
-AdrRecord AlokasiRecord (InfoRecord Info);
+AdrRecord AlokasiRecord (RecordType X);
 /* Mengirimkan address hasil alokasi sebuah elemen */
 /* Jika alokasi berhasil, maka address tidak Nil, dan misalnya menghasilkan P */
 /* Jika alokasi gagal, mengirimkan Nil */
 
 void DealokasiBoard (AdrBoard P);
-/* I.S. P terdefinisi */
-/* F.S. P dikembalikan ke sistem */
-/* Melakukan dealokasi/pengembalian address P */
-
-void DealokasiUser (AdrUser P);
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
 /* Melakukan dealokasi/pengembalian address P */
@@ -115,69 +104,68 @@ void InsertBoard (List *L, AdrBoard P);
 /* I.S. Sembarang, P sudah dialokasi */
 /* F.S. Menambahkan elemen ber-address P sebagai elemen pertama */
 
-void InsertUser (AdrBoard Z, AdrUser P);
+void InsertRecord(AdrBoard Z, AdrRecord P);
 /* I.S. Sembarang, P sudah dialokasi */
-/* F.S. Menambahkan elemen ber-address P sebagai elemen pertama pada List User ddengan AdrBoard Z */
-
-void InsertFRecord(AdrUser Z, AdrRecord P);
-/* I.S. Sembarang, P sudah dialokasi */
-/* F.S. Menambahkan elemen ber-address P sebagai elemen pertama pada list Record dengan AdrUser Z */
+/* F.S. Menambahkan elemen ber-address P sebagai elemen pertama pada list Record dengan AdrBoard Z */
 
 
-void InsVBoard (List *L, BoardNb X);
+void InsVBoard (List *L, BoardType X);
 /* I.S. L mungkin kosong */
 /* F.S. X ditambahkan sebagai elemen pertama L */
 /* Proses : Melakukan alokasi sebuah elemen dan menambahkan elemen pertama dengan
 nilai X jika alokasi berhasil.
 Jika alokasi gagal: I.S.= F.S. */
 
-void InsVUser (AdrBoard Z, UserName X);
+void InsVRecord (AdrBoard Z, RecordType X);
 /* I.S. Next(Z) mungkin Nil */
 /* F.S. X ditambahkan sebagai Next(Z) */
 /* Proses : Melakukan alokasi sebuah elemen dan menambahkan elemen pertama dengan
 nilai X jika alokasi berhasil.
 Jika alokasi gagal: I.S.= F.S. */
 
-void InsVRecord (AdrUser Z, InfoRecord X);
-/* I.S. Next(Z) mungkin Nil */
-/* F.S. X ditambahkan sebagai Next(Z) */
-/* Proses : Melakukan alokasi sebuah elemen dan menambahkan elemen pertama dengan
-nilai X jika alokasi berhasil.
-Jika alokasi gagal: I.S.= F.S. */
+AdrBoard SearchBoard (List L, BoardType Board);
+/* Mengirimkan AdrBoard dimana Board yang dicari ditemukan */
+/*mengembalikan Nil jika Board tidak ditemukkan */
+/* List mungkin Kosong */
 
 
-
-
-
-//penambahan score pada user dengan menjaga keterurutan score (besar -->kecil
-void InsertAfterRecord (AdrUser Z, AdrRecord P, AdrRecord Prec);
-/* I.S. Prec adalah elemen User. Dimungkinkan Prec bernilai Nil*/
-/* P sudah dialokasi */
-/* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec,
- * jika Prec bernilai Nil, artinya P diinsert sebagai elemen pertama*/
- 
-void DeleteAfterRecord (AdrUser Z,AdrRecord *Pdel,AdrRecord Prec);
-/* I.S. FirstRecord(Z) bukan Nil,  Prec adalah AdrRecord pada User Z. */
-/* F.S. Menghapus NextRecord(Prec) : Pdel adalah AdrRecord yang dihapus */
-
-void InsertSortedRecord (AdrUser Z, InfoRecord X);
-/* I.S: sembarang, FirstRecord(Z) boleh sama dengan Nil */
-/*F.S: alokasi X, kemudian insert address X pada list Record dari User Z dengan menjaga keterurutan nilai Record dari besar ke kecil */
-/* record diurutkan berdasarkan InfoRecord.Nilai */
-
-
-
-
-
-//Penambahan Record berdasarkan Board dan User tertentu (penambahana database)
-void InsertGameScore (List *L, BoardNb Board, UserName User, InfoRecord Record);
-/* I.S. List boleh kosong, Board dan User mungkin sudah ada, Record belum ada dalam List */
+//Penambahan Record berdasarkan Board tertentu(penambahana database)
+void InsertGameScore (List *L, BoardType Board,RecordType Record);
+/* I.S. List boleh kosong, Board mungkin sudah ada, Record belum ada dalam List */
 /*F.S. Record telah dimasukan ke dalam isi List */
-/*proses: Jika Board belum ada pada List, InsertBoard
- * Jika User belum ada pada board, InsertUser*/
+/*proses: Jika Board belum ada pada List, InsertBoard terlebih dahulu */
+/*dilanjutkan dengan proses InserRecord pada Board tersebut*/
 
 
+//Keperluan HighScore Game
+int NbBoardRecord (List L, BoardType Board);
+/* mengembalikan jumlah Record yang ada pada board tertentu */
+/*Jika Board tidak ada dalam list, maka akan mengembalikan 0 */
 
+void MakeTabRecordEmpty (int N,TabRecord *T);
+/*{ I.S. sembarang }
+{ F.S. Terbentuk tabel T kosong dengan ukuran N }*/
 
+void MoveBoardRecordToArray (List L, BoardType Board, TabRecord *T);
+/* I.S. Board sudah ada dalam List, sudah ada record dalam Board */
+/* F.S. Semua record yang ada dalam board akan dipindahkan ke dalam TabRecord T */
+
+void SortTabRecord (TabRecord *T);
+/* I.S. TabRecord T tidak kosong */
+/* F.S. Elemen-elemen dalam TabRecord T sudah terurut berdasarkan Record.Score */
+/*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending. */
+
+void ViewMyHighscore (TabRecord T, UserNameType UserName);
+/* I.S. TabRecord T tidak kosong */
+/* F.S. menampilkan 10 skor tertinggi pada board yang sedang dipilih yang didapatkan user tersebut */
+/*Tampilan high score akan menampilkan skor secara terurut mengecil dan waktu(tanggal+jam) pencapaian skor tersebut*/
+/*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending. */
+
+void ViewAllHighscore (TabRecord T);
+/* I.S. TabRecord T tidak kosong */
+/* F.S. menampilkan 10 skor tertinggi pada board yang sedang dipilih yang didapatkan dari semua user yang terdaftar. */
+/*Tampilan high score akan menampilkan skor secara terurut mengecil,
+ * nama user yang mendapatkan skor tersebut, dan waktu(tanggal+jam) pencapaian skor tersebut */
+ /*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending.*/
 
 #endif

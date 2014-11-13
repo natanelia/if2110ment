@@ -9,7 +9,7 @@ Topik :multilist untuk highscore*/
 
 
 //fungsi2 alokasi dan dealokasi
-AdrBoard AlokasiBoard(BoardNb Nb)
+AdrBoard AlokasiBoard(BoardType X)
 /* Mengirimkan address hasil alokasi sebuah elemen */
 /* Jika alokasi berhasil, maka address tidak Nil, dan misalnya menghasilkan P */
 /* Jika alokasi gagal, mengirimkan Nil */
@@ -18,31 +18,15 @@ AdrBoard AlokasiBoard(BoardNb Nb)
 	P = (AdrBoard) malloc (sizeof (ElmBoard));
 	if (P != 0 )  /*alokasi berhasil */
 	{
-		InfoBoard(P) = Nb;
+		InfoBoard(P) = X;
 		NextBoard(P) = Nil;
-		FirstUser(P) = Nil;
+		FirstRecord(P) = Nil;
 	}
 	return P; 
 }
 
 
-AdrUser AlokasiUser(UserName User)
-/* Mengirimkan address hasil alokasi sebuah elemen */
-/* Jika alokasi berhasil, maka address tidak Nil, dan misalnya menghasilkan P */
-/* Jika alokasi gagal, mengirimkan Nil */
-{
-	AdrUser P;
-	P = (AdrUser) malloc (sizeof (ElmUser));
-	if (P != 0 )  /*alokasi berhasil */
-	{
-		InfoUser (P) = User;
-		NextUser(P) = Nil;
-		FirstRecord (P) = Nil;
-	}
-	return P; 
-}
-
-AdrRecord AlokasiRecord (InfoRecord Info)
+AdrRecord AlokasiRecord (RecordType X)
 /* Mengirimkan address hasil alokasi sebuah elemen */
 /* Jika alokasi berhasil, maka address tidak Nil, dan misalnya menghasilkan P */
 /* Jika alokasi gagal, mengirimkan Nil */
@@ -51,21 +35,14 @@ AdrRecord AlokasiRecord (InfoRecord Info)
 	P = (AdrRecord) malloc (sizeof (ElmRecord));
 	if (P != 0 )  /*alokasi berhasil */
 	{
-		Info(P) = Info;
+		InfoRecord(P) = X;
 		NextRecord(P) = Nil;
 	}
 	return P; 
 }
 
-void DealokasiBoard (AdrBoard P)
-/* I.S. P terdefinisi */
-/* F.S. P dikembalikan ke sistem */
-/* Melakukan dealokasi/pengembalian address P */
-{
-	free(P);
-}
 
-void DealokasiUser (AdrUser P)
+void DealokasiBoard (AdrBoard P)
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
 /* Melakukan dealokasi/pengembalian address P */
@@ -85,7 +62,7 @@ void CreateList (List *L)
 /* I.S. Sembarang */
 /* F.S. Terbentuk list L kosong */
 {
-	Head(*L) = Nil;
+	FirstBoard(*L) = Nil;
 }
 
 
@@ -96,52 +73,35 @@ void InsertBoard (List *L, AdrBoard P)
 /* I.S. Sembarang, P sudah dialokasi */
 /* F.S. Menambahkan elemen ber-address P sebagai elemen pertama */
 {
-	if (First(*L) == Nil) //list kosong
+	if (FirstBoard(*L) == Nil) //list kosong
 		{
-			First(*L) = P;
+			FirstBoard(*L) = P;
 		}
 		else
 		{
-			Next(P) = First(*L);
-			First(*L)=P;
+			NextBoard(P) = FirstBoard(*L);
+			FirstBoard(*L)=P;
 		}
 }
 
 
-void InsertUser (AdrBoard Z, AdrUser P)
+void InsertRecord(AdrBoard Z, AdrRecord P)
 /* I.S. Sembarang, P sudah dialokasi */
-/* F.S. Menambahkan elemen ber-address P sebagai elemen pertama pada List User ddengan AdrBoard Z */
+/* F.S. Menambahkan elemen ber-address P sebagai elemen pertama pada list Record dengan AdrRecord Z */
 {
-	if (FirstUser (Z) == Nil) //Board belum memiliki user yang pernah bermain
-		{
-			FirstUser (Z) = P;
-		}
-		else
-		{
-			Next(P) = FirstUser (Z);
-			FirstUser (Z) =P;
-		}
-}
-
-
-
-void InsertFRecord(AdrUser Z, AdrRecord P)
-/* I.S. Sembarang, P sudah dialokasi */
-/* F.S. Menambahkan elemen ber-address P sebagai elemen pertama pada list Record dengan AdrUser Z */
-{
-	if (FirstRecord (Z) == Nil) //User belum pernah bermain
+	if (FirstRecord(Z) == Nil) 
 		{
 			FirstRecord (Z) = P;
 		}
 		else
 		{
-			Next(P) = FirstRecord(Z);
+			NextRecord(P) = FirstRecord(Z);
 			FirstRecord (Z) =P;
 		}
 }
 
 
-void InsVBoard (List *L, BoardNb X)
+void InsVBoard (List *L, BoardType X)
 /* I.S. L mungkin kosong */
 /* F.S. X ditambahkan sebagai elemen pertama L */
 /* Proses : Melakukan alokasi sebuah elemen dan menambahkan elemen pertama dengan
@@ -152,30 +112,13 @@ Jika alokasi gagal: I.S.= F.S. */
 	P= AlokasiBoard(X);
 	if (P!=Nil) //alokasi berhasil
 	{
-		InsertBoard(L,P);
+		InsertBoard(L, P);
 	}
 }
 
-void InsVUser (AdrBoard Z, UserName X)
-/* I.S. Next(Z) mungkin Nil */
-/* F.S. X ditambahkan sebagai Next(Z) */
-/* Proses : Melakukan alokasi sebuah elemen dan menambahkan elemen pertama dengan
-nilai X jika alokasi berhasil.
-Jika alokasi gagal: I.S.= F.S. */
-{
-	AdrUser P;
-	P= AlokasiUser(X);
-	if (P!=Nil) //alokasi berhasil
-	{
-		InsertUser(Z,P);
-	}
-}
-
-
-
-void InsVRecord (AdrUser Z, InfoRecord X)
-/* I.S. Next(Z) mungkin Nil */
-/* F.S. X ditambahkan sebagai Next(Z) */
+void InsVRecord (AdrBoard Z, RecordType X)
+/* I.S. FirstRecord(Z) mungkin Nil */
+/* F.S. X ditambahkan sebagai FirstRecord(Z) */
 /* Proses : Melakukan alokasi sebuah elemen dan menambahkan elemen pertama dengan
 nilai X jika alokasi berhasil.
 Jika alokasi gagal: I.S.= F.S. */
@@ -184,96 +127,22 @@ Jika alokasi gagal: I.S.= F.S. */
 	P= AlokasiRecord(X);
 	if (P!=Nil) //alokasi berhasil
 	{
-		InsertFRecord(Z,P);
+		InsertRecord(Z,P);
 	}
 }
 
-
-
-
-//penambahan score pada user dengan menjaga keterurutan score (besar -->kecil
-void InsertAfterRecord (AdrUser Z, AdrRecord P, AdrRecord Prec)
-/* I.S. Prec adalah elemen User. Dimungkinkan Prec bernilai Nil*/
-/* P sudah dialokasi */
-/* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec,
- * jika Prec bernilai Nil, artinya P diinsert sebagai elemen pertama*/
+AdrBoard SearchBoard (List L, BoardType Board)
+/* Mengirimkan AdrBoard dimana Board yang dicari ditemukan */
+/*mengembalikan Nil jika Board tidak ditemukkan */
+/* List mungkin Kosong */
 {
-	//kamus
-	//algoritma
-	if (Prec == Nil)
-	{
-		InsertFRecord(Z,P);
-	}
-	else
-	{
-		NextRecord(P) = NextRecord(Prec);
-		NextRecord(Prec) = P;
-	}
-}
-
-
-void DeleteAfterRecord (AdrUser Z,AdrRecord *Pdel,AdrRecord Prec)
-/* I.S. FirstRecord(Z) bukan Nil,  Prec adalah AdrRecord pada User Z. */
-/* F.S. Menghapus NextRecord(Prec) : Pdel adalah AdrRecord yang dihapus */
-{
-	*Pdel = NextRecord (Prec);
-	NextRecord(Prec) = NextRecord(*Pdel);
-	NextRecord(*Pdel) = Nil;
-}
-
-
-void InsertSortedRecord (AdrUser Z, InfoRecord X)
-/* I.S: sembarang, FirstRecord(Z) boleh sama dengan Nil */
-/*F.S: alokasi X, kemudian insert address X pada list Record dari User Z dengan menjaga keterurutan nilai Record dari besar ke kecil */
-/* record diurutkan berdasarkan InfoRecord.Nilai */
-{
-	AdrRecord P, After, Pass, PDel;
-	boolean Inserted;
-	
-	//algoritma
-	/*inisialisasi*/
-	Inserted = false;
-	Pass = Nil;
-	InsVRecord(Z, X);
-	P = FirstRecord(Z);
-	After = NextRecord(P);
-	
-	//pencarian posisi yang pas dengan menjaga keterurutan
-	while (After != Nil && !(Inserted)) 
-	{
-		if (Info(P).Score >= Info(After).Score) //posisi P sudah pas
-		{
-			Inserted = true;
-		}
-		else //posisi P belum pas
-		{
-			After = NextRecord(After);
-			DeleteAfterRecord(Z, &PDel, P);
-			InsertAfterRecord(Z, PDel, Pass);
-			Pass = PDel;
-		}
-	}
-}
-
-
-
-
-//Penambahan Record berdasarkan Board dan User tertentu (penambahana database)
-void InsertGameScore (List *L, BoardNb Board, UserName User, InfoRecord Record)	
-/* I.S. List boleh kosong, Board dan User mungkin sudah ada, Record belum ada dalam List */
-/*F.S. Record telah dimasukan ke dalam isi List */
-/*proses: Jika Board belum ada pada List, InsertBoard
- * Jika User belum ada pada board, InsertUser*/
- {
+	 {
 	 //kamus 
 	 AdrBoard PBoard;
-	 AdrUser PUser;
-	 boolean FoundBoard, FoundUser;
-	 
+	 boolean FoundBoard;
 	 
 	 //algoritma
-	 /*pencarian board yang pas */
-		 PBoard = Head(*L);
+		 PBoard = FirstBoard(L);
 		 FoundBoard = false;
 		 while (PBoard !=Nil && !(FoundBoard))
 		 {
@@ -286,39 +155,123 @@ void InsertGameScore (List *L, BoardNb Board, UserName User, InfoRecord Record)
 			PBoard = NextBoard(PBoard);
 			}
 		}
-		if (!(FoundBoard)) // Board belum pernah dimainkan
+	}
+	return PBoard;
+}
+
+
+//Penambahan Record berdasarkan Board dan User tertentu (penambahana database)
+void InsertGameScore (List *L, BoardType Board,RecordType Record)
+/* I.S. List boleh kosong, Board mungkin sudah ada, Record belum ada dalam List */
+/*F.S. Record telah dimasukan ke dalam isi List */
+/*proses: Jika Board belum ada pada List, InsertBoard terlebih dahulu */
+/*dilanjutkan dengan proses InserRecord pada Board tersebut*/
+{
+	// Kamus
+	AdrBoard Z;
+	
+	//Algoritma
+	Z = SearchBoard (L, Board);
+	if (Z == Nil) // Board belum pernah dimainkan (tidak ada)
+	{
+		Z = AlokasiBoard(Board);
+		if (Z != Nil) 
 		{
-			PBoard = AlokasiBoard(Board);
-			InsertBoard(L,PBoard);
+			InsertBoard (L,Z);
 		}
-		
-	/*pencarian user yang pas */
-		PUser = FirstUser(PBoard);
-		FoundUser = false;
-		while (PUser !=Nil && !(FoundUser))
-		{
-			if (InfoUser(PUser) == User)
-			{
-				FoundUser = true;
-			}
-			else
-			{
-				PUser=NextUser(PUser);
-			}
-		}
-		if (!(FoundUser)) // User belum pernah bermain pada board tersebut
-		{
-			PUser = AlokasiUser(User);
-			InsertUser(PBoard, PUser);
-		}
-		
-	/*sudah ditemukan board dan user yang pas*/
-	/*record diinsertkan ke dalam List */
-	InsertSortedRecord(PUser, Record);
+	}
+	InsVRecord(Z, Record);	
 }
 	
  
  
+ //Keperluan HighScore Game
+int NbBoardRecord (List L, BoardType Board)
+/* mengembalikan jumlah Record yang ada pada board tertentu */
+/*Jika Board tidak ada dalam list, maka akan mengembalikan 0 */
+{
+	//Kamus
+	AdrBoard P;
+	AdrRecord PRecord;
+	int CountRecord = 0;
+	
+	//Algoritma
+	P = SearchBoard(L,Board);
+	if (P == Nil) //Board tidak ada dalam List
+	{
+		return 0;
+	}
+	else
+	{
+		PRecord = FirstRecord(Board);
+		while (PRecord != Nil) 
+		{
+			CountRecord++
+			PRecord = NextRecord(PRecord);
+		}
+		return CountRecord;
+	}
+}
+		
+
+void MakeTabRecordEmpty (int N,TabRecord *T)
+/*{ I.S. sembarang }
+{ F.S. Terbentuk tabel T kosong dengan ukuran N }*/
+{
+    T->TR = (RecordType*) malloc(N * sizeof(RecordType));
+    T->Size = N;
+}
+
+void MoveBoardRecordToArray (List L, BoardType Board, TabRecord *T)
+/* I.S. Board sudah ada dalam List, sudah ada record dalam Board */
+/* F.S. Semua record yang ada dalam board akan dipindahkan ke dalam TabRecord T */
+{
+	//Kamus
+	int NRecord; //jumlah record yang akan dipindahkan ke array
+	AdrBoard PBoard;
+	AdrRecord PRecord;
+	int Index = 0; //index array
+	
+	
+	//Algoritma
+	NRecord = NbBoardRecord (L, Board);
+	MakeTabRecordEmpty(NRecord, T);
+	PBoard = SearchBoard(L,Board);
+	PRecord = FirstRecord(PBoard);
+	
+	while (PRecord != Nil)
+	{
+		T->TR[Index] = InfoRecord(PRecord);
+		Indeks++;
+		PRecord = NextRecord(PRecord);
+	}
+}
+	
+	
+	
+	
+void SortTabRecord (TabRecord *T)
+/* I.S. TabRecord T mungkin kosong */
+/* F.S. Elemen-elemen dalam TabRecord T sudah terurut berdasarkan Record.Score */
+/*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending. */
+{
+	if
+
+
+
+void ViewMyHighscore (TabRecord T, UserNameType UserName);
+/* I.S. TabRecord T tidak kosong */
+/* F.S. menampilkan 10 skor tertinggi pada board yang sedang dipilih yang didapatkan user tersebut */
+/*Tampilan high score akan menampilkan skor secara terurut mengecil dan waktu(tanggal+jam) pencapaian skor tersebut*/
+/*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending. */
+
+void ViewAllHighscore (TabRecord T);
+/* I.S. TabRecord T tidak kosong */
+/* F.S. menampilkan 10 skor tertinggi pada board yang sedang dipilih yang didapatkan dari semua user yang terdaftar. */
+/*Tampilan high score akan menampilkan skor secara terurut mengecil,
+ * nama user yang mendapatkan skor tersebut, dan waktu(tanggal+jam) pencapaian skor tersebut */
+ /*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending.*/
+
  
  
  
