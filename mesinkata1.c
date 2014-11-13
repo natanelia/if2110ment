@@ -90,3 +90,14 @@ boolean IsKataSama (Kata K1, Kata K2)
         return false;
     }
 }
+
+void CopyKata(Kata Kata1,Kata *Kata2){
+/* Mengkopi kata yang ada pada Kata1 ke Kata2*/
+
+    int i;
+    
+    for (i=1; i<= Kata1.Length;i++){
+        Kata2->TabKata[i] = Kata1.TabKata[i];   
+    }
+    Kata2->length = Kata1.Length;
+}
