@@ -27,5 +27,7 @@ boolean IsTanggalEqual (TANGGAL T1, TANGGAL T2);
 TANGGAL TanggalEarly (TANGGAL T1, TANGGAL T2);
 // Menghasilkan tanggal yang lebih dulu di antara T1 dan T2
 // Prekondisi : T1 != T2
+void PrintTanggal (TANGGAL T);
+// Menampilkan tanggal pada layar dengan format DD/MM/YYYY
 
 #endif
