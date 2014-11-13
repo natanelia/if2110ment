@@ -39,6 +39,8 @@ void ReadBoards();
 void ReadDictionary();
 void clrscr(void);
 void DisplayBoard();
+void MainMenu();
+void PreparationMenu ();
 
 
 static struct termios old_termios, new_termios;
@@ -277,11 +279,52 @@ int i,j;
 		printf(ANSI_COLOR_MAGENTA "                       Board 8                Board 9\n\n" ANSI_COLOR_RESET);
 }
 	
+void MainMenu() {
+/* Kamus Lokal */
+	int pil;
+/* Algoritma */	
+	printf(ANSI_COLOR_RED  "[1] Register      " ANSI_COLOR_RESET ANSI_COLOR_BLUE  "[2] Login     "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] How To Play     "   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "[4] About     "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Quit    " ANSI_COLOR_RESET);
+    	printf("\n\n");
+	printf("Menu yang dipilh= ");
+    	scanf("%d",&pil);
+    	switch (pil) {
+		case 1:{clrscr(); PreparationMenu(); break;}
+		case 2:{clrscr(); PreparationMenu(); break;}
+		case 3:{clrscr(); PreparationMenu(); break;}
+		case 4:{clrscr(); PreparationMenu(); break;}
+		case 5:{clrscr(); PreparationMenu(); break;}
+	}
+}
+
+void PreparationMenu () {
+/* Kamus Lokal */
+	int pil;
+	int pilboard; //pilihan board
+/* Algoritma */
+	printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_BLUE  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
+    	printf("Menu yang dipilh= ");
+    	scanf("%d",&pil);
+    	switch (pil)
+    	{
+        	case 1 : Play(120); break;
+		case 2 : { clrscr();
+		  	DisplayBoard();
+		  	printf("Masukkan pilihan board= ");
+		  	scanf("%d",&pilboard);
+		  	selectedBoard=pilboard;
+		  	Play(120);
+		  	break;
+			}
+        	default : break;
+	
+    }
+}
+
 
 int main()
 {
     int pil; //pilihan menu
-    int pilboard; //pilihan board
+    
 
     selectedBoard = 0;
     ReadBoards();
@@ -297,25 +340,9 @@ int main()
 
     printf("WORDAMENT!\n");
     printf("Pilih menu\n");
-   /* printf(ANSI_COLOR_RED  "[1] Register      " ANSI_COLOR_RESET ANSI_COLOR_BLUE  "[2] Login     "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] How To Play     "   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "[4] About     "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Quit    " ANSI_COLOR_RESET);
-    printf("\n\n"); */
-    printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_BLUE  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
-    printf("Menu yang dipilh= ");
-    scanf("%d",&pil);
-    switch (pil)
-    {
-        case 1 : Play(120); break;
-	case 2 : { clrscr();
-		  DisplayBoard();
-		  printf("Masukkan pilihan board= ");
-		  scanf("%d",&pilboard);
-		  selectedBoard=pilboard;
-		  Play(120);
-		  break;
-		}
-        default : break;
-	
-    }
+    MainMenu();
+   
+    
 
     return 0;
 }
