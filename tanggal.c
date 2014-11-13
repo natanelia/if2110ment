@@ -43,3 +43,8 @@ TANGGAL TanggalEarly (TANGGAL T1, TANGGAL T2)
 					else
 						return (T2);
 }
+void PrintTanggal (TANGGAL T)
+// Menampilkan tanggal pada layar dengan format DD/MM/YYYY
+{
+	printf("%02i/%02i/%d",Day(T),Month(T),Year(T));
+}
