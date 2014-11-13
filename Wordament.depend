@@ -79,3 +79,28 @@
 1415633939 /home/nim_13513070/Documents/if2110ment/point.h
 	"boolean.h"
 
+1415638156 source:/Users/zulvafachrina/Documents/if2110ment/matriks.c
+	<stdio.h>
+	<math.h>
+	"boolean.h"
+	"matriks.h"
+
+1415619784 /Users/zulvafachrina/Documents/if2110ment/boolean.h
+
+1415619784 /Users/zulvafachrina/Documents/if2110ment/matriks.h
+	<stdio.h>
+	"boolean.h"
+
+1415638156 source:/Users/zulvafachrina/Documents/if2110ment/mesinkar.c
+	<stdio.h>
+	"mesinkar.h"
+
+1415638156 /Users/zulvafachrina/Documents/if2110ment/mesinkar.h
+	"boolean.h"
+
+1415619784 source:/Users/zulvafachrina/Documents/if2110ment/mesinkata1.c
+	"mesinkata1.h"
+
+1415619784 /Users/zulvafachrina/Documents/if2110ment/mesinkata1.h
+	"mesinkar.h"
+

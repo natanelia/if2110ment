@@ -27,6 +27,20 @@ int selectedBoard;
 POINT kursor;
 POINT chosen;
 
+// FUNGSI DAN PROSEDUR
+void resetTermios();
+void initTermios();
+int kbhit();
+char getch();
+void Play(double seconds);
+void InitBoard();
+void UpdateLayout();
+void ReadBoards();
+void ReadDictionary();
+void clrscr(void);
+void DisplayBoard();
+
+
 static struct termios old_termios, new_termios;
 /* restore new terminal i/o settings */
 void resetTermios() {
@@ -206,9 +220,68 @@ void clrscr(void) {
   system("clear");
 }
 
+void DisplayBoard() {
+/* KAMUS LOKAL */
+int i,j;
+/* ALGORITMA */
+	ReadBoards();
+	for (i=FirstIdxBrs(boards[0]);i<=LastIdxBrs(boards[0]);i++){
+		for (j=FirstIdxBrs(boards[0]);j<=LastIdxBrs(boards[0]);j++){
+			printf(" %c ", GetElmt(boards[0],i,j));
+		}
+		printf("          ");
+		for (j=FirstIdxBrs(boards[1]);j<=LastIdxBrs(boards[1]);j++){
+			printf(" %c ", GetElmt(boards[1],i,j));
+		}
+		printf("          ");
+		for (j=FirstIdxBrs(boards[2]);j<=LastIdxBrs(boards[2]);j++){
+			printf(" %c ", GetElmt(boards[2],i,j));
+		}
+		printf("          ");
+		for (j=FirstIdxBrs(boards[3]);j<=LastIdxBrs(boards[3]);j++){
+			printf(" %c ", GetElmt(boards[3],i,j));
+		}
+		printf("\n");
+	}
+	printf(ANSI_COLOR_MAGENTA "   Board 0               Board 1               Board 2              Board 3\n\n" ANSI_COLOR_RESET );
+	for (i=FirstIdxBrs(boards[4]);i<=LastIdxBrs(boards[4]);i++){
+		for (j=FirstIdxBrs(boards[4]);j<=LastIdxBrs(boards[4]);j++){
+			printf(" %c ", GetElmt(boards[4],i,j));
+		}
+		printf("          ");
+		for (j=FirstIdxBrs(boards[5]);j<=LastIdxBrs(boards[5]);j++){
+			printf(" %c ", GetElmt(boards[5],i,j));
+		}
+		printf("          ");
+		for (j=FirstIdxBrs(boards[6]);j<=LastIdxBrs(boards[6]);j++){
+			printf(" %c ", GetElmt(boards[6],i,j));
+		}
+		printf("          ");
+		for (j=FirstIdxBrs(boards[7]);j<=LastIdxBrs(boards[7]);j++){
+			printf(" %c ", GetElmt(boards[7],i,j));
+		}
+		printf("\n");
+	}
+	printf(ANSI_COLOR_MAGENTA "   Board 4               Board 5               Board 6              Board 7\n\n" ANSI_COLOR_RESET);
+	for (i=FirstIdxBrs(boards[8]);i<=LastIdxBrs(boards[8]);i++){
+		printf("                     ");
+		for (j=FirstIdxBrs(boards[8]);j<=LastIdxBrs(boards[8]);j++){
+			printf(" %c ", GetElmt(boards[8],i,j));
+		}
+		printf("          ");
+		for (j=FirstIdxBrs(boards[9]);j<=LastIdxBrs(boards[9]);j++){
+			printf(" %c ", GetElmt(boards[9],i,j));
+		}
+		printf("\n");
+	}
+		printf(ANSI_COLOR_MAGENTA "                       Board 8                Board 9\n\n" ANSI_COLOR_RESET);
+}
+	
+
 int main()
 {
     int pil; //pilihan menu
+    int pilboard; //pilihan board
 
     selectedBoard = 0;
     ReadBoards();
@@ -224,12 +297,24 @@ int main()
 
     printf("WORDAMENT!\n");
     printf("Pilih menu\n");
-    printf("1. Play game\n");
+   /* printf(ANSI_COLOR_RED  "[1] Register      " ANSI_COLOR_RESET ANSI_COLOR_BLUE  "[2] Login     "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] How To Play     "   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "[4] About     "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Quit    " ANSI_COLOR_RESET);
+    printf("\n\n"); */
+    printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_BLUE  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
+    printf("Menu yang dipilh= ");
     scanf("%d",&pil);
     switch (pil)
     {
         case 1 : Play(120); break;
+	case 2 : { clrscr();
+		  DisplayBoard();
+		  printf("Masukkan pilihan board= ");
+		  scanf("%d",&pilboard);
+		  selectedBoard=pilboard;
+		  Play(120);
+		  break;
+		}
         default : break;
+	
     }
 
     return 0;
