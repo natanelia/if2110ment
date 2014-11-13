@@ -99,5 +99,5 @@ void CopyKata(Kata Kata1,Kata *Kata2){
     for (i=1; i<= Kata1.Length;i++){
         Kata2->TabKata[i] = Kata1.TabKata[i];   
     }
-    Kata2->length = Kata1.Length;
+    Kata2->Length = Kata1.Length;
 }

@@ -209,7 +209,7 @@ void ReadDictionary()
     STARTKATA("Dictionary.txt");
     while (!EndKata)
     {
-        CopyKata(CKata,kamusKata[i])
+        CopyKata(CKata,&kamusKata[i]);
         i++;
         ADVKATA();
     }
