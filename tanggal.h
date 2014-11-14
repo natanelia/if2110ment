@@ -2,7 +2,7 @@
 
 #ifndef TANGGAL_C
 #define TANGGAL_C
-#define "boolean.h"
+#include "boolean.h"
 
 /*** DEFINISI DAN SPESIFIKASI TYPE TANGGAL ***/
 typedef struct {
@@ -12,9 +12,9 @@ typedef struct {
 } TANGGAL;
 
 /*** SELEKTOR ***/
-#define Day(T) (T).DD
-#define Month(T) (T).MM
-#define Year(T) (T).YY
+#define Hari(T) (T).DD
+#define Bulan(T) (T).MM
+#define Tahun(T) (T).YY
 
 /*** KONSTRUKTOR ***/
 TANGGAL MakeTANGGAL (int h, int b, int t);
