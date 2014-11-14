@@ -40,4 +40,7 @@ CC = BLANK atau CC = MARK; CC adalah karakter sesudah karakter terakhir yang dia
 void CopyKata(Kata Kata1,Kata *Kata2);
 /* Mengkopi kata yang ada pada Kata1 ke Kata2*/
 
+int GetIntegerFromKata(Kata Kata1);
+/*mengembalikan integer hasil convertan kata yang dibaca*/
+
 #endif

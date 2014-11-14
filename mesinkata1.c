@@ -101,3 +101,22 @@ void CopyKata(Kata Kata1,Kata *Kata2){
     }
     Kata2->Length = Kata1.Length;
 }
+
+
+
+int GetIntegerFromKata(Kata Kata1);
+/*mengembalikan integer hasil convertan kata yang dibaca*/
+{
+	//kamus 
+	int Val;
+	
+	//algoritma
+	Val = chartoint(CC);
+		ADV();
+		while (CC!= MARK & CC!=BLANK)
+		{
+			Val = Val*10 + chartoint(CC);
+			ADV();
+		}
+}
+	
