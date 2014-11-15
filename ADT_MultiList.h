@@ -8,6 +8,8 @@ Topik :multilist untuk highscore*/
 #include "boolean.h"
 #include <stdlib.h>
 #include "tanggal.h"
+#include "mesinkar.h"
+#include "mesinkata1.h"
 
 
 /* Representasi address dengan pointer */
@@ -22,15 +24,15 @@ Topik :multilist untuk highscore*/
 /* *** Definisi Type List *** */
 typedef int BoardType;
 typedef int ScoreType;
-typedef TANGGAL DateType;
-typedef char[15] UserNameType;
+typedef char UserNameType[15];
+typedef Waktu TimeType;
 
 typedef struct tRecord *AdrRecord;
 typedef struct
 {
 	UserNameType UserName;
 	ScoreType Score;
-	DateType Date;
+	TimeType Time;
 } RecordType;
 
 typedef struct tRecord 
@@ -45,7 +47,7 @@ typedef struct tBoard *AdrBoard;
 typedef struct tBoard
 {
 	BoardType InfoBoard;
-	AdrRecord FirtsRecord;
+	AdrRecord FirstRecord;
 	AdrBoard NextBoard;
 } ElmBoard;
 
@@ -64,11 +66,11 @@ typedef struct {
 
 /* Selektor */
 #define FirstBoard(L) ((L).FirstBoard)
-#define InfoBoard(P) ((P).InfoBoard)
-#define NextBoard(P) ((P).NextBoard)
-#define FirstRecord(P) ((P).FirstRecord)
-#define InfoRecord(P) ((P).InfoRecord)
-#define NextRecord(P) ((P).NextRecord)
+#define InfoBoard(P) (P)->InfoBoard
+#define NextBoard(P) (P)->NextBoard
+#define FirstRecord(P) (P)->FirstRecord
+#define InfoRecord(P) (P)->InfoRecord
+#define NextRecord(P) (P)->NextRecord
 
 
 

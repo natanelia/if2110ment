@@ -14,7 +14,7 @@ EOP akan padam (false). Jika CC = MARK maka EOP akan menyala (true)
 */
 
     /* Algoritma */
-    pita = fopen(filename,"r");
+    pita = fopen(filename,"r+");
     ADV();
 }
 
