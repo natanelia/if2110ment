@@ -10,6 +10,7 @@
 #include "mesinkar.h" //untuk mesinkata
 #include "mesinkata1.h" //untuk membaca kamus data dan file eksternal
 #include "point.h"
+#include "ArrayOfKata.c" //untuk membaca file berisi nama-nama user dan menyimpannya di array
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -26,6 +27,8 @@ int kamusKataNeff;
 int selectedBoard;
 POINT kursor;
 POINT chosen;
+TabK users;	//array of Kata, isinya nama-nama user yg udah pernah diregister-in 
+Kata namauser;	//nama user yang saat ini sedang log in
 
 // FUNGSI DAN PROSEDUR
 void resetTermios();
@@ -41,6 +44,9 @@ void clrscr(void);
 void DisplayBoard();
 void MainMenu();
 void PreparationMenu ();
+void ReadUser();
+void Register (Kata *namauser);
+void Login (Kata *namauser);
 
 
 static struct termios old_termios, new_termios;
@@ -288,8 +294,8 @@ void MainMenu() {
 	printf("Menu yang dipilh= ");
     	scanf("%d",&pil);
     	switch (pil) {
-		case 1:{clrscr(); PreparationMenu(); break;}
-		case 2:{clrscr(); PreparationMenu(); break;}
+		case 1:{clrscr(); Register(&namauser); break;}
+		case 2:{clrscr(); Login(&namauser); break;}
 		case 3:{clrscr(); PreparationMenu(); break;}
 		case 4:{clrscr(); PreparationMenu(); break;}
 		case 5:{clrscr(); PreparationMenu(); break;}
@@ -320,6 +326,64 @@ void PreparationMenu () {
     }
 }
 
+void ReadUser()
+//I.S sembarang
+//F.S Array users berisi nama-nama user di file NamaUser.txt
+{
+    MakeAKEmpty(&users);
+    STARTKATA("NamaUser.txt");
+    while (!EndKata)
+    {
+	AddAsLastEl(&users,CKata);
+        ADVKATA();
+    }
+}
+
+void Register (Kata *namauser)
+{
+	/* KAMUS */ 
+	char nama[15];
+	int i=1;
+	
+	/* ALGORITMA */
+	do
+	{	printf("REGISTER\n\n");
+		printf("Masukkan nama (tanpa spasi): ");
+		scanf("%s",nama);
+		(*namauser).Length=strlen(nama);
+		for (i=1;i<=(*namauser).Length;i++)
+			(*namauser).TabKata[i]=nama[i-1];
+		if (SearchB (users, *namauser))
+			printf("Nama sudah ada. Masukkan nama yang lain!\n\n");
+		clrscr();
+	}
+	while (SearchB (users, *namauser));
+	AddAsLastEl(&users,*namauser);
+	PreparationMenu();
+}
+
+void Login (Kata *namauser)
+{
+	/* KAMUS */ 
+	char nama[15];
+	int i=1;
+	
+	/* ALGORITMA */
+	do
+	{	printf("LOGIN\n\n");
+		printf("Masukkan nama (tanpa spasi): ");
+		scanf("%s",nama);
+		(*namauser).Length=strlen(nama);
+		for (i=1;i<=(*namauser).Length;i++)
+			(*namauser).TabKata[i]=nama[i-1];
+		if (!(SearchB (users, *namauser)))
+			printf("Nama anda belum terdaftar.\n\n");
+		clrscr();
+	}
+	while (!(SearchB (users, *namauser)));
+	PreparationMenu();
+}
+
 
 int main()
 {
@@ -329,7 +393,7 @@ int main()
     selectedBoard = 0;
     ReadBoards();
     ReadDictionary();
-
+    ReadUser();
 
     /*printf(ANSI_COLOR_RED     "This text is RED!"     ANSI_COLOR_RESET "\n");
     printf(ANSI_COLOR_GREEN   "This text is GREEN!"   ANSI_COLOR_RESET "\n");
