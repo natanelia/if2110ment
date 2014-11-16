@@ -61,6 +61,7 @@ typedef struct
 typedef struct {
 	RecordType *TR;
 	int Size;
+	int TNeff;
 } TabRecord;
 
 

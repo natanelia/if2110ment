@@ -220,6 +220,7 @@ void MakeTabRecordEmpty (int N,TabRecord *T)
 {
     T->TR = (RecordType*) malloc(N * sizeof(RecordType));
     T->Size = N;
+    T->TNeff = 0;
 }
 
 void MoveBoardRecordToArray (List L, BoardType Board, TabRecord *T)
@@ -246,6 +247,7 @@ void MoveBoardRecordToArray (List L, BoardType Board, TabRecord *T)
 	{
 		T->TR[Index] = InfoRecord(PRecord);
 		Index++;
+		T->TNeff++;
 		PRecord = NextRecord(PRecord);
 	}
 }
@@ -308,7 +310,7 @@ void ViewMyHighscore (List L, BoardType Board, UserNameType UserName)
 	
 	//algoritma
 	MoveBoardRecordToArray(L, Board, &T);
-	Last = T.Size;
+	Last = T.TNeff;
 	while (i <= Last && Number<=10)
 	{
 		if (IsKataSama(T.TR[i].UserName,UserName))
@@ -335,7 +337,7 @@ void ViewAllHighscore (List L, BoardType Board)
 	
 	//algoritma
 	MoveBoardRecordToArray(L, Board, &T);
-	 Last = T.Size ;
+	 Last = T.TNeff;
 	while (i <= Last && Number<=10)
 	{
 		printf ("%d", Number); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");
