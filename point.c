@@ -213,3 +213,9 @@ void Point_Putar (POINT *P, point_infotype Sudut)
 	SetAbsis(P, X);
 	SetOrdinat(P, Y);
 }
+
+boolean IsPointSama(POINT P1, POINT P2)
+//Mengecek apakah kedua pont merupakan point yang sama atau tidak
+{
+	return (GetAbsis(P1) == GetAbsis(P2) ) && (GetOrdinat(P1) == GetOrdinat(P2)); 
+}
