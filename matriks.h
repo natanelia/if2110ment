@@ -1,6 +1,7 @@
 //  ********** Definisi TYPE MATRIKS dengan indeks integer ********** }
 //  Ukuran minimum dan maksimum baris dan kolom }
 #include<stdio.h>
+#include "point.h""
 #include "boolean.h"
 
 typedef int indeks;
@@ -177,3 +178,6 @@ void Transpose(MATRIKS *M);
 //  I.S. M terdefinisi dan IsBujursangkar(M) }
 //  F.S. M "di-transpose", yaitu setiap elemen M(i,j) ditukar nilainya dengan elemen
 //M(j,i) }
+
+boolean SearchArrayPoint(ARRAYPOINT P,POINT point);
+//Mengecek apakah point merupakan member dari ARRAYPOINT P
