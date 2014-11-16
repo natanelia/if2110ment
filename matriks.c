@@ -417,3 +417,19 @@ void Transpose(MATRIKS *M)
         }
     }
 }
+
+boolean SearchArrayPoint(ARRAYPOINT P,POINT kursor)
+//Mengecek apakah point merupakan member dari ARRAYPOINT P
+{
+		int i = 1 ;
+		boolean found= false;
+		while(i <= P.sum && !false ){
+			if (IsPointSama(P.point[i],kursor)){
+				found = true;
+			}
+			else{
+				i++;
+			}
+		}
+		return found;
+}
