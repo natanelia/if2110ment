@@ -29,6 +29,12 @@ POINT kursor;
 POINT chosen;
 TabK users;	//array of Kata, isinya nama-nama user yg udah pernah diregister-in 
 Kata namauser;	//nama user yang saat ini sedang log in
+int isSHit = 0; // Counter penghitung tombol 's' sudah dipencet berapa kali
+Stack StackKata;
+char word;
+ARRAYPOINT P;
+int indeksP =1 ; // indeks array penyimpan ARRAY POINT yang sudah di lewati kursor
+
 
 // FUNGSI DAN PROSEDUR
 void resetTermios();
@@ -83,6 +89,7 @@ void Play(double seconds){
     char cc;
     const double TIME_LIMIT = seconds * CLOCKS_PER_SEC;
     clock_t startTime = clock();
+    CreateEmptyStack(&StackKata);
     while ((clock() - startTime) <= TIME_LIMIT) {
         if (kbhit()) {
             cc = getch();
@@ -94,52 +101,112 @@ void Play(double seconds){
                             {
                                 kursor.X--;
                                 kursor.Y--;
+				SetAbsis(&P.point[indeksP],kursor.X);
+				SetOrdinat(&P.point[indeksP],kursor.Y);
+				indeksP++;
                             }
                             break;
 
                 case 'w' :  if (kursor.X > FirstIdxBrs(boards[selectedBoard]))
-                                kursor.X--;
+                            {
+				kursor.X--;
+				SetAbsis(&P.point[indeksP],kursor.X);
+				SetOrdinat(&P.point[indeksP],kursor.Y);
+				indeksP++;
+			    }
                             break;
 
                 case 'e' :  if (kursor.X > FirstIdxBrs(boards[selectedBoard]) && (kursor.Y < LastIdxKol(boards[selectedBoard])))
                             {
                                 kursor.X--;
                                 kursor.Y++;
+				SetAbsis(&P.point[indeksP],kursor.X);
+				SetOrdinat(&P.point[indeksP],kursor.Y);
+				indeksP++;
+
                             }
                             break;
 
                 case 'a' :  if (kursor.Y > FirstIdxKol(boards[selectedBoard]))
-                                kursor.Y--;
+                            {    
+				kursor.Y--;
+				SetAbsis(&P.point[indeksP],kursor.X);
+				SetOrdinat(&P.point[indeksP],kursor.Y);
+				indeksP++;
+			}
                             break;
 
                 case 's' :  chosen.X = kursor.X;
                             chosen.Y = kursor.Y;
+                            isSHit++;
+			    SetAbsis(&P.point[indeksP],kursor.X);
+			    SetOrdinat(&P.point[indeksP],kursor.Y);
+			    indeksP++;
                             break;
 
                 case 'd' :  if (kursor.Y < LastIdxKol(boards[selectedBoard]))
-                                kursor.Y++;
+                            {
+				kursor.Y++;
+				SetAbsis(&P.point[indeksP],kursor.X);
+				SetOrdinat(&P.point[indeksP],kursor.Y);
+				indeksP++;	
+			    }
                             break;
 
                 case 'z' :  if (kursor.X < LastIdxBrs(boards[selectedBoard]) && (kursor.Y > FirstIdxKol(boards[selectedBoard])))
                             {
                                 kursor.X++;
                                 kursor.Y--;
+				SetAbsis(&P.point[indeksP],kursor.X);
+				SetOrdinat(&P.point[indeksP],kursor.Y);
+				indeksP++;
                             }
                             break;
 
                 case 'x' :  if (kursor.X < LastIdxBrs(boards[selectedBoard]))
-                                kursor.X++;
+                            {
+				kursor.X++;
+				SetAbsis(&P.point[indeksP],kursor.X);
+				SetOrdinat(&P.point[indeksP],kursor.Y);
+				indeksP++;
+			    }
                             break;
 
                 case 'c' :  if (kursor.X < LastIdxBrs(boards[selectedBoard]) && (kursor.Y < LastIdxKol(boards[selectedBoard])))
                             {
                                 kursor.X++;
                                 kursor.Y++;
+				SetAbsis(&P.point[indeksP],kursor.X);
+				SetOrdinat(&P.point[indeksP],kursor.Y);
+				indeksP++;
                             }
                             break;
             }
-            UpdateLayout();
+			
+	    if (SearchArrayPoint(P,kursor)){
+		while(!IsEmptyStack(StackKata)){
+		 	Pop(&StackKata,&word);
+		}
+		Push(&StackKata,word);
+	     }	
+	/* Jika ada point yang sudah dilewati kursor (setelah menekan tombol s), 
+	maka pop semua kata sehingga tersisa huruf awal saat menekan s saja */ 
+	     else{
+		if (isSHit == 0){
+				
+		}
+		else if (isSHit %2 == 1){
+			Push(&StackKata,GetElmt(boards[selectedBoard],kursor.X,kursor.Y));
+		}
+		else{
+			while(!IsEmptyStack(StackKata)){
+				Pop(&StackKata,&word);
+			}
+		}					
+	     }
 
+            UpdateLayout();
+            PrintStack(reverseStack(StackKata));
             printf("\nSelected Char: %c\n",GetElmt(boards[selectedBoard],kursor.X,kursor.Y)); // process character
             initTermios(); // use new terminal setting again to make kbhit() and getch() work
         }
