@@ -1,7 +1,7 @@
 //  ********** Definisi TYPE MATRIKS dengan indeks integer ********** }
 //  Ukuran minimum dan maksimum baris dan kolom }
 #include<stdio.h>
-#include "point.h""
+#include "point.h"
 #include "boolean.h"
 
 typedef int indeks;
