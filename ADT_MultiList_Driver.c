@@ -23,7 +23,7 @@ int main()
 	printf("check check check \n");
 	ViewMyHighscore(L1, 1, Kata1 ); //kosong
 	printf("check check check \n");
-	ViewAllHighscore(L1, 1);  //jebol
+	ViewAllHighscore(L1, 1);  //kosong
 	printf("check check check \n");
 
 
