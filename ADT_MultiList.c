@@ -6,9 +6,6 @@ Topik :multilist untuk highscore*/
 #include "ADT_MultiList.h"	
 #include "boolean.h"
 #include <stdio.h>	
-#include "mesinkar.h"
-#include "mesinkata1.h"	
-
 
 
 //fungsi2 alokasi dan dealokasi
@@ -231,16 +228,19 @@ void MoveBoardRecordToArray (List L, BoardType Board, TabRecord *T)
 {
 	//Kamus
 	int NRecord; //jumlah record yang akan dipindahkan ke array
-	AdrBoard PBoard;
-	AdrRecord PRecord;
-	int Index = 0; //index array
+	AdrBoard PBoard = Nil;
+	AdrRecord PRecord = Nil;
+	int Index = 1; //index array
 	
 	
 	//Algoritma
 	NRecord = NbBoardRecord (L, Board);
-	MakeTabRecordEmpty(NRecord, T);
+	MakeTabRecordEmpty(NRecord+1, T);
 	PBoard = SearchBoard(L,Board);
+	if (PBoard != Nil)
+	{
 	PRecord = FirstRecord(PBoard);
+	}
 	
 	while (PRecord != Nil)
 	{
@@ -261,11 +261,11 @@ void SortTabRecord (TabRecord *T)
 	//KAMUS LOKAL
 	RecordType Max;
 	int i,j,idx; //untuk proses transversal
-	int idxmax = (T->Size - 1 );
+	int idxmax = (T->Size);
 	TANGGAL TanggalEarlier;
 	
 	//ALGORITMA
-	for(i=0;i<=idxmax;i++)
+	for(i=1;i<=idxmax;i++)
 	{
 		Max= T->TR[i];
 		idx = i;
@@ -279,8 +279,7 @@ void SortTabRecord (TabRecord *T)
 			
 			if (T->TR[j].Score == Max.Score)
 			{
-				TanggalEarlier = TanggalEarly(T->TR[j].Date , Max.Date);
-				if (IsTanggalEqual ((T->TR[j].Date), TanggalEarlier));
+				if (IsWaktuEarly(T->TR[j].Time, Max.Time))
 				{
 					Max = T->TR[j];
 					idx = j;
@@ -295,30 +294,33 @@ void SortTabRecord (TabRecord *T)
 
 
 
-void ViewMyHighscore (TabRecord T, UserNameType UserName)
-/* I.S. TabRecord T mungkin kosong*/
+void ViewMyHighscore (List L, BoardType Board, UserNameType UserName)
+/* I.S. List mungkin kosong*/
 /* F.S. menampilkan 10 skor tertinggi pada board yang sedang dipilih yang didapatkan user tersebut */
 /*Tampilan high score akan menampilkan skor secara terurut mengecil dan waktu(tanggal+jam) pencapaian skor tersebut*/
 /*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending. */
 {
 	//kamus 
 	int Number =1;
-	int Last = T.Size -1;
-	int i=0;
+	int Last;
+	int i=1;
+	TabRecord T;
 	
 	//algoritma
+	MoveBoardRecordToArray(L, Board, &T);
+	Last = T.Size;
 	while (i <= Last && Number<=10)
 	{
-		if (T.TR[i].UserName == UserName)
+		if (IsKataSama(T.TR[i].UserName,UserName))
 		{
-			printf ("%d", Number); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");PRINTWAKTU(T.TR[i].Date);
+			printf ("%d", Number); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");PrintWaktu(T.TR[i].Time);
 			Number++;
 		}
 		i++;
 	}
 }
 
-void ViewAllHighscore (TabRecord T)
+void ViewAllHighscore (List L, BoardType Board)
 /* I.S. TabRecord T tidak kosong */
 /* F.S. menampilkan 10 skor tertinggi pada board yang sedang dipilih yang didapatkan dari semua user yang terdaftar. */
 /*Tampilan high score akan menampilkan skor secara terurut mengecil,
@@ -327,21 +329,24 @@ void ViewAllHighscore (TabRecord T)
 {
 	//kamus 
 	int Number =1;
-	int Last = T.Size -1;
-	int i=0;
+	int Last;
+	int i=1;
+	TabRecord T;
 	
 	//algoritma
+	MoveBoardRecordToArray(L, Board, &T);
+	 Last = T.Size ;
 	while (i <= Last && Number<=10)
 	{
 		printf ("%d", Number); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");
-		printf("%s",  T.TR[i].UserName); printf ("			");	PRINTWAKTU(T.TR[i].Date);
+		printf("%s",  T.TR[i].UserName); printf ("			");	PrintWaktu(T.TR[i].Time);
 		Number++;
 		i++;
 	}
 }
  
  
-void BacaDataBaseScore (List *L);
+void BacaDataBaseScore (List *L)
 /*I.S. File eksternal DataBaseScore Mungkin kosong */
 /* F.S. Semua database disalin ke dalam multilist */
 {
@@ -350,12 +355,12 @@ void BacaDataBaseScore (List *L);
 	RecordType Record;
 	
 	//algoritma
-	STARTKATA(DataBaseScore.txt);
+	STARTKATA("DataBaseScore.txt");
 	while (CC != '.')
 	{
 		while (!(EndKata))
 		{
-			Board = charToInteger(CKata);
+			Board = GetIntegerFromKata(CKata);
 			ADVKATA();
 			Record.UserName = CKata;
 			ADVKATA();
@@ -380,7 +385,7 @@ void BacaDataBaseScore (List *L);
 }
 		
  
- void TulisDataBaseScore (L)
+ void TulisDataBaseScore (List L)
  /* I.S. List mungkin kosong */
  /*Isi multilist dipindahkan ke dalam file DataBaseScore.txt */
  /*format penulisan tiap score = Board UserName Score TangalBulanTahunJamMenitDetik */
@@ -393,30 +398,30 @@ void BacaDataBaseScore (List *L);
 	 AdrRecord PRecord;
 
 	//algoritma
-   fp = fopen("C:\Users\Marco Orlando\Documents\GitHub2\DataBaseScore.txt", "w+");
+   fp = fopen("DataBaseScore.txt", "w+");
    PBoard = FirstBoard(L);
    while (PBoard != Nil)
    {
 	   PRecord = FirstRecord(PBoard);
 	   while (PRecord != Nil)
 	   {
-			fputs(InfoBoard(PBoard), fp);
+		   fprintf(fp,"%d", InfoBoard(PBoard));
 			fputs("	",fp);
-		   fputs(InfoRecord(PRecord).UserName, fp);
+			fprintf(fp, "%s", InfoRecord(PRecord).UserName);
 		   fputs("		",fp);
-		   fputs(InfoRecord(PRecord).Score, fp);)
+		   fprintf(fp, "%d", InfoRecord(PRecord).Score);
 		   fputs("		",fp);
-		   fputs(Day(InfoRecord(PRecord).Time), fp)
+		   fprintf(fp, "%d",Day(InfoRecord(PRecord).Time));
 		   fputs(" ",fp);
-		    fputs(Month(InfoRecord(PRecord).Time), fp)
+		     fprintf(fp, "%d",Month(InfoRecord(PRecord).Time));
 		   fputs(" ",fp);
-		    fputs(Year(InfoRecord(PRecord).Time), fp)
+		     fprintf(fp, "%d",Year(InfoRecord(PRecord).Time));
 		   fputs(" ",fp);
-		    fputs(Hour(InfoRecord(PRecord).Time), fp)
+		     fprintf(fp, "%d",Hour(InfoRecord(PRecord).Time));
 		   fputs(" ",fp);
-		    fputs(Minute(InfoRecord(PRecord).Time), fp)
+		     fprintf(fp, "%d",Minute(InfoRecord(PRecord).Time));
 		   fputs(" ",fp);
-		    fputs(Second(InfoRecord(PRecord).Time), fp)
+		     fprintf(fp, "%d",Second(InfoRecord(PRecord).Time));
 		   fputs("\n",fp);
 		PRecord = NextRecord(PRecord);
 		}

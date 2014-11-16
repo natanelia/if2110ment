@@ -104,18 +104,18 @@ void CopyKata(Kata Kata1,Kata *Kata2){
 
 
 
-int GetIntegerFromKata(Kata Kata1);
+int GetIntegerFromKata(Kata Kata1)
 /*mengembalikan integer hasil convertan kata yang dibaca*/
 {
 	//kamus 
 	int Val;
 	
 	//algoritma
-	Val = chartoint(CC);
+	Val = charToInteger(CC);
 		ADV();
 		while (CC!= MARK & CC!=BLANK)
 		{
-			Val = Val*10 + chartoint(CC);
+			Val = Val*10 + charToInteger(CC);
 			ADV();
 		}
 }

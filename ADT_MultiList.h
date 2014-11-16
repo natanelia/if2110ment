@@ -7,7 +7,7 @@ Topik :multilist untuk highscore*/
 #define ADT_MultiList_h
 #include "boolean.h"
 #include <stdlib.h>
-#include "tanggal.h"
+#include "waktu.h"
 #include "mesinkar.h"
 #include "mesinkata1.h"
 
@@ -24,8 +24,8 @@ Topik :multilist untuk highscore*/
 /* *** Definisi Type List *** */
 typedef int BoardType;
 typedef int ScoreType;
-typedef char UserNameType[15];
-typedef Waktu TimeType;
+typedef Kata UserNameType;
+typedef WAKTU TimeType;
 
 typedef struct tRecord *AdrRecord;
 typedef struct
@@ -157,17 +157,29 @@ void SortTabRecord (TabRecord *T);
 /* F.S. Elemen-elemen dalam TabRecord T sudah terurut berdasarkan Record.Score */
 /*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending. */
 
-void ViewMyHighscore (TabRecord T, UserNameType UserName);
-/* I.S. TabRecord T tidak kosong */
+void ViewMyHighscore (List L, BoardType Board, UserNameType UserName);
+/* I.S. List mungkin kosong*/
 /* F.S. menampilkan 10 skor tertinggi pada board yang sedang dipilih yang didapatkan user tersebut */
 /*Tampilan high score akan menampilkan skor secara terurut mengecil dan waktu(tanggal+jam) pencapaian skor tersebut*/
 /*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending. */
 
-void ViewAllHighscore (TabRecord T);
+void ViewAllHighscore (List L, BoardType Board);
 /* I.S. TabRecord T tidak kosong */
 /* F.S. menampilkan 10 skor tertinggi pada board yang sedang dipilih yang didapatkan dari semua user yang terdaftar. */
 /*Tampilan high score akan menampilkan skor secara terurut mengecil,
  * nama user yang mendapatkan skor tersebut, dan waktu(tanggal+jam) pencapaian skor tersebut */
  /*Jika ada lebih dari 2 skor yang sama, maka diurutkan berdasarkan waktu secara ascending.*/
+ 
+void BacaDataBaseScore (List *L);
+/*I.S. File eksternal DataBaseScore Mungkin kosong */
+/* F.S. Semua database disalin ke dalam multilist */
+
+
+void TulisDataBaseScore (List L);
+ /* I.S. List mungkin kosong */
+ /*Isi multilist dipindahkan ke dalam file DataBaseScore.txt */
+ /*format penulisan tiap score = Board UserName Score TangalBulanTahunJamMenitDetik */
+ /* contoh : 2 Marco 100 26 12 2014 15 30 45 */
+ /*akhir file txt ditandai dengan '.' */
 
 #endif
