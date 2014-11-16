@@ -122,4 +122,7 @@ void Point_Putar (POINT *P, point_infotype Sudut);
 // { I.S. P terdefinisi }
 // { F.S. P digeser sebesar Sudut derajat dengan sumbu titik (0,0) }
 
+boolean IsPointSama(POINT P1, POINT P2);
+//Mengecek apakah kedua pont merupakan point yang sama atau tidak
+
 #endif
