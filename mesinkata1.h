@@ -43,5 +43,7 @@ void CopyKata(Kata Kata1,Kata *Kata2);
 int GetIntegerFromKata(Kata Kata1);
 /*mengembalikan integer hasil convertan kata yang dibaca*/
 
+void printKata(Kata Kata1);
+/* mengeprint kata1*/
 
 #endif
