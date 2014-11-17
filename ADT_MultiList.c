@@ -1,7 +1,7 @@
 /* NIM/Nama : 13513038/Tjan, Marco Orlando
 Nama file :ADT_MultiList.c
 Topik :multilist untuk highscore*/
-
+// gcc ADT_MultiList.c ADT_MultiList_Driver.c waktu.c jam.c tanggal.c mesinkar.c mesinkata1.c -o test
 
 #include "ADT_MultiList.h"	
 #include "boolean.h"
@@ -263,8 +263,7 @@ void SortTabRecord (TabRecord *T)
 	//KAMUS LOKAL
 	RecordType Max;
 	int i,j,idx; //untuk proses transversal
-	int idxmax = (T->Size);
-	TANGGAL TanggalEarlier;
+	int idxmax = (T->TNeff);
 	
 	//ALGORITMA
 	for(i=1;i<=idxmax;i++)
@@ -287,9 +286,10 @@ void SortTabRecord (TabRecord *T)
 					idx = j;
 				}
 			}
-		}
-		T->TR[idx] = T->TR[i];
+			T->TR[idx] = T->TR[i];
 		T->TR[i] = Max;
+		}
+		
 	}
 }
 
@@ -316,7 +316,7 @@ void ViewMyHighscore (List L, BoardType Board, UserNameType UserName)
 	{
 		if (IsKataSama(T.TR[i].UserName,UserName))
 		{
-			printf ("%d", Number); printf (" ");printKata(T.TR[i].UserName); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");PrintWaktu(T.TR[i].Time); printf("\n");	
+			printf ("%d", Number); printf (" "); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");PrintWaktu(T.TR[i].Time); printf("\n");	
 			Number++;
 		}
 		i++;
@@ -338,11 +338,12 @@ void ViewAllHighscore (List L, BoardType Board)
 	
 	//algoritma
 	MoveBoardRecordToArray(L, Board, &T);
-	 Last = T.TNeff;
+	SortTabRecord(&T);
+	Last = T.TNeff;
 	while (i <= Last && Number<=10)
 	{
-		printf ("%d", Number); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");
-		printf("%s",  T.TR[i].UserName); printf ("			");	PrintWaktu(T.TR[i].Time);
+		printf ("%d", Number); printf (" "); printf("%d", T.TR[i].Score);  printf ("	");
+		printKata(T.TR[i].UserName); printf ("		");	PrintWaktu(T.TR[i].Time); printf("\n");
 		Number++;
 		i++;
 	}
@@ -411,10 +412,10 @@ void BacaDataBaseScore (List *L)
 	   {
 		   fprintf(fp,"%d", InfoBoard(PBoard));
 			fputs("	",fp);
-			fprintf(fp, "%s", InfoRecord(PRecord).UserName);
-		   fputs("		",fp);
+			printKataToText(fp, InfoRecord(PRecord).UserName);
+		   fputs("	",fp);
 		   fprintf(fp, "%d", InfoRecord(PRecord).Score);
-		   fputs("		",fp);
+		   fputs("	",fp);
 		   fprintf(fp, "%d",Day(InfoRecord(PRecord).Time));
 		   fputs(" ",fp);
 		     fprintf(fp, "%d",Month(InfoRecord(PRecord).Time));

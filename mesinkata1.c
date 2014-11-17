@@ -132,4 +132,11 @@ void printKata(Kata Kata1){
 }
 /* mengeprint kata1*/
 
+void printKataToText(FILE *fp, Kata Kata1){
+	int i;
+	for (i = 1 ; i<= Kata1.Length; i++){
+		fprintf(fp, "%c", Kata1.TabKata[i]);
+	}
+}
+
 	
