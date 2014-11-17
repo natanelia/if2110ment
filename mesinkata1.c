@@ -1,4 +1,5 @@
 #include "mesinkata1.h"
+#include <stdio.h>
 boolean EndKata;
 Kata CKata;
 void IgnoreBlank()
