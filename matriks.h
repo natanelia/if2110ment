@@ -179,5 +179,5 @@ void Transpose(MATRIKS *M);
 //  F.S. M "di-transpose", yaitu setiap elemen M(i,j) ditukar nilainya dengan elemen
 //M(j,i) }
 
-boolean SearchArrayPoint(ARRAYPOINT P,POINT point);
+//boolean SearchArrayPoint(ARRAYPOINT P,POINT point);
 //Mengecek apakah point merupakan member dari ARRAYPOINT P
