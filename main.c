@@ -90,7 +90,7 @@ void Play(double seconds){
     char cc;
     const double TIME_LIMIT = seconds * CLOCKS_PER_SEC;
     clock_t startTime = clock();
-    CreateEmptyStack(&StackKata);
+//    CreateEmptyStack(&StackKata);
     while ((clock() - startTime) <= TIME_LIMIT) {
         if (kbhit()) {
             cc = getch();
@@ -200,8 +200,8 @@ void Play(double seconds){
 	//		Push(&StackKata,GetElmt(boards[selectedBoard],kursor.X,kursor.Y));
 	//	}
 	//	else{
-			while(!IsEmptyStack(StackKata)){
-				Pop(&StackKata,&word);
+//			while(!IsEmptyStack(StackKata)){
+//				Pop(&StackKata,&word);
 	//		}
 	//	}					
 	 //    }
