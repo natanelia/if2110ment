@@ -16,14 +16,12 @@ int test;
 int main()
 {
 	BacaDataBaseScore(&L1);
-	test = NbBoardRecord(L1,1);
-	printf("%d",test);
 	printf("check check check \n");
-	Kata1.TabKata[1] = 'M'; Kata1.TabKata[1] = 'A'; Kata1.TabKata[1] = 'R'; Kata1.TabKata[1] = 'C'; Kata1.TabKata[1] = 'O'; Kata1.Length = 5;
+	Kata1.TabKata[1] = 'M'; Kata1.TabKata[2] = 'a'; Kata1.TabKata[3] = 'r'; Kata1.TabKata[4] = 'c'; Kata1.TabKata[5] = 'o'; Kata1.Length = 5;
 	printf("check check check \n");
 	ViewMyHighscore(L1, 1, Kata1 ); //kosong
 	printf("check check check \n");
-	ViewAllHighscore(L1, 1);  //kosong
+	//~ ViewAllHighscore(L1, 1);  //kosong
 	printf("check check check \n");
 
 

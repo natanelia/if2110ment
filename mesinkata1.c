@@ -29,7 +29,9 @@ CC karakter pertama sesudah karakter terakhir kata */
     } else /* CC != MARK */ {
         EndKata = false;
         SalinKata();
+        
     }
+    
 }
 
 void ADVKATA()
@@ -84,7 +86,8 @@ boolean IsKataSama (Kata K1, Kata K2)
         {
             if (K1.TabKata[i] != K2.TabKata[i])
                 isSama = false;
-            i++;
+            else
+				i++;
         }
         return isSama;
     } else {
@@ -109,16 +112,16 @@ int GetIntegerFromKata(Kata Kata1)
 /*mengembalikan integer hasil convertan kata yang dibaca*/
 {
 	//kamus 
-	int Val;
+	int Val =0;
+	int i=1;
 	
 	//algoritma
-	Val = charToInteger(CC);
-		ADV();
-		while (CC!= MARK & CC!=BLANK)
+		while (i<=Kata1.Length)
 		{
-			Val = Val*10 + charToInteger(CC);
-			ADV();
+			Val = Val*10 + charToInteger(Kata1.TabKata[i]);
+			i++;
 		}
+	return Val;
 }
 
 void printKata(Kata Kata1){

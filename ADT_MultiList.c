@@ -315,7 +315,7 @@ void ViewMyHighscore (List L, BoardType Board, UserNameType UserName)
 	{
 		if (IsKataSama(T.TR[i].UserName,UserName))
 		{
-			printf ("%d", Number); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");PrintWaktu(T.TR[i].Time);
+			printf ("%d", Number); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");PrintWaktu(T.TR[i].Time); printf("\n");	
 			Number++;
 		}
 		i++;
@@ -360,11 +360,12 @@ void BacaDataBaseScore (List *L)
 	STARTKATA("DataBaseScore.txt");
 	while (CC != '.')
 	{
+		
 		while (!(EndKata))
 		{
 			Board = GetIntegerFromKata(CKata);
 			ADVKATA();
-			Record.UserName = CKata;
+			CopyKata(CKata, &Record.UserName);
 			ADVKATA();
 			Record.Score= GetIntegerFromKata(CKata);
 			ADVKATA();
