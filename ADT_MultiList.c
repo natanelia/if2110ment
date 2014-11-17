@@ -315,7 +315,7 @@ void ViewMyHighscore (List L, BoardType Board, UserNameType UserName)
 	{
 		if (IsKataSama(T.TR[i].UserName,UserName))
 		{
-			printf ("%d", Number); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");PrintWaktu(T.TR[i].Time); printf("\n");	
+			printf ("%d", Number); printf (" ");printKata(T.TR[i].UserName); printf ("		"); printf("%d", T.TR[i].Score);  printf ("		");PrintWaktu(T.TR[i].Time); printf("\n");	
 			Number++;
 		}
 		i++;

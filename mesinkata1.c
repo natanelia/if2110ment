@@ -129,7 +129,6 @@ void printKata(Kata Kata1){
 	for (i = 1 ; i<= Kata1.Length; i++){
 		printf("%c",Kata1.TabKata[i]);
 	}
-	printf("\n");
 }
 /* mengeprint kata1*/
 
