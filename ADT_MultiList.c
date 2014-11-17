@@ -310,6 +310,7 @@ void ViewMyHighscore (List L, BoardType Board, UserNameType UserName)
 	
 	//algoritma
 	MoveBoardRecordToArray(L, Board, &T);
+	SortTabRecord(&T);
 	Last = T.TNeff;
 	while (i <= Last && Number<=10)
 	{
