@@ -16,6 +16,11 @@ typedef struct {
     int NKolEff;
 } MATRIKS;
 
+typedef struct {
+    POINT point[17];
+    int neff;
+} ARRAYPOINT;
+
 //  NBrsEff ≥ 1 dan NKolEff ≥ 1 }
 //  Memori matriks yang dipakai selalu di "ujung kiri atas" }
 //  ********** DEFINISI PROTOTIPE PRIMITIF ********** }
@@ -136,7 +141,7 @@ boolean IsLess(MATRIKS M1, MATRIKS M2);
 // Mengirimkan true jika ukuran efektif M1 < ukuran efektif M2 }
 
 // ********** Operasi lain ********** }
-int NbElmt(MATRIKS M);
+int NbElmtMATRIKS(MATRIKS M);
 // Mengirimkan banyaknya elemen M }
 
 // ********** KELOMPOK TEST TERHADAP MATRIKS ********** }

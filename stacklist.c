@@ -6,7 +6,7 @@
 /* Prototype manajemen memori */
 address AlokasiStack(infotype X) {
     address P;
-	
+
 	P = (address)malloc(sizeof(ElmtStack));
 	if (P != Nil){
 		Info(P) = X;
@@ -15,7 +15,7 @@ address AlokasiStack(infotype X) {
 	else{
 		P = Nil;
 	}
-	
+
 	return P;
 }
 /* I.S. Sembarang */
@@ -40,7 +40,7 @@ void CreateEmptyStack (Stack *S) {
 /* F.S. Membuat sebuah stack S yang kosong */
 void Push (Stack *S, infotype X) {
 	address P,Pt;
-	
+
 	Pt = AlokasiStack(X);
 	if (Pt != Nil) {
 		P = Top(*S);
@@ -56,7 +56,7 @@ void Push (Stack *S, infotype X) {
 /* Pada dasarnya adalah operasi Insert First pada list linier */
 void Pop (Stack *S, infotype *X) {
 	address P;
-	
+
 	P = Top(*S);
 	(*X) = InfoTop(*S);
 	Top(*S) = Next(P);
@@ -70,17 +70,18 @@ void Pop (Stack *S, infotype *X) {
 
 void PrintStack(Stack S){
 	address P;
-	
+
 	P = Top(S);
-	printf("Isi Stack : ");
 	if (IsEmptyStack(S)){
-		printf("Stack kosong.");
+		printf("Press 's' to input!\n");
 	}
 	else{
+        printf("Your word: ");
 		while (P != Nil){
 			printf("%c ",Info(P) );
 			P = Next(P);
 		}
+		printf("\n");
 	}
 }
 
@@ -90,7 +91,7 @@ Stack reverseStack(Stack S) {
 	boolean failed;
 	CreateEmptyStack(&STemp);
 	infotype X;
-	
+
 	if (IsEmptyStack(S))
 		return (STemp);
 	else

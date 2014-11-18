@@ -285,13 +285,13 @@ void KonsMATRIKSb(MATRIKS *M, int K)
 // ********** KELOMPOK OPERASI RELASIONAL TERHADAP MATRIKS ********** }
 boolean IsEQ(MATRIKS M1, MATRIKS M2)
 // Mengirimkan true jika M1 = M2, }
-// yaitu NBElmt(M1) = NBElmt(M2) dan }
+// yaitu NbElmtMATRIKS(M1) = NbElmtMATRIKS(M2) dan }
 // untuk setiap i,j yang merupakan indeks baris dan kolom }
 // M1(i,j) = M2(i,j) }
 {
     boolean eq;
     indeks i,j;
-    if (NbElmt(M1) != NbElmt(M2) || GetNBrsEff(M1) != GetNKolEff(M2) || GetNKolEff(M1) != GetNKolEff(M2)) {
+    if (NbElmtMATRIKS(M1) != NbElmtMATRIKS(M2) || GetNBrsEff(M1) != GetNKolEff(M2) || GetNKolEff(M1) != GetNKolEff(M2)) {
         return false;
     } else {
         eq = true;
@@ -327,11 +327,11 @@ boolean EQSize(MATRIKS M1, MATRIKS M2)
 boolean IsLess(MATRIKS M1, MATRIKS M2)
 // Mengirimkan true jika ukuran efektif M1 < ukuran efektif M2 }
 {
-    return (NbElmt(M1) < NbElmt(M2));
+    return (NbElmtMATRIKS(M1) < NbElmtMATRIKS(M2));
 }
 
 // ********** Operasi lain ********** }
-int NbElmt(MATRIKS M)
+int NbElmtMATRIKS(MATRIKS M)
 // Mengirimkan banyaknya elemen M }
 {
     return GetNBrsEff(M)*GetNKolEff(M);
@@ -423,7 +423,8 @@ void Transpose(MATRIKS *M)
 {
 		int i = 1 ;
 		boolean found= false;
-		while(i <= P.sum && !false ){
+
+		while(i <= P.neff && !found ){
 			if (IsPointSama(P.point[i],kursor)){
 				found = true;
 			}

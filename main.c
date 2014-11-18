@@ -25,6 +25,8 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
+//gcc jam.c main.c matriks.c mesinkar.c mesinkata1.c point.c -o a -lm
+
 //KAMUS GLOBAL
 MATRIKS boards[10];
 Kata kamusKata[109000];
@@ -38,7 +40,7 @@ int tempTime; //sisa waktu dalam sekon
 int playTime; //waktu permainan dalam sekon
 TabK users;	//array of Kata, isinya nama-nama user yg udah pernah diregister-in
 Kata namauser;	//nama user yang saat ini sedang log in
-int isSHit; // Counter penghitung tombol 's' sudah dipencet berapa kali
+short isSHit; // Counter penghitung tombol 's' sudah dipencet berapa kali
 Stack StackKata;
 char word;
 ARRAYPOINT P;
@@ -122,7 +124,7 @@ void Play(double seconds){
                 case 'w' :  if (kursor.X > FirstIdxBrs(boards[selectedBoard]))
                             {
                                 kursor.X--;
-			    }
+                            }
                             break;
 
                 case 'e' :  if (kursor.X > FirstIdxBrs(boards[selectedBoard]) && (kursor.Y < LastIdxKol(boards[selectedBoard])))
@@ -138,15 +140,18 @@ void Play(double seconds){
                             }
                             break;
 
-                case 's' :  chosen.X = kursor.X;
-                            chosen.Y = kursor.Y;
-                            isSHit++;
-                            P.neff++;
-                            SetAbsis(&P.point[P.neff],kursor.X);
-                            SetOrdinat(&P.point[P.neff],kursor.Y);
-
-                            Push(&StackKata,GetElmt(boards[selectedBoard],kursor.X,kursor.Y));
-
+                case 's' :  if (isSHit == 0)
+                            {
+                                chosen.X = kursor.X;
+                                chosen.Y = kursor.Y;
+                                isSHit=1; //Ditekan
+                            }
+                            else if (isSHit == 1)
+                            {
+                                isSHit=2; //Submit kata
+                                chosen.X = 0;
+                                chosen.Y = 0;
+                            }
                             break;
 
                 case 'd' :  if (kursor.Y < LastIdxKol(boards[selectedBoard]))
@@ -177,9 +182,9 @@ void Play(double seconds){
             }
 
             //Bila pencetan keyboard tidak membuat kursor keluar dari board, lakukan
-            if (kursorTemp.X != kursor.X || kursorTemp.Y != kursor.Y || CC=='s')
+            if (kursorTemp.X != kursor.X || kursorTemp.Y != kursor.Y || cc=='s')
             {
-                if (SearchArrayPoint(P,kursor)){
+                if (cc!='s' && SearchArrayPoint(P,kursor)){
                     while(!IsEmptyStack(StackKata)){
                         Pop(&StackKata,&word);
                     }
@@ -194,32 +199,26 @@ void Play(double seconds){
                 maka pop semua kata sehingga tersisa huruf awal saat menekan s saja */
                  else
                  {
-                    if (isSHit == 0){
-
+                    if (isSHit==2){
+                        //Proses kata ke dictionary
+                        while(!IsEmptyStack(StackKata)){
+                            Pop(&StackKata,&word);
+                            P.neff = 0;
+                        }
+                        isSHit = 0;
                     }
-                    else if (isSHit %2 == 1){
+                    else if (isSHit==1){
                         P.neff++;
                         SetAbsis(&P.point[P.neff],kursor.X);
                         SetOrdinat(&P.point[P.neff],kursor.Y);
                         Push(&StackKata,GetElmt(boards[selectedBoard],kursor.X,kursor.Y));
-                        printf("coba 2");
-                    }
-                    else{
-                        while(!IsEmptyStack(StackKata)){
-                            Pop(&StackKata,&word);
-                            P.neff = 1;
-                        }
                     }
                  }
             }
 
 
             UpdateLayout();
-            PrintStack(reverseStack(StackKata));
 
-            printf("P.Sum = %d\n", P.neff);
-            printf("isSHit = %d\n",isSHit);
-            printf("\nSelected Char: %c\n",GetElmt(boards[selectedBoard],kursor.X,kursor.Y)); // process character
             initTermios(); // use new terminal setting again to make kbhit() and getch() work
         }
     }
@@ -248,13 +247,19 @@ void UpdateLayout()
 
     //Print Matriks
     int i,j;
+    POINT sel;
     printf("\n" ANSI_BACKGROUND_BLACK "                 " ANSI_COLOR_RESET "\n");
     for (i=FirstIdxBrs(boards[selectedBoard]);i<=LastIdxBrs(boards[selectedBoard]);i++)
     {
         printf(ANSI_BACKGROUND_BLACK " " ANSI_COLOR_RESET);
         for (j=FirstIdxKol(boards[selectedBoard]);j<=LastIdxKol(boards[selectedBoard]);j++)
         {
+            sel.X = i; sel.Y = j;
             if (chosen.X == i && chosen.Y == j)
+            {
+                printf(ANSI_BACKGROUND_RED " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+            }
+            else if (SearchArrayPoint(P,sel))
             {
                 printf(ANSI_BACKGROUND_RED " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
@@ -270,6 +275,8 @@ void UpdateLayout()
         }
         printf("\n" ANSI_BACKGROUND_BLACK "                 " ANSI_COLOR_RESET "\n");
     }
+    PrintStack(reverseStack(StackKata));
+    printf("\nSelected Char: %c\n",GetElmt(boards[selectedBoard],kursor.X,kursor.Y)); // process character
 }
 
 void ReadBoards()

@@ -1,10 +1,11 @@
 /* File : ArrayOfKata.c */
 
 #include "ArrayOfKata.h"
+#include "mesinkata1.h"
 #include <stdio.h>
 #include "boolean.h"
 
-	
+
 /* KONSTRUKTOR */
 void MakeAKEmpty (TabK *T)
 /*	I.S. sembarang
@@ -94,12 +95,12 @@ void AddAsLastEl (TabK *T, ElType X)
 	Proses : Menambahkan sebagai elemen ke-i yang baru */
 {
 	IdxType i;
-	
+
 	if (IsAKEmpty(*T))
 		CopyKata(X,&Elmt(*T,IdxMin));
 	else
 	{	i=GetLastIdx(*T);
 		i++;
 		CopyKata(X,&Elmt(*T,i));	}
-	SetNeff(T,NbElmt(*T)+1);	
+	SetNeff(T,NbElmt(*T)+1);
 }
