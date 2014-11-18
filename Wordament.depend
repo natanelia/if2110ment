@@ -104,7 +104,7 @@
 1415619784 /Users/zulvafachrina/Documents/if2110ment/mesinkata1.h
 	"mesinkar.h"
 
-1416222462 source:/home/nim_13513070/Documents/if2110/matriks.c
+1416284763 source:/home/nim_13513070/Documents/if2110/matriks.c
 	<stdio.h>
 	<math.h>
 	"boolean.h"
@@ -112,7 +112,7 @@
 
 1416189281 /home/nim_13513070/Documents/if2110/boolean.h
 
-1416215292 /home/nim_13513070/Documents/if2110/matriks.h
+1416283664 /home/nim_13513070/Documents/if2110/matriks.h
 	<stdio.h>
 	"point.h"
 	"boolean.h"
@@ -127,10 +127,11 @@
 1416189281 /home/nim_13513070/Documents/if2110/mesinkar.h
 	"boolean.h"
 
-1416213147 source:/home/nim_13513070/Documents/if2110/mesinkata1.c
+1416283940 source:/home/nim_13513070/Documents/if2110/mesinkata1.c
 	"mesinkata1.h"
+	<stdio.h>
 
-1416189281 /home/nim_13513070/Documents/if2110/mesinkata1.h
+1416286246 /home/nim_13513070/Documents/if2110/mesinkata1.h
 	"mesinkar.h"
 
 1416189281 source:/home/nim_13513070/Documents/if2110/point.c
@@ -175,7 +176,7 @@
 	"boolean.h"
 	<stdio.h>
 
-1416283490 source:/home/nim_13513070/Documents/if2110/main.c
+1416286866 source:/home/nim_13513070/Documents/if2110/main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -195,13 +196,13 @@
 	"boolean.h"
 	<stdlib.h>
 
-1416199940 /home/nim_13513070/Documents/if2110/ArrayOfKata.c
+1416283664 /home/nim_13513070/Documents/if2110/ArrayOfKata.c
 	"ArrayOfKata.h"
 	"mesinkata1.h"
 	<stdio.h>
 	"boolean.h"
 
-1416283291 source:/home/nim_13513070/Documents/if2110/stacklist.c
+1416283664 source:/home/nim_13513070/Documents/if2110/stacklist.c
 	"stacklist.h"
 	"boolean.h"
 	<stdlib.h>

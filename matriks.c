@@ -418,7 +418,7 @@ void Transpose(MATRIKS *M)
     }
 }
 
-/*boolean SearchArrayPoint(ARRAYPOINT P,POINT kursor)
+boolean SearchArrayPoint(ARRAYPOINT P,POINT kursor)
 //Mengecek apakah point merupakan member dari ARRAYPOINT P
 {
 		int i = 1 ;
@@ -433,4 +433,4 @@ void Transpose(MATRIKS *M)
 			}
 		}
 		return found;
-}*/
+}

@@ -13,10 +13,13 @@
 #include "stacklist.h"
 #include "ArrayOfKata.c" //untuk membaca file berisi nama-nama user dan menyimpannya di array
 
-#define ANSI_BACKGROUND_RED "\e[37m\e[41m"
-#define ANSI_BACKGROUND_YELLOW "\e[37m\e[43m"
 #define ANSI_BACKGROUND_BLACK "\e[37m\e[40m"
+#define ANSI_BACKGROUND_RED "\e[37m\e[41m"
+#define ANSI_BACKGROUND_GREEN "\e[37m\e[42m"
+#define ANSI_BACKGROUND_YELLOW "\e[37m\e[43m"
 #define ANSI_BACKGROUND_BLUE "\e[37m\e[44m"
+#define ANSI_BACKGROUND_MAGENTA "\e[37m\e[45m"
+#define ANSI_BACKGROUND_CYAN "\e[37m\e[46m"
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
@@ -25,7 +28,7 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-//gcc jam.c main.c matriks.c mesinkar.c mesinkata1.c point.c -o a -lm
+//gcc jam.c main.c matriks.c mesinkar.c mesinkata1.c stacklist.c point.c -o a -lm
 
 //KAMUS GLOBAL
 MATRIKS boards[10];
@@ -42,8 +45,11 @@ TabK users;	//array of Kata, isinya nama-nama user yg udah pernah diregister-in
 Kata namauser;	//nama user yang saat ini sedang log in
 short isSHit; // Counter penghitung tombol 's' sudah dipencet berapa kali
 Stack StackKata;
-char word;
+Kata InsertedKata;
 ARRAYPOINT P;
+
+Kata AcceptedKata[500];
+int acceptedKataNeff;
 
 
 // FUNGSI DAN PROSEDUR
@@ -51,6 +57,8 @@ void resetTermios();
 void initTermios();
 int kbhit();
 char getch();
+boolean IsInDictionary(Kata K);
+void PauseScreen();
 void Play(double seconds);
 void InitBoard();
 void UpdateLayout();
@@ -94,7 +102,10 @@ char getch() {
 }
 /* skeleton program for play */
 void Play(double seconds){
+    char word;
+
     InitBoard();
+    InsertedKata.Length = 0;
     initTermios(); // initailize new terminal setting to make kbhit() and getch() work
     char cc;
     const double TIME_LIMIT = seconds * CLOCKS_PER_SEC;
@@ -201,10 +212,20 @@ void Play(double seconds){
                  {
                     if (isSHit==2){
                         //Proses kata ke dictionary
+                        StackKata = reverseStack(StackKata);
                         while(!IsEmptyStack(StackKata)){
                             Pop(&StackKata,&word);
+                            InsertedKata.Length++;
+                            InsertedKata.TabKata[InsertedKata.Length] = word;
                             P.neff = 0;
                         }
+                        if (IsInDictionary(InsertedKata))
+                        {
+                            acceptedKataNeff++;
+                            CopyKata(InsertedKata, &AcceptedKata[acceptedKataNeff]);
+                        }
+                        InsertedKata.Length=0;
+
                         isSHit = 0;
                     }
                     else if (isSHit==1){
@@ -224,6 +245,8 @@ void Play(double seconds){
     }
     printf("\nTime Up\n");
     resetTermios(); // restore default terminal setting
+    clrscr();
+    PreparationMenu();
 }
 
 void InitBoard()
@@ -233,6 +256,7 @@ void InitBoard()
     P.neff = 0;
     chosen.X = 0;
     chosen.Y = 0;
+    acceptedKataNeff = 0;
 
     UpdateLayout();
 }
@@ -243,15 +267,15 @@ void UpdateLayout()
     clrscr();
     printf("\n");
     //Print Time
-    printf("%14d:%02d\n",(playTime - tempTime)/60,(playTime - tempTime)%60);
+    printf("%17d:%02d\n",(playTime - tempTime)/60,(playTime - tempTime)%60);
 
     //Print Matriks
     int i,j;
     POINT sel;
-    printf("\n" ANSI_BACKGROUND_BLACK "                 " ANSI_COLOR_RESET "\n");
+    printf("\n" ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n");
     for (i=FirstIdxBrs(boards[selectedBoard]);i<=LastIdxBrs(boards[selectedBoard]);i++)
     {
-        printf(ANSI_BACKGROUND_BLACK " " ANSI_COLOR_RESET);
+        printf(ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
         for (j=FirstIdxKol(boards[selectedBoard]);j<=LastIdxKol(boards[selectedBoard]);j++)
         {
             sel.X = i; sel.Y = j;
@@ -261,22 +285,28 @@ void UpdateLayout()
             }
             else if (SearchArrayPoint(P,sel))
             {
-                printf(ANSI_BACKGROUND_RED " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+                printf(ANSI_BACKGROUND_MAGENTA " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
             else if (kursor.X == i && kursor.Y == j)
             {
-                printf(ANSI_BACKGROUND_YELLOW ANSI_COLOR_BLUE " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+                printf(ANSI_BACKGROUND_CYAN " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
             else
             {
                 printf(ANSI_BACKGROUND_BLACK " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
-            printf(ANSI_BACKGROUND_BLACK " " ANSI_COLOR_RESET);
         }
-        printf("\n" ANSI_BACKGROUND_BLACK "                 " ANSI_COLOR_RESET "\n");
+        printf(ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
+        printf("\n");
     }
-    PrintStack(reverseStack(StackKata));
-    printf("\nSelected Char: %c\n",GetElmt(boards[selectedBoard],kursor.X,kursor.Y)); // process character
+    printf(ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n\n");
+    printf(" "); PrintStack(reverseStack(StackKata));
+    printKata(InsertedKata);
+    if (acceptedKataNeff>0)
+    {
+        printf(" GOT "); printKata(AcceptedKata[acceptedKataNeff]); printf("!\n");
+    }
+    //printf("  "); printf("%c\n",GetElmt(boards[selectedBoard],kursor.X,kursor.Y)); // process character
 }
 
 void ReadBoards()
@@ -321,6 +351,23 @@ void ReadDictionary()
         ADVKATA();
     }
     kamusKataNeff = i-1;
+}
+
+boolean IsInDictionary(Kata K)
+//Mencari kata K dalam kamus dan return true bila ada.
+{
+    int i = 0;
+    boolean found = false;
+    while (i<=kamusKataNeff && !found)
+    {
+        if (K.Length == kamusKata[i].Length)
+        {
+            if (IsKataSama(K,kamusKata[i]))
+                found = true;
+        }
+        i++;
+    }
+    return found;
 }
 
 void clrscr(void) {
@@ -389,16 +436,16 @@ void MainMenu() {
 /* Kamus Lokal */
 	int pil;
 /* Algoritma */
-	printf(ANSI_COLOR_RED  "[1] Register      " ANSI_COLOR_RESET ANSI_COLOR_BLUE  "[2] Login     "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] How To Play     "   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "[4] About     "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Quit    " ANSI_COLOR_RESET);
+	printf(ANSI_COLOR_RED  "[1] Register      " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Login     "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] How To Play     "   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "[4] About     "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Quit    " ANSI_COLOR_RESET);
     	printf("\n\n");
-	printf("Menu yang dipilh= ");
+	printf("Menu yang dipilih: ");
     	scanf("%d",&pil);
     	switch (pil) {
 		case 1:{clrscr(); Register(&namauser); break;}
 		case 2:{clrscr(); Login(&namauser); break;}
 		case 3:{clrscr(); PreparationMenu(); break;}
 		case 4:{clrscr(); PreparationMenu(); break;}
-		case 5:{clrscr(); PreparationMenu(); break;}
+		case 5:{clrscr(); break;}
 	}
 }
 
@@ -407,20 +454,22 @@ void PreparationMenu () {
 	int pil;
 	int pilboard; //pilihan board
 /* Algoritma */
-	printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_BLUE  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
-    	printf("Menu yang dipilh= ");
+	printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
+    	printf("Menu yang dipilih: ");
     	scanf("%d",&pil);
     	switch (pil)
     	{
-        	case 1 : Play(120); break;
-		case 2 : { clrscr();
-		  	DisplayBoard();
-		  	printf("Masukkan pilihan board= ");
-		  	scanf("%d",&pilboard);
-		  	selectedBoard=pilboard;
-		  	Play(120);
-		  	break;
-			}
+        	case 1 : Play(playTime); break;
+            case 2 : { clrscr();
+                        DisplayBoard();
+                        printf("Masukkan pilihan board: ");
+                        scanf("%d",&pilboard);
+                        selectedBoard=pilboard;
+                        Play(playTime);
+                        break;
+                     }
+            case 5 : clrscr();
+                     MainMenu();
         	default : break;
 
     }
@@ -470,33 +519,47 @@ void Login (Kata *namauser)
 
 	/* ALGORITMA */
 	do
-	{	printf("LOGIN\n\n");
+	{
+		printf("LOGIN\n");
 		printf("Masukkan nama (tanpa spasi): ");
 		scanf("%s",nama);
 		(*namauser).Length=strlen(nama);
 		for (i=1;i<=(*namauser).Length;i++)
 			(*namauser).TabKata[i]=nama[i-1];
 		if (!(SearchB (users, *namauser)))
-			printf("Nama anda belum terdaftar.\n\n");
+		{
+            printf("\n");
+            printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED " " ANSI_COLOR_RESET "ERROR! Nama Anda belum terdaftar!" ANSI_BACKGROUND_RED " " ANSI_COLOR_RESET "\n");
+			printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
+            PauseScreen(1);
+		}
 		clrscr();
 	}
 	while (!(SearchB (users, *namauser)));
 	PreparationMenu();
 }
 
+void PauseScreen (int seconds)
+{
+    const double TIME_LIMIT = seconds * CLOCKS_PER_SEC;
+    clock_t startTime = clock();
+    //CreateEmptyStack(&StackKata);
+    while ((clock() - startTime) <= TIME_LIMIT) {
+
+    }
+}
+
 
 int main()
 {
-    int pil; //pilihan menu
-    playTime = 120;
+    playTime = 30;
 
     selectedBoard = 0;
     ReadBoards();
     ReadDictionary();
     ReadUser();
     clrscr();
-    printf("WORDAMENT!\n");
-    printf("Pilih menu\n");
     MainMenu();
 
 
