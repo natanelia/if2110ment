@@ -11,7 +11,7 @@
 #include "mesinkata1.h" //untuk membaca kamus data dan file eksternal
 #include "point.h"
 #include "stacklist.h"
-#include "ArrayOfKata.c" //untuk membaca file berisi nama-nama user dan menyimpannya di array
+#include "ArrayOfKata.h" //untuk membaca file berisi nama-nama user dan menyimpannya di array
 
 #define ANSI_BACKGROUND_BLACK "\e[37m\e[40m"
 #define ANSI_BACKGROUND_RED "\e[37m\e[41m"
@@ -47,7 +47,7 @@ short isSHit; // Counter penghitung tombol 's' sudah dipencet berapa kali
 Stack StackKata;
 Kata InsertedKata;
 ARRAYPOINT P;
-
+char nama[15];
 Kata AcceptedKata[500];
 int acceptedKataNeff;
 
@@ -71,6 +71,7 @@ void PreparationMenu ();
 void ReadUser();
 void Register (Kata *namauser);
 void Login (Kata *namauser);
+void SalinKeEks(TabK users);
 
 
 static struct termios old_termios, new_termios;
@@ -272,10 +273,11 @@ void UpdateLayout()
     //Print Matriks
     int i,j;
     POINT sel;
-    printf("\n" ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n");
+    printf("\n\n\n" "          " ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n");
     for (i=FirstIdxBrs(boards[selectedBoard]);i<=LastIdxBrs(boards[selectedBoard]);i++)
     {
-        printf(ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
+	
+        printf( "          "ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
         for (j=FirstIdxKol(boards[selectedBoard]);j<=LastIdxKol(boards[selectedBoard]);j++)
         {
             sel.X = i; sel.Y = j;
@@ -299,7 +301,7 @@ void UpdateLayout()
         printf(ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
         printf("\n");
     }
-    printf(ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n\n");
+    printf("          " ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n\n");
     printf(" "); PrintStack(reverseStack(StackKata));
     printKata(InsertedKata);
     if (acceptedKataNeff>0)
@@ -454,6 +456,7 @@ void PreparationMenu () {
 	int pil;
 	int pilboard; //pilihan board
 /* Algoritma */
+	printf("User: %s                                                            Board=%d\n\n", nama,selectedBoard);                             
 	printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
     	printf("Menu yang dipilih: ");
     	scanf("%d",&pil);
@@ -464,8 +467,9 @@ void PreparationMenu () {
                         DisplayBoard();
                         printf("Masukkan pilihan board: ");
                         scanf("%d",&pilboard);
+			clrscr();
                         selectedBoard=pilboard;
-                        Play(playTime);
+                        PreparationMenu();
                         break;
                      }
             case 5 : clrscr();
@@ -491,8 +495,10 @@ void ReadUser()
 void Register (Kata *namauser)
 {
 	/* KAMUS */
-	char nama[15];
+	
 	int i=1;
+	FILE *fileku;
+	char filename[20];
 
 	/* ALGORITMA */
 	do
@@ -508,13 +514,37 @@ void Register (Kata *namauser)
 	}
 	while (SearchB (users, *namauser));
 	AddAsLastEl(&users,*namauser);
+	SalinKeEks(users);
+	strcpy(filename, nama);
+	strcat(filename, ".txt");
+	fileku=fopen(filename, "w");
+	fclose(fileku);
 	PreparationMenu();
+}
+
+void SalinKeEks(TabK users)
+{
+	/* KAMUS */
+	static FILE *fileku;
+	static int retval;
+	int i,j;
+
+	/* ALGORITMA */
+	fileku = fopen("NamaUser.txt","w");
+	for (i=1; i<=users.Neff; i++)
+	{
+		for(j=1; j<=users.TI[i].Length; j++) {
+			retval=fprintf(fileku, "%c", users.TI[i].TabKata[j] );
+		}
+		fprintf(fileku, "\n");
+	}
+	retval=fprintf(fileku, ".");
+	fclose(fileku);
 }
 
 void Login (Kata *namauser)
 {
 	/* KAMUS */
-	char nama[15];
 	int i=1;
 
 	/* ALGORITMA */
