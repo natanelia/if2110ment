@@ -178,7 +178,7 @@ void TulisSet(Set S)
     int i;
     int j=1;
     if (IsSetEmpty(S))
-        printf("Set kosong\n");
+        printf("-\n");
     else
     {
         for (i=1;i<=SetNbElmt(S);i++)
