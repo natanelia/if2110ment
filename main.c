@@ -251,6 +251,9 @@ void Play(double seconds){
         }
     }
     printf("\nTime Up\n");
+    printf("Kata-kata yang berhasil dibentuk : \n");
+    TulisSet(S1);
+    getch();
     resetTermios(); // restore default terminal setting
     clrscr();
     PreparationMenu();
