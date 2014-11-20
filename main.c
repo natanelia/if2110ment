@@ -12,6 +12,8 @@
 #include "point.h"
 #include "stacklist.h"
 #include "ArrayOfKata.h" //untuk membaca file berisi nama-nama user dan menyimpannya di array
+#include "set.h"
+#include "map.h"
 
 #define ANSI_BACKGROUND_BLACK "\e[37m\e[40m"
 #define ANSI_BACKGROUND_RED "\e[37m\e[41m"
@@ -28,7 +30,7 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-//gcc jam.c main.c matriks.c mesinkar.c mesinkata1.c stacklist.c point.c -o a -lm
+//gcc -o coba ADT_MultiList.c ArrayOfKata.c jam.c main.c map.c matriks.c mesinkar.c mesinkata1.c point.c PrioQueueList.c QueueList.c set.c stacklist.c tanggal.c waktu.c -lm
 
 //KAMUS GLOBAL
 MATRIKS boards[10];
@@ -48,8 +50,10 @@ Stack StackKata;
 Kata InsertedKata;
 ARRAYPOINT P;
 char nama[15];
-Kata AcceptedKata[500];
-int acceptedKataNeff;
+Kata AcceptedKata;
+//int acceptedKataNeff;
+Set S1;
+int skortot;
 
 
 // FUNGSI DAN PROSEDUR
@@ -72,6 +76,7 @@ void ReadUser();
 void Register (Kata *namauser);
 void Login (Kata *namauser);
 void SalinKeEks(TabK users);
+int Score (Kata K);
 
 
 static struct termios old_termios, new_termios;
@@ -222,8 +227,9 @@ void Play(double seconds){
                         }
                         if (IsInDictionary(InsertedKata))
                         {
-                            acceptedKataNeff++;
-                            CopyKata(InsertedKata, &AcceptedKata[acceptedKataNeff]);
+                            //acceptedKataNeff++;
+                            CopyKata(InsertedKata,&AcceptedKata);
+                            InsertSet(&S1,AcceptedKata);
                         }
                         InsertedKata.Length=0;
 
@@ -257,7 +263,8 @@ void InitBoard()
     P.neff = 0;
     chosen.X = 0;
     chosen.Y = 0;
-    acceptedKataNeff = 0;
+    //acceptedKataNeff = 0;
+    CreateEmptySet(&S1);
 
     UpdateLayout();
 }
@@ -304,9 +311,15 @@ void UpdateLayout()
     printf("          " ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n\n");
     printf(" "); PrintStack(reverseStack(StackKata));
     printKata(InsertedKata);
-    if (acceptedKataNeff>0)
+    if (SetNbElmt(S1)>=1)
     {
-        printf(" GOT "); printKata(AcceptedKata[acceptedKataNeff]); printf("!\n");
+	printf(" GOT "); printKata(AcceptedKata); printf("!\n");
+	skortot = 0;
+	for (i=1;i<=SetNbElmt(S1);i++)
+	{
+		skortot = skortot + Score(S1.T[i]);
+	}
+        printf("Score : %d\n",skortot); 
     }
     //printf("  "); printf("%c\n",GetElmt(boards[selectedBoard],kursor.X,kursor.Y)); // process character
 }
@@ -578,6 +591,48 @@ void PauseScreen (int seconds)
     while ((clock() - startTime) <= TIME_LIMIT) {
 
     }
+}
+
+int Score (Kata K)
+{
+	int nilai = 0;
+	int i = 1;
+	Map M;
+	CreateEmptyMap(&M);
+	InsertMap('E',1,&M);
+	InsertMap('A',2,&M);
+	InsertMap('I',2,&M);
+	InsertMap('N',2,&M);
+	InsertMap('O',2,&M);
+	InsertMap('R',2,&M);
+	InsertMap('S',2,&M);
+	InsertMap('T',2,&M);
+	InsertMap('C',3,&M);
+	InsertMap('D',3,&M);
+	InsertMap('L',3,&M);
+	InsertMap('G',4,&M);
+	InsertMap('H',4,&M);
+	InsertMap('M',4,&M);
+	InsertMap('P',4,&M);
+	InsertMap('U',4,&M);
+	InsertMap('B',5,&M);
+	InsertMap('F',5,&M);
+	InsertMap('Y',5,&M);
+	InsertMap('K',6,&M);
+	InsertMap('V',6,&M);
+	InsertMap('W',6,&M);
+	InsertMap('Z',8,&M);
+	InsertMap('X',9,&M);
+	InsertMap('J',10,&M);
+	InsertMap('Q',10,&M);
+	while (i <= K.Length)
+	{
+		nilai = nilai + ValueOfMap(K.TabKata[i],M);
+		i++;
+	}
+	if (K.Length >= 10)
+		nilai = nilai + 100;
+	return nilai;
 }
 
 
