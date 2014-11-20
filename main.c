@@ -561,12 +561,15 @@ void SalinKeEks(TabK users)
 void Login (Kata *namauser)
 {
 	/* KAMUS */
+	char nama[15];
 	int i=1;
+	int count=0;
+	char pil;
 
 	/* ALGORITMA */
 	do
 	{
-		printf("LOGIN\n");
+		printf(ANSI_COLOR_CYAN "LOGIN\n\n" ANSI_COLOR_RESET);
 		printf("Masukkan nama (tanpa spasi): ");
 		scanf("%s",nama);
 		(*namauser).Length=strlen(nama);
@@ -574,16 +577,37 @@ void Login (Kata *namauser)
 			(*namauser).TabKata[i]=nama[i-1];
 		if (!(SearchB (users, *namauser)))
 		{
-            printf("\n");
-            printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
+            		printf("\n");
+           		printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
 			printf(ANSI_BACKGROUND_RED " " ANSI_COLOR_RESET "ERROR! Nama Anda belum terdaftar!" ANSI_BACKGROUND_RED " " ANSI_COLOR_RESET "\n");
 			printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
-            PauseScreen(1);
+            		PauseScreen(1);
+			count++;
+		}
+		else
+		{
+            		printf("\n");
+			printf(ANSI_COLOR_CYAN "Welcome ");
+			printKata(*namauser);
+			printf("!" ANSI_COLOR_RESET "\n");
+            		PauseScreen(1);
 		}
 		clrscr();
 	}
-	while (!(SearchB (users, *namauser)));
-	PreparationMenu();
+	while ((!SearchB(users, *namauser))&&(count<3));
+	if (count==3)
+	{	printf(ANSI_COLOR_CYAN "LOGIN\n\n" ANSI_COLOR_RESET);
+		printf("Apakah anda ingin register? (y/n) ");
+		getch();
+		scanf("%c",&pil);
+		clrscr();
+		if (pil=='y')
+			Register(namauser);
+		else
+			MainMenu();
+	}
+	else
+		PreparationMenu();	
 }
 
 void PauseScreen (int seconds)
