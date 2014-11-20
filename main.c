@@ -277,6 +277,8 @@ void UpdateLayout()
 
     clrscr();
     printf("\n");
+    printf("User: ");
+    printKata(namauser);
     //Print Time
     printf("%17d:%02d\n",(playTime - tempTime)/60,(playTime - tempTime)%60);
 
@@ -479,7 +481,7 @@ void PreparationMenu () {
     	switch (pil)
     	{
         	case 1 : Play(playTime); break;
-            case 2 : { clrscr();
+            	case 2 : { clrscr();
                         DisplayBoard();
                         printf("Masukkan pilihan board: ");
                         scanf("%d",&pilboard);
@@ -488,7 +490,7 @@ void PreparationMenu () {
                         PreparationMenu();
                         break;
                      }
-            case 5 : clrscr();
+        	case 5 : clrscr();
                      MainMenu();
         	default : break;
 
@@ -526,6 +528,14 @@ void Register (Kata *namauser)
 			(*namauser).TabKata[i]=nama[i-1];
 		if (SearchB (users, *namauser))
 			printf("Nama sudah ada. Masukkan nama yang lain!\n\n");
+		else
+		{
+            		printf("\n");
+			printf(ANSI_COLOR_RED "Welcome ");
+			printKata(*namauser);
+			printf("!" ANSI_COLOR_RESET "\n");
+            		PauseScreen(1);
+		}
 		clrscr();
 	}
 	while (SearchB (users, *namauser));
