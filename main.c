@@ -13,8 +13,9 @@
 #include "stacklist.h"
 #include "ADT_MultiList.h"
 #include "ArrayOfKata.h" //untuk membaca file berisi nama-nama user dan menyimpannya di array
-#include "set.h"
-#include "map.h"
+#include "map.c"
+#include "set.c"
+#include "PrioQueueList.h"
 
 #define ANSI_BACKGROUND_BLACK "\e[37m\e[40m"
 #define ANSI_BACKGROUND_RED "\e[37m\e[41m"
@@ -55,6 +56,7 @@ Kata AcceptedKata;
 Map M;
 Set S1;
 List HighScoreList;
+PrioQueue PQ;
 
 
 // FUNGSI DAN PROSEDUR
@@ -79,9 +81,13 @@ void Register (Kata *namauser);
 void Login (Kata *namauser);
 void SalinKeEks(TabK users);
 void InitScoreMap();
-void PrintChosenWords(Set S, Map M);
+void PrintChosenWords(PrioQueue PQ);
 int TotalScore();
 int Score (Kata K);
+void PutarBoard (MATRIKS *M);
+void InsertPrioQueue (Set S, PrioQueue *PQ);
+void MyHighScoreMenu ();
+void AllHighScoreMenu ();
 
 
 static struct termios old_termios, new_termios;
@@ -203,6 +209,8 @@ void Play(double seconds){
                                 kursor.Y++;
                             }
                             break;
+		case 'r' : PutarBoard(&boards[selectedBoard]);
+			   break;
             }
 
             //Bila pencetan keyboard tidak membuat kursor keluar dari board, lakukan
@@ -254,7 +262,7 @@ void Play(double seconds){
                  }
             }
 
-
+	    InsertPrioQueue(S1, &PQ);
             UpdateLayout();
 
             initTermios(); // use new terminal setting again to make kbhit() and getch() work
@@ -489,6 +497,7 @@ void PreparationMenu () {
 	int pilboard; //pilihan board
 /* Algoritma */
     do {
+	ReadBoards();
         clrscr();
         printf("User: "); printKata(namauser); printf("                                                  Selected Board: %d\n\n",selectedBoard);
         printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
@@ -529,7 +538,7 @@ void ResultMenu () {
     printf(" ==TIME UP, " ANSI_COLOR_CYAN); printKata(namauser); printf(ANSI_COLOR_RESET "!==\n");
     printf("  Board No.  : %d\n", selectedBoard);
     printf("  Your Score : %d\n", TotalScore());
-    printf("  Words Found:\n"); PrintChosenWords(S1,M);
+    printf("  Words Found:\n"); PrintChosenWords(PQ);
 
     //Save Result to File
     RecordType NewRecord;
@@ -764,24 +773,55 @@ int Score (Kata K)
 	return nilai;
 }
 
-void PrintChosenWords(Set S, Map M)
-{
-    int i;
-    if (IsSetEmpty(S))
-        printf("-\n");
-    else
-    {
-        for (i=1;i<=SetNbElmt(S);i++)
-        {
-            printf("    %2d ", Score(S.T[i]));
-			printKata(S.T[i]);
+void InsertPrioQueue (Set S, PrioQueue *PQ)
+{/* Kamus Lokal */
+	int nilai;
+	int i;
+/* Algoritma */
+	CreatePrioQueueEmpty(PQ);
+	if(!(IsSetEmpty(S))) {
+		for (i=1;i<=SetNbElmt(S);i++) {
+			nilai=Score(S.T[i]);
+			AddPrio (PQ, S.T[i] , nilai);
+        	}
+	}
+}
+	
+
+void PrintChosenWords(PrioQueue PQ)
+{/* Kamus Lokal */
+ 	addressprio P;
+/* Algoritma */
+    	if (IsPrioQueueEmpty(PQ))
+        	printf("-\n");
+   	 else {
+       		P=HeadPrio(PQ);
+		while(P!=Nil) {
+        	    	printf("    %2d ", Prio(P));
+			printKata(InfoPrio(P));
 			printf("\n");
-        }
+			P=NextPrio(P);
+        	}
         //printf(" Press ENTER to continue...");
     }
 
 }
 
+void PutarBoard(MATRIKS *M)
+{ /* Kamus Lokal */
+	MATRIKS Mputar;
+	int i,j,k;
+/* Algoritma */
+	MakeMATRIKS(4, 4, &Mputar);
+	for (i=FirstIdxBrs(*M); i<=LastIdxBrs(*M); i++) {
+		k=LastIdxKol(*M);
+		for(j=FirstIdxKol(*M); j<=LastIdxKol(*M); j++ ) {
+				SetEl(&Mputar, i, j, GetElmt(*M,k,i));
+				k--;
+		}
+	}
+	CopyMATRIKS(Mputar, M);
+}
 
 int main()
 {

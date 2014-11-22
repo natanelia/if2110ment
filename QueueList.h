@@ -12,17 +12,17 @@
 #define Nil NULL
 
 /*** Definisi Type Queue ***/
-typedef int infotype;
+typedef int infoqtype;
 typedef struct tElmtQueue *address;
 typedef struct tElmtQueue {
-		infotype info;
+		infoqtype info;
 		address next;
 } ElmtQueue;
 
 /* Type Queue dengan ciri HEAD dan TAIL */
-typedef struct { 
+typedef struct {
 	address HEAD;
-	address TAIL; 
+	address TAIL;
 } Queue;
 
 /* Selektor */
@@ -34,7 +34,7 @@ typedef struct {
 #define Info(P) (P)->info
 
 /**** Prototype manajemen memori ****/
-void AlokasiQueue (address *P, infotype X);
+void AlokasiQueue (address *P, infoqtype X);
 /* I.S. P sembarang, X terdefinisi */
 /* F.S. Alamat P dialokasi, jika berhasil maka Info(P) = X dan Next(P) = Nil */
 /* P = Nil jika alokasi gagal */
@@ -54,12 +54,12 @@ void CreateQueueEmpty (Queue *Q);
 /* F.S. Sebuah Q kosong terbentuk */
 
 /***** Primitif Add/Delete *****/
-void AddQueue (Queue *Q, infotype X);
+void AddQueue (Queue *Q, infoqtype X);
 /* Proses : Mengalokasi X dan menambahkan X pada bagian TAIL dari Q jika alokasi
 berhasil; jika alokasi gagal Q tetap */
 /* I.S. Q mungkin kosong */
 /* F.S. X menjadi TAIL, TAIL "maju" */
-void DelQueue (Queue *Q, infotype *X);
+void DelQueue (Queue *Q, infoqtype *X);
 /* Proses : Menghapus X pada bagian HEAD dari Q dan mendealokasi elemen HEAD */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "mundur" */

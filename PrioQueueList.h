@@ -5,6 +5,7 @@
 #ifndef _PrioQueueList_H
 #define _PrioQueueList_H
 #include "boolean.h"
+#include "mesinkata1.h"
 #include <stdlib.h>
 
 /*** KAMUS UMUM ***/
@@ -12,10 +13,10 @@
 #define Nil NULL
 
 /*** Definisi Type Queue ***/
-typedef int infotype;
+typedef Kata infopriotype;
 typedef struct tElmtPrioQueue *addressprio;
 typedef struct tElmtPrioQueue {
-		infotype info;
+		infopriotype info;
 		addressprio next;
 		int prio;
 } ElmtQ;
@@ -26,17 +27,17 @@ typedef struct {
 } PrioQueue;
 
 /* Selektor */
-#define Head(Q) (Q).HEAD
+#define HeadPrio(Q) (Q).HEAD
 #define InfoHead(Q) (Q).HEAD->info
 #define Prio(P) (P)->prio
-#define Next(P) (P)->next
-#define Info(P) (P)->info
+#define NextPrio(P) (P)->next
+#define InfoPrio(P) (P)->info
 
 
 /**** Prototype manajemen memori ****/
-void AlokasiPrio (addressprio *P, infotype X, int Pr);
+void AlokasiPrio (addressprio *P, infopriotype X, int Pr);
 /* I.S. P sembarang, X terdefinisi */
-/* F.S. Alamat P dialokasi, jika berhasil maka Info(P) = X dan Next(P) = Nil */
+/* F.S. Alamat P dialokasi, jika berhasil maka Info(P) = X dan NextPrio(P) = Nil */
 /* P = Nil jika alokasi gagal */
 void DealokasiPrio (addressprio P);
 /* I.S. P adalah hasil alokasi, P <> Nil */
@@ -54,13 +55,13 @@ void CreatePrioQueueEmpty (PrioQueue *Q);
 /* F.S. Sebuah Q kosong terbentuk */
 
 /***** Primitif Add/Delete *****/
-void AddPrio (PrioQueue *Q, infotype X, int Pr);
+void AddPrio (PrioQueue *Q, infopriotype X, int Pr);
 /* Proses : Mengalokasi X dan menambahkan X pada bagian TAIL dari Q jika alokasi
 berhasil dengan memperhatikan prioritas; jika alokasi gagal Q tetap */
 /* I.S. Q mungkin kosong, X terdefinisi */
 /* F.S. X menjadi elemen Q sesuai prioritas Pr,
 Q tetap terurut mengecil sesuai prioritas */
-void DelPrio (PrioQueue *Q, infotype *X, int *Pr);
+void DelPrio (PrioQueue *Q, infopriotype *X, int *Pr);
 /* Proses : Menghapus X pada bagian HEAD dari Q dan mendealokasi elemen HEAD,
 X berisi elemen dengan prioritas tertinggi */
 /* I.S. Q tidak kosong */

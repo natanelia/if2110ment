@@ -56,5 +56,5 @@ void SetDifference (Set S1, Set S2, Set *S3);
 void CopySet(Set S1, Set *S2);
 //Menghasilkan elemen S terbesar
 
-//void TulisSet(Set S);*/
+void TulisSet(Set S);
 #endif // set_h

@@ -79,7 +79,7 @@
 1415633939 /home/nim_13513070/Documents/if2110ment/point.h
 	"boolean.h"
 
-1415638156 source:/Users/zulvafachrina/Documents/if2110ment/matriks.c
+1416667802 source:/Users/zulvafachrina/Documents/if2110ment/matriks.c
 	<stdio.h>
 	<math.h>
 	"boolean.h"
@@ -87,22 +87,25 @@
 
 1415619784 /Users/zulvafachrina/Documents/if2110ment/boolean.h
 
-1415619784 /Users/zulvafachrina/Documents/if2110ment/matriks.h
+1416667802 /Users/zulvafachrina/Documents/if2110ment/matriks.h
 	<stdio.h>
+	"point.h"
 	"boolean.h"
 
-1415638156 source:/Users/zulvafachrina/Documents/if2110ment/mesinkar.c
+1416139059 source:/Users/zulvafachrina/Documents/if2110ment/mesinkar.c
 	<stdio.h>
 	"mesinkar.h"
 
 1415638156 /Users/zulvafachrina/Documents/if2110ment/mesinkar.h
 	"boolean.h"
 
-1415619784 source:/Users/zulvafachrina/Documents/if2110ment/mesinkata1.c
+1416273403 source:/Users/zulvafachrina/Documents/if2110ment/mesinkata1.c
 	"mesinkata1.h"
+	<stdio.h>
 
-1415619784 /Users/zulvafachrina/Documents/if2110ment/mesinkata1.h
+1416667802 /Users/zulvafachrina/Documents/if2110ment/mesinkata1.h
 	"mesinkar.h"
+	<stdio.h>
 
 1416284763 source:/home/nim_13513070/Documents/if2110/matriks.c
 	<stdio.h>
@@ -263,6 +266,141 @@
 	<stdio.h>
 
 1416189281 source:/home/nim_13513070/Documents/if2110/waktu.c
+	"boolean.h"
+	"waktu.h"
+	<stdio.h>
+
+1416185555 source:/Users/zulvafachrina/Documents/if2110ment/point.c
+	<stdio.h>
+	"point.h"
+	<math.h>
+
+1416185555 /Users/zulvafachrina/Documents/if2110ment/point.h
+	"boolean.h"
+
+1416673904 source:/Users/zulvafachrina/Documents/if2110ment/ADT_MultiList.c
+	"ADT_MultiList.h"
+	"boolean.h"
+	<stdio.h>
+
+1416673976 /Users/zulvafachrina/Documents/if2110ment/ADT_MultiList.h
+	"boolean.h"
+	<stdlib.h>
+	"waktu.h"
+	"mesinkar.h"
+	"mesinkata1.h"
+
+1416139059 /Users/zulvafachrina/Documents/if2110ment/waktu.h
+	"boolean.h"
+	"jam.h"
+	"tanggal.h"
+
+1416139059 /Users/zulvafachrina/Documents/if2110ment/jam.h
+	"boolean.h"
+
+1416139059 /Users/zulvafachrina/Documents/if2110ment/tanggal.h
+	"boolean.h"
+
+1416322915 source:/Users/zulvafachrina/Documents/if2110ment/ArrayOfKata.c
+	"ArrayOfKata.h"
+	"mesinkata1.h"
+	<stdio.h>
+	"boolean.h"
+
+1416273376 /Users/zulvafachrina/Documents/if2110ment/ArrayOfKata.h
+	"boolean.h"
+	"mesinkata1.h"
+
+1416139059 source:/Users/zulvafachrina/Documents/if2110ment/jam.c
+	"jam.h"
+	"boolean.h"
+	<stdio.h>
+
+1416673805 source:/Users/zulvafachrina/Documents/if2110ment/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<sys/select.h>
+	<termios.h>
+	<time.h>
+	"boolean.h"
+	"matriks.h"
+	"mesinkar.h"
+	"mesinkata1.h"
+	"point.h"
+	"stacklist.h"
+	"ADT_MultiList.h"
+	"ArrayOfKata.h"
+	"map.c"
+	"set.c"
+
+1416185555 /Users/zulvafachrina/Documents/if2110ment/stacklist.h
+	"boolean.h"
+	<stdlib.h>
+
+1416620982 /Users/zulvafachrina/Documents/if2110ment/map.c
+	"map.h"
+	"boolean.h"
+	<stdio.h>
+
+1416620982 /Users/zulvafachrina/Documents/if2110ment/map.h
+	"mesinkata1.h"
+	"boolean.h"
+
+1416667802 /Users/zulvafachrina/Documents/if2110ment/set.c
+	"set.h"
+	"boolean.h"
+	"mesinkata1.h"
+	<stdio.h>
+
+1416667803 /Users/zulvafachrina/Documents/if2110ment/set.h
+	"mesinkata1.h"
+	"boolean.h"
+
+1416620982 source:/Users/zulvafachrina/Documents/if2110ment/map.c
+	"map.h"
+	"boolean.h"
+	<stdio.h>
+
+1415639618 source:/Users/zulvafachrina/Documents/if2110ment/PrioQueueList.c
+	"PrioQueueList.h"
+	"boolean.h"
+	<stdlib.h>
+	<stdio.h>
+
+1415639667 /Users/zulvafachrina/Documents/if2110ment/PrioQueueList.h
+	"boolean.h"
+	<stdlib.h>
+
+1416667803 source:/Users/zulvafachrina/Documents/if2110ment/QueueList.c
+	"QueueList.h"
+	"boolean.h"
+	<stdlib.h>
+	<stdio.h>
+
+1416674062 /Users/zulvafachrina/Documents/if2110ment/QueueList.h
+	"boolean.h"
+	<stdlib.h>
+
+1416667802 source:/Users/zulvafachrina/Documents/if2110ment/set.c
+	"set.h"
+	"boolean.h"
+	"mesinkata1.h"
+	<stdio.h>
+
+1416322916 source:/Users/zulvafachrina/Documents/if2110ment/stacklist.c
+	"stacklist.h"
+	"boolean.h"
+	<stdlib.h>
+	<stdio.h>
+
+1416139059 source:/Users/zulvafachrina/Documents/if2110ment/tanggal.c
+	"tanggal.h"
+	"boolean.h"
+	<stdio.h>
+
+1416139059 source:/Users/zulvafachrina/Documents/if2110ment/waktu.c
 	"boolean.h"
 	"waktu.h"
 	<stdio.h>
