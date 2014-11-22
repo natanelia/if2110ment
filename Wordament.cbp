@@ -58,6 +58,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="mesinkata1.h" />
+		<Unit filename="point.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="point.h" />
+		<Unit filename="stacklist.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="stacklist.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
