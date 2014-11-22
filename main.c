@@ -114,6 +114,8 @@ char getch() {
 /* skeleton program for play */
 void Play(double seconds){
     char word;
+    int stackPop;
+    int i;
 
     InitBoard();
     InsertedKata.Length = 0;
@@ -206,15 +208,18 @@ void Play(double seconds){
             //Bila pencetan keyboard tidak membuat kursor keluar dari board, lakukan
             if (kursorTemp.X != kursor.X || kursorTemp.Y != kursor.Y || cc=='s')
             {
-                if (cc!='s' && SearchArrayPoint(P,kursor)){
-                    while(!IsEmptyStack(StackKata)){
-                        Pop(&StackKata,&word);
-                    }
-                    Push(&StackKata,word);
-                    P.neff = 1;
+                stackPop = SearchArrayPoint(P,kursor);
+                if ((cc != 's') && (stackPop != -1)){
+                    //Set kursor di posisi stackPop
                     if (chosen.X != 0 && chosen.Y !=0) {
-                        kursor.X = chosen.X;
-                        kursor.Y = chosen.Y;
+                        kursor.X = P.point[stackPop].X;
+                        kursor.Y = P.point[stackPop].Y;
+                    }
+
+                    for (i=P.neff-stackPop;i>=1;i--)
+                    {
+                        Pop(&StackKata,&word);
+                        P.neff--;
                     }
                 }
                 /* Jika ada point yang sudah dilewati kursor (setelah menekan tombol s),
@@ -302,7 +307,7 @@ void UpdateLayout() {
             {
                 printf(ANSI_BACKGROUND_RED " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
-            else if (SearchArrayPoint(P,sel))
+            else if (SearchArrayPoint(P,sel) != -1)
             {
                 printf(ANSI_BACKGROUND_MAGENTA " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
@@ -780,7 +785,7 @@ void PrintChosenWords(Set S, Map M)
 
 int main()
 {
-    playTime = 2;
+    playTime = 30;
 
     selectedBoard = 0;
     ReadBoards();
