@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/select.h>
 #include <termios.h>
@@ -11,6 +11,7 @@
 #include "mesinkata1.h" //untuk membaca kamus data dan file eksternal
 #include "point.h"
 #include "stacklist.h"
+#include "ADT_MultiList.h"
 #include "ArrayOfKata.h" //untuk membaca file berisi nama-nama user dan menyimpannya di array
 #include "set.h"
 #include "map.h"
@@ -40,7 +41,6 @@ int selectedBoard;
 POINT kursor;
 POINT kursorTemp;
 POINT chosen;
-
 int tempTime; //sisa waktu dalam sekon
 int playTime; //waktu permainan dalam sekon
 TabK users;	//array of Kata, isinya nama-nama user yg udah pernah diregister-in
@@ -52,8 +52,9 @@ ARRAYPOINT P;
 char nama[15];
 Kata AcceptedKata;
 //int acceptedKataNeff;
+Map M;
 Set S1;
-int skortot;
+List HighScoreList;
 
 
 // FUNGSI DAN PROSEDUR
@@ -72,10 +73,14 @@ void clrscr(void);
 void DisplayBoard();
 void MainMenu();
 void PreparationMenu ();
+void ResultMenu();
 void ReadUser();
 void Register (Kata *namauser);
 void Login (Kata *namauser);
 void SalinKeEks(TabK users);
+void InitScoreMap();
+void PrintChosenWords(Set S, Map M);
+int TotalScore();
 int Score (Kata K);
 
 
@@ -250,13 +255,12 @@ void Play(double seconds){
             initTermios(); // use new terminal setting again to make kbhit() and getch() work
         }
     }
-    printf("\nTime Up\n");
+    /*printf("\nTime Up\n");
     printf("Kata-kata yang berhasil dibentuk : \n");
     TulisSet(S1);
-    getch();
+    getch();*/
     resetTermios(); // restore default terminal setting
-    clrscr();
-    PreparationMenu();
+    ResultMenu();
 }
 
 void InitBoard()
@@ -268,16 +272,17 @@ void InitBoard()
     chosen.Y = 0;
     //acceptedKataNeff = 0;
     CreateEmptySet(&S1);
+    InitScoreMap();
 
     UpdateLayout();
 }
 
-void UpdateLayout()
-{
+void UpdateLayout() {
+
 
     clrscr();
     printf("\n");
-    printf("User: ");
+    printf(" User: ");
     printKata(namauser);
     //Print Time
     printf("%17d:%02d\n",(playTime - tempTime)/60,(playTime - tempTime)%60);
@@ -285,11 +290,11 @@ void UpdateLayout()
     //Print Matriks
     int i,j;
     POINT sel;
-    printf("\n\n\n" "          " ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n");
+    printf("\n" "        " ANSI_BACKGROUND_BLACK "                  " ANSI_COLOR_RESET "\n");
     for (i=FirstIdxBrs(boards[selectedBoard]);i<=LastIdxBrs(boards[selectedBoard]);i++)
     {
-	
-        printf( "          "ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
+
+        printf("       " ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
         for (j=FirstIdxKol(boards[selectedBoard]);j<=LastIdxKol(boards[selectedBoard]);j++)
         {
             sel.X = i; sel.Y = j;
@@ -313,26 +318,31 @@ void UpdateLayout()
         printf(ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
         printf("\n");
     }
-    printf("          " ANSI_BACKGROUND_BLACK "                    " ANSI_COLOR_RESET "\n\n");
+    printf("        " ANSI_BACKGROUND_BLACK "                  " ANSI_COLOR_RESET "\n\n");
     printf(" "); PrintStack(reverseStack(StackKata));
     printKata(InsertedKata);
     if (SetNbElmt(S1)>=1)
     {
-	printf(" GOT "); printKata(AcceptedKata); printf("!\n");
-	skortot = 0;
+        printf(" GOT "); printKata(AcceptedKata); printf("!\n");
+        printf(" Total Score : %d\n",TotalScore());
+	}
+	printf(" ");
+    //printf("  "); printf("%c\n",GetElmt(boards[selectedBoard],kursor.X,kursor.Y)); // process character
+}
+
+int TotalScore() {
+    int i;
+	int skortot = 0;
 	for (i=1;i<=SetNbElmt(S1);i++)
 	{
 		skortot = skortot + Score(S1.T[i]);
 	}
-        printf("Score : %d\n",skortot); 
-    }
-    //printf("  "); printf("%c\n",GetElmt(boards[selectedBoard],kursor.X,kursor.Y)); // process character
+    return skortot;
 }
 
-void ReadBoards()
+void ReadBoards() {
 //I.S sembarang
 //F.S MATRIKS boards berisi semua board yang ada di folder boards.
-{
     char filename[13];
     int i,j,k;
 
@@ -357,12 +367,10 @@ void ReadBoards()
     }
 }
 
-void ReadDictionary()
+void ReadDictionary() {
 //I.S sembarang
 //F.S MATRIKS boards berisi semua board yang ada di folder boards.
-{
     int i = 0;
-    int j;
     STARTKATA("Dictionary.txt");
     while (!EndKata)
     {
@@ -373,9 +381,8 @@ void ReadDictionary()
     kamusKataNeff = i-1;
 }
 
-boolean IsInDictionary(Kata K)
+boolean IsInDictionary(Kata K) {
 //Mencari kata K dalam kamus dan return true bila ada.
-{
     int i = 0;
     boolean found = false;
     while (i<=kamusKataNeff && !found)
@@ -456,6 +463,8 @@ void MainMenu() {
 /* Kamus Lokal */
 	int pil;
 /* Algoritma */
+    clrscr();
+    printf("===========================WELCOME TO FAKEWORDAMENT===========================\n");
 	printf(ANSI_COLOR_RED  "[1] Register      " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Login     "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] How To Play     "   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "[4] About     "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Quit    " ANSI_COLOR_RESET);
     	printf("\n\n");
 	printf("Menu yang dipilih: ");
@@ -471,41 +480,102 @@ void MainMenu() {
 
 void PreparationMenu () {
 /* Kamus Lokal */
-	int pil;
+	int pil = 0;
 	int pilboard; //pilihan board
 /* Algoritma */
-	printf("User: %s                                                            Board=%d\n\n", nama,selectedBoard);                             
-	printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
-    	printf("Menu yang dipilih: ");
-    	scanf("%d",&pil);
-    	switch (pil)
-    	{
-        	case 1 : Play(playTime); break;
-            	case 2 : { clrscr();
-                        DisplayBoard();
-                        printf("Masukkan pilihan board: ");
-                        scanf("%d",&pilboard);
-			clrscr();
-                        selectedBoard=pilboard;
-                        PreparationMenu();
-                        break;
-                     }
-        	case 5 : clrscr();
-                     MainMenu();
-        	default : break;
+    do {
+        clrscr();
+        printf("User: "); printKata(namauser); printf("                                                  Selected Board: %d\n\n",selectedBoard);
+        printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
 
-    }
+        printf("\nMenu yang dipilih: ");
+        scanf("%d",&pil);
+        switch (pil)
+        {
+            case 1 : Play(playTime); break;
+            case 2 : clrscr();
+                     DisplayBoard();
+                     printf("Masukkan pilihan board: ");
+                     scanf("%d",&pilboard);
+                     clrscr();
+                     selectedBoard=pilboard;
+                     PreparationMenu();
+                     break;
+            case 3 : MyHighScoreMenu();
+                     break;
+            case 4 : AllHighScoreMenu();
+                     break;
+            case 5 : MainMenu();
+                     break;
+            default: printf("ERROR: Masukan salah, coba ulangi!\n");
+                     getch();
+                     PauseScreen(1);
+
+        }
+    } while (pil < 1 || pil > 5);
 }
 
-void ReadUser()
+void ResultMenu () {
+//Shows complete statistic including username, score, date, board, words formed, and top 5 high scores for that board.
+    time_t t = time(0);
+    struct tm *infoTime = localtime(&t);
+
+    clrscr();
+    printf(" ==TIME UP, " ANSI_COLOR_CYAN); printKata(namauser); printf(ANSI_COLOR_RESET "!==\n");
+    printf("  Board No.  : %d\n", selectedBoard);
+    printf("  Your Score : %d\n", TotalScore());
+    printf("  Words Found:\n"); PrintChosenWords(S1,M);
+
+    //Save Result to File
+    RecordType NewRecord;
+
+	NewRecord.UserName = namauser;
+	NewRecord.Score = TotalScore();
+	Day(NewRecord.Time) = infoTime->tm_mday;
+	Month(NewRecord.Time) = infoTime->tm_mon;
+	Year(NewRecord.Time) = infoTime->tm_year+1900;
+	Hour(NewRecord.Time) = infoTime->tm_hour;
+	Minute(NewRecord.Time) = infoTime->tm_min;
+	Second(NewRecord.Time) = infoTime->tm_sec;
+	InsertGameScore(&HighScoreList, selectedBoard, NewRecord);
+	TulisDataBaseScore(HighScoreList);
+
+
+    printf("\n >> Press ENTER to continue...");
+    getch();
+    PreparationMenu();
+}
+
+void MyHighScoreMenu () {
+    clrscr();
+    printf("==============================================================================\n");
+    printf("========================MY HIGHSCORE for BOARD No. %d==========================\n",selectedBoard);
+    printf("==============================================================================\n");
+    ViewMyHighscore(HighScoreList,selectedBoard,namauser);
+    printf("\n >> Press ENTER to return...");
+    getch(); getch();
+    PreparationMenu();
+}
+
+void AllHighScoreMenu() {
+    clrscr();
+    printf("==============================================================================\n");
+    printf("==========================HIGHSCORE for BOARD No. %d===========================\n",selectedBoard);
+    printf("==============================================================================\n");
+    ViewAllHighscore(HighScoreList,selectedBoard);
+    printf("\n >> Press ENTER to return...");
+    getch(); getch();
+    PreparationMenu();
+}
+
+void ReadUser() {
 //I.S sembarang
 //F.S Array users berisi nama-nama user di file NamaUser.txt
-{
     MakeAKEmpty(&users);
     STARTKATA("NamaUser.txt");
     while (!EndKata)
     {
-	AddAsLastEl(&users,CKata);
+        AddAsLastEl(&users,CKata);
         ADVKATA();
     }
 }
@@ -513,7 +583,7 @@ void ReadUser()
 void Register (Kata *namauser)
 {
 	/* KAMUS */
-	
+
 	int i=1;
 	FILE *fileku;
 	char filename[20];
@@ -527,25 +597,39 @@ void Register (Kata *namauser)
 		for (i=1;i<=(*namauser).Length;i++)
 			(*namauser).TabKata[i]=nama[i-1];
 		if (SearchB (users, *namauser))
-			printf("Nama sudah ada. Masukkan nama yang lain!\n\n");
+		{
+            printf("\n");
+            printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "   ERROR: Nama sudah terdaftar!    \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "   Ketik 'EXIT' untuk kembali...   \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
+            PauseScreen(2);
+        }
 		else
 		{
-            		printf("\n");
-			printf(ANSI_COLOR_RED "Welcome ");
-			printKata(*namauser);
-			printf("!" ANSI_COLOR_RESET "\n");
-            		PauseScreen(1);
+            if (strcmp(nama,"EXIT"))
+            {
+                printf("\n");
+                printf(ANSI_COLOR_RED "Welcome ");
+                printKata(*namauser);
+                printf("!" ANSI_COLOR_RESET "\n");
+                PauseScreen(1);
+            }
 		}
 		clrscr();
-	}
-	while (SearchB (users, *namauser));
-	AddAsLastEl(&users,*namauser);
-	SalinKeEks(users);
-	strcpy(filename, nama);
-	strcat(filename, ".txt");
-	fileku=fopen(filename, "w");
-	fclose(fileku);
-	PreparationMenu();
+	} while (SearchB (users, *namauser));
+	if (strcmp(nama,"EXIT"))
+	{
+        AddAsLastEl(&users,*namauser);
+        SalinKeEks(users);
+        strcpy(filename, nama);
+        strcat(filename, ".txt");
+        fileku=fopen(filename, "w");
+        fclose(fileku);
+        PreparationMenu();
+    }
+    else
+        MainMenu();
 }
 
 void SalinKeEks(TabK users)
@@ -587,11 +671,11 @@ void Login (Kata *namauser)
 			(*namauser).TabKata[i]=nama[i-1];
 		if (!(SearchB (users, *namauser)))
 		{
-            		printf("\n");
-           		printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
-			printf(ANSI_BACKGROUND_RED " " ANSI_COLOR_RESET "ERROR! Nama Anda belum terdaftar!" ANSI_BACKGROUND_RED " " ANSI_COLOR_RESET "\n");
-			printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
-            		PauseScreen(1);
+            printf("\n");
+            printf(ANSI_BACKGROUND_RED "                                      \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "   ERROR! Nama Anda belum terdaftar!  \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "                                      \n" ANSI_COLOR_RESET);
+            PauseScreen(1);
 			count++;
 		}
 		else
@@ -617,7 +701,7 @@ void Login (Kata *namauser)
 			MainMenu();
 	}
 	else
-		PreparationMenu();	
+    PreparationMenu();
 }
 
 void PauseScreen (int seconds)
@@ -630,11 +714,8 @@ void PauseScreen (int seconds)
     }
 }
 
-int Score (Kata K)
+void InitScoreMap()
 {
-	int nilai = 0;
-	int i = 1;
-	Map M;
 	CreateEmptyMap(&M);
 	InsertMap('E',1,&M);
 	InsertMap('A',2,&M);
@@ -662,6 +743,12 @@ int Score (Kata K)
 	InsertMap('X',9,&M);
 	InsertMap('J',10,&M);
 	InsertMap('Q',10,&M);
+}
+
+int Score (Kata K)
+{
+	int nilai = 0;
+	int i = 1;
 	while (i <= K.Length)
 	{
 		nilai = nilai + ValueOfMap(K.TabKata[i],M);
@@ -672,15 +759,34 @@ int Score (Kata K)
 	return nilai;
 }
 
+void PrintChosenWords(Set S, Map M)
+{
+    int i;
+    if (IsSetEmpty(S))
+        printf("-\n");
+    else
+    {
+        for (i=1;i<=SetNbElmt(S);i++)
+        {
+            printf("    %2d ", Score(S.T[i]));
+			printKata(S.T[i]);
+			printf("\n");
+        }
+        //printf(" Press ENTER to continue...");
+    }
+
+}
+
 
 int main()
 {
-    playTime = 30;
+    playTime = 2;
 
     selectedBoard = 0;
     ReadBoards();
     ReadDictionary();
     ReadUser();
+    BacaDataBaseScore(&HighScoreList);
     clrscr();
     MainMenu();
 

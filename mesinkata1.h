@@ -1,6 +1,7 @@
 #ifndef __MESINKATA1_H__
 #define __MESINKATA1_H__
 #include "mesinkar.h"
+#include <stdio.h>
 #define NMax 50
 #define BLANK ' '
 #define ENTER '\n'
@@ -47,5 +48,7 @@ int GetIntegerFromKata(Kata Kata1);
 
 void printKata(Kata Kata1);
 /* mengeprint kata1*/
+
+void printKataToText(FILE *fp, Kata Kata1);
 
 #endif

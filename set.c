@@ -2,6 +2,8 @@
 #include "boolean.h"
 #include "mesinkata1.h"
 #include <stdio.h>
+
+
 boolean IsSetEmpty(Set S)
 {
     return (SetNbElmt(S) == 0);
@@ -46,7 +48,7 @@ void DeleteSet(Set *S, infosettype X)
     temp = (*S).T[1];
     found = false;
     while (((i+1)<=SetNbElmt(*S))&& (!found))
-    { 
+    {
         if (IsKataSama(temp,(*S).T[i]))
             found = true;
         else
@@ -186,7 +188,7 @@ void TulisSet(Set S)
 			printKata(S.T[i]);
 			printf("\n");
         }
-        printf("---Press Enter to continue---");
+        //printf(" Press ENTER to continue...");
     }
 
 }

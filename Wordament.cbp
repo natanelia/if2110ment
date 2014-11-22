@@ -31,7 +31,23 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="ADT_MultiList.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ADT_MultiList.h" />
+		<Unit filename="ArrayOfKata.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ArrayOfKata.h" />
 		<Unit filename="Dictionary.txt" />
+		<Unit filename="PrioQueueList.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PrioQueueList.h" />
+		<Unit filename="QueueList.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="QueueList.h" />
 		<Unit filename="boards/0.txt" />
 		<Unit filename="boards/1.txt" />
 		<Unit filename="boards/2.txt" />
@@ -43,9 +59,17 @@
 		<Unit filename="boards/8.txt" />
 		<Unit filename="boards/9.txt" />
 		<Unit filename="boolean.h" />
+		<Unit filename="jam.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="jam.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="map.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="map.h" />
 		<Unit filename="matriks.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -62,10 +86,22 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="point.h" />
+		<Unit filename="set.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="set.h" />
 		<Unit filename="stacklist.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="stacklist.h" />
+		<Unit filename="tanggal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tanggal.h" />
+		<Unit filename="waktu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="waktu.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

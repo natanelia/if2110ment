@@ -186,3 +186,7 @@ void Transpose(MATRIKS *M);
 
 //boolean SearchArrayPoint(ARRAYPOINT P,POINT point);
 //Mengecek apakah point merupakan member dari ARRAYPOINT P
+
+
+boolean SearchArrayPoint(ARRAYPOINT P,POINT kursor);
+//Mengecek apakah point merupakan member dari ARRAYPOINT P
