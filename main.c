@@ -477,7 +477,7 @@ void MainMenu() {
 	int pil;
 /* Algoritma */
     clrscr();
-    printf("===========================WELCOME TO FAKEWORDAMENT===========================\n");
+    printf("=========================== WELCOME TO WORDAMENT-0 ===========================\n");
 	printf(ANSI_COLOR_RED  "[1] Register      " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Login     "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] How To Play     "   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "[4] About     "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Quit    " ANSI_COLOR_RESET);
     	printf("\n\n");
 	printf("Menu yang dipilih: ");
@@ -605,18 +605,18 @@ void Register (Kata *namauser)
 	/* ALGORITMA */
 	do
 	{	printf("REGISTER\n\n");
-		printf("Masukkan nama (tanpa spasi): ");
+		printf("Type your name (one word): ");
 		scanf("%s",nama);
 		(*namauser).Length=strlen(nama);
 		for (i=1;i<=(*namauser).Length;i++)
 			(*namauser).TabKata[i]=nama[i-1];
 		if (SearchB (users, *namauser))
 		{
-            printf("\n");
-            printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
-			printf(ANSI_BACKGROUND_RED "   ERROR: Nama sudah terdaftar!    \n" ANSI_COLOR_RESET);
-			printf(ANSI_BACKGROUND_RED "   Ketik 'EXIT' untuk kembali...   \n" ANSI_COLOR_RESET);
-			printf(ANSI_BACKGROUND_RED "                                   \n" ANSI_COLOR_RESET);
+        		printf("\n");
+            		printf(ANSI_BACKGROUND_RED "                                            \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "   ERROR: Your name has been registered!    \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "   Type 'EXIT' to return...                 \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "                                            \n" ANSI_COLOR_RESET);
             PauseScreen(2);
         }
 		else
@@ -678,7 +678,7 @@ void Login (Kata *namauser)
 	do
 	{
 		printf(ANSI_COLOR_CYAN "LOGIN\n\n" ANSI_COLOR_RESET);
-		printf("Masukkan nama (tanpa spasi): ");
+		printf("Type your name: ");
 		scanf("%s",nama);
 		(*namauser).Length=strlen(nama);
 		for (i=1;i<=(*namauser).Length;i++)
@@ -686,9 +686,9 @@ void Login (Kata *namauser)
 		if (!(SearchB (users, *namauser)))
 		{
             printf("\n");
-            printf(ANSI_BACKGROUND_RED "                                      \n" ANSI_COLOR_RESET);
-			printf(ANSI_BACKGROUND_RED "   ERROR! Nama Anda belum terdaftar!  \n" ANSI_COLOR_RESET);
-			printf(ANSI_BACKGROUND_RED "                                      \n" ANSI_COLOR_RESET);
+        		printf(ANSI_BACKGROUND_RED "                                              \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "   ERROR! Your name has not been registered!  \n" ANSI_COLOR_RESET);
+			printf(ANSI_BACKGROUND_RED "                                              \n" ANSI_COLOR_RESET);
             PauseScreen(1);
 			count++;
 		}
@@ -705,7 +705,7 @@ void Login (Kata *namauser)
 	while ((!SearchB(users, *namauser))&&(count<3));
 	if (count==3)
 	{	printf(ANSI_COLOR_CYAN "LOGIN\n\n" ANSI_COLOR_RESET);
-		printf("Apakah anda ingin register? (y/n) ");
+		printf("Do you want to register? (y/n) ");
 		getch();
 		scanf("%c",&pil);
 		clrscr();
