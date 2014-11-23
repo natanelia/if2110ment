@@ -79,6 +79,7 @@ void ResultMenu();
 void ReadUser();
 void Register (Kata *namauser);
 void Login (Kata *namauser);
+void About();
 void SalinKeEks(TabK users);
 void InitScoreMap();
 void PrintChosenWords(PrioQueue PQ);
@@ -486,7 +487,7 @@ void MainMenu() {
 		case 1:{clrscr(); Register(&namauser); break;}
 		case 2:{clrscr(); Login(&namauser); break;}
 		case 3:{clrscr(); PreparationMenu(); break;}
-		case 4:{clrscr(); PreparationMenu(); break;}
+		case 4:{clrscr(); About(); break;}
 		case 5:{clrscr(); break;}
 	}
 }
@@ -716,6 +717,18 @@ void Login (Kata *namauser)
 	}
 	else
     PreparationMenu();
+}
+
+void About()
+{
+	printf("=================================== About ====================================\n\n");
+	printf("Thank you for playing Wordament-0!\n");
+	printf("This application was made to simulate Wordament.\n\n");
+	printf("CREDITS\n13513010 Zulva Fachrina\n13513038 Tjan Marco Orlando\n13513066 Dininta Annisa\n");
+	printf("13513070 Natan\n13513076 Lie, Albert Tri Adrian\n13513080 Luminto\n");
+	getch();
+	clrscr();
+	MainMenu();
 }
 
 void PauseScreen (int seconds)
