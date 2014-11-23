@@ -721,6 +721,7 @@ void Login (Kata *namauser)
 
 void About()
 {
+	getch();
 	printf("=================================== About ====================================\n\n");
 	printf("Thank you for playing Wordament-0!\n");
 	printf("This application was made to simulate Wordament.\n\n");
