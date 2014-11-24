@@ -107,7 +107,7 @@
 	"mesinkar.h"
 	<stdio.h>
 
-1416284763 source:/home/nim_13513070/Documents/if2110/matriks.c
+1416665967 source:/home/nim_13513070/Documents/if2110/matriks.c
 	<stdio.h>
 	<math.h>
 	"boolean.h"
@@ -115,7 +115,7 @@
 
 1416189281 /home/nim_13513070/Documents/if2110/boolean.h
 
-1416631904 /home/nim_13513070/Documents/if2110/matriks.h
+1416665984 /home/nim_13513070/Documents/if2110/matriks.h
 	<stdio.h>
 	"point.h"
 	"boolean.h"
@@ -181,7 +181,7 @@
 	"boolean.h"
 	<stdio.h>
 
-1416663421 source:/home/nim_13513070/Documents/if2110/main.c
+1416665999 source:/home/nim_13513070/Documents/if2110/main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
