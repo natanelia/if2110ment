@@ -45,6 +45,7 @@ void DeleteSet(Set *S, infosettype X)
     int i,j;
     infosettype temp;
     boolean found;
+    i=1;
     temp = (*S).T[1];
     found = false;
     while (((i+1)<=SetNbElmt(*S))&& (!found))
@@ -94,6 +95,7 @@ boolean IsSetEqual(Set S1, Set S2)
                 equal = IsSetMember(S1,S2.T[i]);
                 i++;
             }
+            return equal;
         }
     }
     else

@@ -16,7 +16,7 @@ typedef struct
 {
     Elmt T[MaxEl];
     int NbMapElmt;
-}Map;
+} Map;
 
 boolean IsMapEmpty(Map M);
 //Tes terhadap M : true jika M kosong, false jika M tidak kosong

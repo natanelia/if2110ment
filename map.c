@@ -27,7 +27,8 @@ void InsertMap(keytype K, infomaptype V, Map *M)
         (*M).T[(*M).NbMapElmt+1].key = K;
         (*M).T[(*M).NbMapElmt+1].value = V;
         (*M).NbMapElmt++;
-    } else
+    }
+    else
     {
         (*M).T[i].key = K;
         (*M).T[i].value = V;
@@ -47,7 +48,7 @@ void DeleteMap(keytype K, Map *M)
     }
     if (found)
     {
-        for (j=i;j<=(*M).NbMapElmt;j++)
+        for (j=i; j<=(*M).NbMapElmt; j++)
         {
             (*M).T[j].key=(*M).T[j+1].key;
             (*M).T[j].value=(*M).T[j+1].value;
@@ -85,6 +86,7 @@ infomaptype ValueOfMap (keytype K, Map M)
         else
             i++;
     }
+    return 0;
 }
 
 void TulisMap(Map M)
@@ -94,7 +96,7 @@ void TulisMap(Map M)
         printf("Map kosong\n");
     else
     {
-        for (i=1;i<=M.NbMapElmt;i++)
+        for (i=1; i<=M.NbMapElmt; i++)
         {
             printf("(%c,%d)\n",M.T[i].key,M.T[i].value);
         }

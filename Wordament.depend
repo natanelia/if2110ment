@@ -181,7 +181,7 @@
 	"boolean.h"
 	<stdio.h>
 
-1416665999 source:/home/nim_13513070/Documents/if2110/main.c
+1416810275 source:/home/nim_13513070/Documents/if2110/main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -197,8 +197,9 @@
 	"stacklist.h"
 	"ADT_MultiList.h"
 	"ArrayOfKata.h"
-	"set.h"
-	"map.h"
+	"map.c"
+	"set.c"
+	"PrioQueueList.h"
 
 1416189281 /home/nim_13513070/Documents/if2110/stacklist.h
 	"boolean.h"
@@ -216,11 +217,11 @@
 	<stdlib.h>
 	<stdio.h>
 
-1416627329 /home/nim_13513070/Documents/if2110/set.h
+1416705951 /home/nim_13513070/Documents/if2110/set.h
 	"mesinkata1.h"
 	"boolean.h"
 
-1416627329 /home/nim_13513070/Documents/if2110/map.h
+1416878821 /home/nim_13513070/Documents/if2110/map.h
 	"mesinkata1.h"
 	"boolean.h"
 
@@ -229,32 +230,33 @@
 	"boolean.h"
 	<stdio.h>
 
-1416627329 source:/home/nim_13513070/Documents/if2110/map.c
+1416878841 source:/home/nim_13513070/Documents/if2110/map.c
 	"map.h"
 	"boolean.h"
 	<stdio.h>
 
-1416189281 source:/home/nim_13513070/Documents/if2110/PrioQueueList.c
+1416705951 source:/home/nim_13513070/Documents/if2110/PrioQueueList.c
 	"PrioQueueList.h"
 	"boolean.h"
 	<stdlib.h>
 	<stdio.h>
 
-1416189281 /home/nim_13513070/Documents/if2110/PrioQueueList.h
+1416705951 /home/nim_13513070/Documents/if2110/PrioQueueList.h
 	"boolean.h"
+	"mesinkata1.h"
 	<stdlib.h>
 
-1416189281 source:/home/nim_13513070/Documents/if2110/QueueList.c
+1416705951 source:/home/nim_13513070/Documents/if2110/QueueList.c
 	"QueueList.h"
 	"boolean.h"
 	<stdlib.h>
 	<stdio.h>
 
-1416189281 /home/nim_13513070/Documents/if2110/QueueList.h
+1416705951 /home/nim_13513070/Documents/if2110/QueueList.h
 	"boolean.h"
 	<stdlib.h>
 
-1416631394 source:/home/nim_13513070/Documents/if2110/set.c
+1416878749 source:/home/nim_13513070/Documents/if2110/set.c
 	"set.h"
 	"boolean.h"
 	"mesinkata1.h"
@@ -403,5 +405,16 @@
 1416139059 source:/Users/zulvafachrina/Documents/if2110ment/waktu.c
 	"boolean.h"
 	"waktu.h"
+	<stdio.h>
+
+1416878461 /home/nim_13513070/Documents/if2110/map.c
+	"map.h"
+	"boolean.h"
+	<stdio.h>
+
+1416878749 /home/nim_13513070/Documents/if2110/set.c
+	"set.h"
+	"boolean.h"
+	"mesinkata1.h"
 	<stdio.h>
 
