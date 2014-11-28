@@ -509,25 +509,31 @@ void ChangeTabtoTabUnique(TabRecord T,TabRecord *Tnew){
 	int Last = T.TNeff;
 	boolean found;
 	int indexFound;
-	
+
+    printf("testing 1");
 	while (counter <= Last ){
-		if ( Tnew -> TNeff != 0){
+        printf("testing 2");
+		if ( Tnew->TNeff != 0){
+            printf("testing 3");
 			SearchUserInArray(*Tnew,T.TR[i].UserName,&found,&indexFound);
 			if (found){
 				Tnew->TR[indexFound].Score += T.TR[i].Score;
 			}
-			else{
-				Tnew -> TR[i] = T.TR[i];
-				i++;
-				Tnew->TNeff++;				
+			else
+			{
+                Tnew->TNeff++;
+				Tnew->TR[Tnew->TNeff] = T.TR[i];
 			}
+			i++;
 		}
 		else{
-			// Ketika awal , yaitu T.Neff = 0 
+            printf("testing 4");
+			// Ketika awal , yaitu T.Neff = 0
 			Tnew -> TR[i] = T.TR[i];
 			i++;
-			Tnew->TNeff++;					
+			Tnew->TNeff++;
 		}
+		counter++;
 	}
 }
 
