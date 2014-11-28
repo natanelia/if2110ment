@@ -25,13 +25,18 @@
 #define ANSI_BACKGROUND_MAGENTA "\e[37m\e[45m"
 #define ANSI_BACKGROUND_CYAN "\e[37m\e[46m"
 #define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_RED_BOLD "\x1b[31;1m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_GREEN_BOLD "\x1b[32;1m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_YELLOW_BOLD "\x1b[33;1m"
 #define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_BLUE_BOLD "\x1b[34;1m"
 #define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_MAGENTA_BOLD "\x1b[35;1m"
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_CYAN_BOLD "\x1b[36;1m"
+#define ANSI_COLOR_WHITE_BOLD "\x1b[37;1m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 //gcc -o coba ADT_MultiList.c ArrayOfKata.c jam.c main.c map.c matriks.c mesinkar.c mesinkata1.c point.c PrioQueueList.c QueueList.c set.c stacklist.c tanggal.c waktu.c -lm
@@ -530,19 +535,19 @@ void UpdateMainMenu()
     printf(ANSI_COLOR_MAGENTA" ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝  ╚═╝  \n\n" ANSI_COLOR_RESET);
 
     char b = ' ';
-    if (pil == 1) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 1) {b = '='; printf(ANSI_COLOR_RED_BOLD); }
     printf("                                %c%c REGISTER %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 2) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 2) {b = '='; printf(ANSI_COLOR_YELLOW_BOLD); }
     printf("                                  %c%c LOGIN %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 3) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 3) {b = '='; printf(ANSI_COLOR_CYAN_BOLD); }
     printf("                               %c%c HOW TO PLAY %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
     if (pil == 4) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
     printf("                                  %c%c ABOUT %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 5) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 5) {b = '='; printf(ANSI_COLOR_MAGENTA_BOLD); }
     printf("                                  %c%c QUIT %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
 
     printf("\n                      " ANSI_BACKGROUND_BLUE "                                    " ANSI_COLOR_RESET);
@@ -631,27 +636,25 @@ void UpdatePrepMenu()
     printf(ANSI_COLOR_MAGENTA" ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝  ╚═╝  \n\n" ANSI_COLOR_RESET);
 
     char b = ' ';
-    if (pil == 1) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 1) {b = '='; printf(ANSI_COLOR_CYAN_BOLD); }
     printf("                                %c%c PLAY GAME %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 2) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 2) {b = '='; printf(ANSI_COLOR_MAGENTA_BOLD); }
     printf("                               %c%c SELECT BOARD %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 3) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 3) {b = '='; printf(ANSI_COLOR_RED_BOLD); }
     printf("                               %c%c MY HIGHSCORES %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 4) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 4) {b = '='; printf(ANSI_COLOR_YELLOW_BOLD); }
     printf("                            %c%c VIEW ALL HIGHSCORES %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
     if (pil == 5) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
     printf("                              %c%c VIEW STATISTIC %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 6) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
-    printf("                                   %c%c QUIT %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    if (pil == 6) {b = '='; printf(ANSI_COLOR_WHITE_BOLD); }
+    printf("                                  %c%c LOGOUT %c%c \n" ANSI_COLOR_RESET, b,b,b,b);
 
-    printf("\n                      " ANSI_BACKGROUND_BLUE "                                    " ANSI_COLOR_RESET);
-    printf("\n                      "ANSI_BACKGROUND_BLUE "  Hint: Use W/A/S/D to navigate...  " ANSI_COLOR_RESET);
-    printf("\n                      " ANSI_BACKGROUND_BLUE "                                    " ANSI_COLOR_RESET "\n");
+    printf("\n\n                        Hint: Use W/A/S/D to navigate...\n");
 
 }
 
@@ -676,7 +679,7 @@ void PreparationMenu()
                                 selectedMenu--;
                            break;
                 case 'd' :
-                case 's' : if (selectedMenu < 5)
+                case 's' : if (selectedMenu < 6)
                                 selectedMenu++;
                            break;
             }
@@ -707,7 +710,6 @@ void PreparationMenu()
             AllHighScoreMenu();
             break;
         case 6 :
-            getch();
             MainMenu();
             break;
 
