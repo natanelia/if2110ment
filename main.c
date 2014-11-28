@@ -89,6 +89,8 @@ void ReadUser();
 void Register (Kata *namauser);
 void Login (Kata *namauser);
 void About();
+void HowToPlay();
+void PrintBoardForTutorial(POINT sel, int pil);
 void SalinKeEks(TabK users);
 void InitScoreMap();
 void PrintChosenWords(PrioQueue PQ);
@@ -622,7 +624,7 @@ void MainMenu()
         case 3:
         {
             clrscr();
-            PreparationMenu();
+            HowToPlay();
             break;
         }
         case 4:
@@ -961,6 +963,111 @@ void About()
     printf("\n  >> Press ENTER to continue...");
     getch();
     clrscr();
+    MainMenu();
+}
+
+void PrintBoardForTutorial(POINT kursor, int pil)
+{
+    //Print Matriks
+	int i,j;
+    printf("\n" "        " ANSI_BACKGROUND_BLACK "                  " ANSI_COLOR_RESET "\n");
+    for (i=FirstIdxBrs(boards[selectedBoard]); i<=LastIdxBrs(boards[selectedBoard]); i++)
+    {
+
+        printf("       " ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
+        for (j=FirstIdxKol(boards[selectedBoard]); j<=LastIdxKol(boards[selectedBoard]); j++)
+        {
+            
+            if ((kursor.X == i && kursor.Y == j)&&(pil==2))
+            {
+                printf(ANSI_BACKGROUND_RED " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+            }
+            /*else if (SearchArrayPoint(P,sel) != -1)
+            {
+                printf(ANSI_BACKGROUND_MAGENTA " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+            }*/
+            else if ((kursor.X == i && kursor.Y == j)&&(pil==1))
+            {
+                printf(ANSI_BACKGROUND_CYAN " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+            }
+            else
+            {
+                printf(ANSI_BACKGROUND_BLACK " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+            }
+        }
+        printf(ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
+        printf("\n");
+    }
+    printf("        " ANSI_BACKGROUND_BLACK "                  " ANSI_COLOR_RESET "\n\n");
+    printf(" ");
+}
+
+void HowToPlay()
+{
+	printf("================================= HOW TO PLAY ================================\n");
+	printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(1,1),1);
+	getch();getch();clrscr();
+	printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(2,1),1);
+	printf("           Pressed 'x'\n");
+	PauseScreen(1);
+    clrscr();
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(2,2),1);
+	printf("           Pressed 'd'\n");
+	PauseScreen(1);
+    clrscr();
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(3,3),1);
+	printf("           Pressed 'c'\n");
+	PauseScreen(1);
+    clrscr();
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(3,2),1);
+	printf("           Pressed 'a'\n");
+	PauseScreen(1);
+    clrscr();
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(4,1),1);
+	printf("           Pressed 'z'\n");
+	PauseScreen(1);
+    clrscr(); 
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(3,2),1);
+	printf("           Pressed 'e'\n");
+	PauseScreen(1);
+	printf("================================= HOW TO PLAY ================================\n");
+    clrscr();printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(2,2),1);
+	printf("           Pressed 'w'\n");
+	PauseScreen(1);
+	printf("================================= HOW TO PLAY ================================\n");
+    clrscr();printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+	PrintBoardForTutorial(MakePoint(1,1),1);
+	printf("           Pressed 'q'\n");
+	PauseScreen(1);
+    clrscr();
+	printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press 's' to select your word\n");
+    PrintBoardForTutorial(MakePoint(2,2),1);
+	getch();
+    clrscr();
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press 's' to select your word\n");
+    PrintBoardForTutorial(MakePoint(2,2),2);
+    printf("           Pressed 's'\n");
+	getch();
+    clrscr();
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n\n Find as many words as you can\n\n Have fun!");
+    getch();
     MainMenu();
 }
 
