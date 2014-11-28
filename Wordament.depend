@@ -181,7 +181,7 @@
 	"boolean.h"
 	<stdio.h>
 
-1416810275 source:/home/nim_13513070/Documents/if2110/main.c
+1417143755 source:/home/nim_13513070/Documents/if2110/main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -197,8 +197,8 @@
 	"stacklist.h"
 	"ADT_MultiList.h"
 	"ArrayOfKata.h"
-	"map.c"
-	"set.c"
+	"map.h"
+	"set.h"
 	"PrioQueueList.h"
 
 1416189281 /home/nim_13513070/Documents/if2110/stacklist.h
