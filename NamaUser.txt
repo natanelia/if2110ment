@@ -1,23 +1,5 @@
 Zulva
-Katniss
 Icha
 Natan
-<<<<<<< HEAD
-=======
 Marco
-sTri
-dnatan
-jak
-NNatan
-asdf
-Exit
-sswxsdawdadas
-natan
-EEXIT
-sdasdsda
-ssss
-<<<<<<< HEAD
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
 .

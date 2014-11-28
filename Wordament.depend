@@ -148,7 +148,7 @@
 	"boolean.h"
 	<stdio.h>
 
-1416189281 /home/nim_13513070/Documents/if2110/ADT_MultiList.h
+1417147430 /home/nim_13513070/Documents/if2110/ADT_MultiList.h
 	"boolean.h"
 	<stdlib.h>
 	"waktu.h"
@@ -181,7 +181,7 @@
 	"boolean.h"
 	<stdio.h>
 
-1417143755 source:/home/nim_13513070/Documents/if2110/main.c
+1417147592 source:/home/nim_13513070/Documents/if2110/main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -225,7 +225,7 @@
 	"mesinkata1.h"
 	"boolean.h"
 
-1416665076 source:/home/nim_13513070/Documents/if2110/ADT_MultiList.c
+1417147375 source:/home/nim_13513070/Documents/if2110/ADT_MultiList.c
 	"ADT_MultiList.h"
 	"boolean.h"
 	<stdio.h>
