@@ -183,4 +183,18 @@ void TulisDataBaseScore (List L);
  /* contoh : 2 Marco 100 26 12 2014 15 30 45 */
  /*akhir file txt ditandai dengan '.' */
 
+
+
+
+
+
+void ViewStatistic();
+void ChangeTabtoTabUnique(TabRecord T,TabRecord *Tnew);
+void SearchUserInArray(TabRecord T, Kata User,boolean *found,int *indexFound);
+void SortTabUniqueRecord (TabRecord *T);
 #endif
+
+
+
+
+

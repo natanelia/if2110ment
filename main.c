@@ -25,11 +25,18 @@
 #define ANSI_BACKGROUND_MAGENTA "\e[37m\e[45m"
 #define ANSI_BACKGROUND_CYAN "\e[37m\e[46m"
 #define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_RED_BOLD "\x1b[31;1m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_GREEN_BOLD "\x1b[32;1m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_YELLOW_BOLD "\x1b[33;1m"
 #define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_BLUE_BOLD "\x1b[34;1m"
 #define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_MAGENTA_BOLD "\x1b[35;1m"
 #define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_CYAN_BOLD "\x1b[36;1m"
+#define ANSI_COLOR_WHITE_BOLD "\x1b[37;1m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 //gcc -o coba ADT_MultiList.c ArrayOfKata.c jam.c main.c map.c matriks.c mesinkar.c mesinkata1.c point.c PrioQueueList.c QueueList.c set.c stacklist.c tanggal.c waktu.c -lm
@@ -89,6 +96,7 @@ void PutarBoard (MATRIKS *M);
 void InsertPrioQueue (Set S, PrioQueue *PQ);
 void MyHighScoreMenu ();
 void AllHighScoreMenu ();
+void Statistic();
 
 
 static struct termios old_termios, new_termios;
@@ -311,8 +319,6 @@ void InitBoard()
 
 void UpdateLayout()
 {
-
-
     clrscr();
     printf("\n");
     printf(" User: ");
@@ -514,69 +520,177 @@ void DisplayBoard()
     printf(ANSI_COLOR_MAGENTA "                       Board 8                Board 9\n\n" ANSI_COLOR_RESET);
 }
 
-void MainMenu()
+int selectedMenu = 1;
+void UpdateMainMenu()
 {
     /* Kamus Lokal */
-    int pil;
+    int pil = selectedMenu;
     /* Algoritma */
     clrscr();
-    printf("=========================== WELCOME TO WORDAMENT-0 ===========================\n");
-    printf(ANSI_COLOR_RED  "[1] Register      " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Login     "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] How To Play     "   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "[4] About     "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Quit    " ANSI_COLOR_RESET);
-    printf("\n\n");
-    printf("Menu yang dipilih: ");
-    scanf("%d",&pil);
-    switch (pil)
+    printf("=========================== WELCOME TO WORDAMENT-0 ============================\n\n");
+    printf(ANSI_COLOR_RED    "██╗    ██╗ ██████╗ ██████╗ ██████╗  █████╗ ███╗   ███╗███████╗███╗   ██╗██████╗\n");
+    printf(ANSI_COLOR_YELLOW "██║    ██║██╔═══██╗██╔══██╗██╔══██╗██╔══██╗████╗ ████║██╔════╝████╗  ██║╚═██╔═╝\n");
+    printf(ANSI_COLOR_GREEN  "██║ █╗ ██║██║   ██║██████╔╝██║  ██║███████║██╔████╔██║█████╗  ██╔██╗ ██║  ██║  \n");
+    printf(ANSI_COLOR_CYAN   "██║███╗██║██║   ██║██╔══██╗██║  ██║██╔══██║██║╚██╔╝██║██╔══╝  ██║╚██╗██║  ██║  \n");
+    printf(ANSI_COLOR_BLUE   "╚███╔███╔╝╚██████╔╝██║  ██║██████╔╝██║  ██║██║ ╚═╝ ██║███████╗██║ ╚████║  ██║  \n");
+    printf(ANSI_COLOR_MAGENTA" ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝  ╚═╝  \n\n" ANSI_COLOR_RESET);
+
+    char b = ' ';
+    if (pil == 1) {b = '='; printf(ANSI_COLOR_RED_BOLD); }
+    printf("                                %c%c REGISTER %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 2) {b = '='; printf(ANSI_COLOR_YELLOW_BOLD); }
+    printf("                                  %c%c LOGIN %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 3) {b = '='; printf(ANSI_COLOR_CYAN_BOLD); }
+    printf("                               %c%c HOW TO PLAY %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 4) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    printf("                                  %c%c ABOUT %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 5) {b = '='; printf(ANSI_COLOR_MAGENTA_BOLD); }
+    printf("                                  %c%c QUIT %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+
+    printf("\n                      " ANSI_BACKGROUND_BLUE "                                    " ANSI_COLOR_RESET);
+    printf("\n                      "ANSI_BACKGROUND_BLUE "  Hint: Use W/A/S/D to navigate...  " ANSI_COLOR_RESET);
+    printf("\n                      " ANSI_BACKGROUND_BLUE "                                    " ANSI_COLOR_RESET "\n");
+}
+
+void MainMenu()
+{
+    selectedMenu = 1;
+    UpdateMainMenu();
+    initTermios();
+    char cc = '\0';
+    while (cc != '\n')
     {
-    case 1:
-    {
-        clrscr();
-        Register(&namauser);
-        break;
+        if (kbhit())
+        {
+            resetTermios();
+            cc = getch();
+            switch(cc)
+            {
+                case 'a' :
+                case 'w' : if (selectedMenu > 1)
+                                selectedMenu--;
+                           break;
+                case 'd' :
+                case 's' : if (selectedMenu < 5)
+                                selectedMenu++;
+                           break;
+            }
+
+            UpdateMainMenu();
+            initTermios();
+        }
     }
-    case 2:
+    resetTermios();
+    cc = '\0';
+    switch (selectedMenu)
     {
-        clrscr();
-        Login(&namauser);
-        break;
-    }
-    case 3:
-    {
-        clrscr();
-        PreparationMenu();
-        break;
-    }
-    case 4:
-    {
-        clrscr();
-        About();
-        break;
-    }
-    case 5:
-    {
-        clrscr();
-        break;
-    }
+        case 1:
+        {
+            clrscr();
+            Register(&namauser);
+            break;
+        }
+        case 2:
+        {
+            clrscr();
+            Login(&namauser);
+            break;
+        }
+        case 3:
+        {
+            clrscr();
+            PreparationMenu();
+            break;
+        }
+        case 4:
+        {
+            clrscr();
+            About();
+            break;
+        }
+        case 5:
+        {
+            clrscr();
+            break;
+        }
     }
 }
 
-void PreparationMenu ()
+void UpdatePrepMenu()
 {
     /* Kamus Lokal */
-    int pil = 0;
-    int pilboard; //pilihan board
+    int pil = selectedMenu;
     /* Algoritma */
-    do
-    {
-        ReadBoards();
-        clrscr();
-        printf("User: ");
-        printKata(namauser);
-        printf("                                                  Selected Board: %d\n\n",selectedBoard);
-        printf(ANSI_COLOR_RED  "          [1] Play Game     " ANSI_COLOR_RESET ANSI_COLOR_CYAN  "[2] Select Board    "  ANSI_COLOR_RESET ANSI_COLOR_GREEN   "[3] View My Highscore    \n"   ANSI_COLOR_RESET ANSI_COLOR_YELLOW  "                    [4] View All Highscore    "  ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "[5] Logout   \n" ANSI_COLOR_RESET);
+    clrscr();
+    printf("User: "); printKata(namauser);
+    printf("                                                  Selected Board: %d\n\n",selectedBoard);
 
-        printf("\nMenu yang dipilih: ");
-        scanf("%d",&pil);
-        switch (pil)
+    printf(ANSI_COLOR_RED    "██╗    ██╗ ██████╗ ██████╗ ██████╗  █████╗ ███╗   ███╗███████╗███╗   ██╗██████╗\n");
+    printf(ANSI_COLOR_YELLOW "██║    ██║██╔═══██╗██╔══██╗██╔══██╗██╔══██╗████╗ ████║██╔════╝████╗  ██║╚═██╔═╝\n");
+    printf(ANSI_COLOR_GREEN  "██║ █╗ ██║██║   ██║██████╔╝██║  ██║███████║██╔████╔██║█████╗  ██╔██╗ ██║  ██║  \n");
+    printf(ANSI_COLOR_CYAN   "██║███╗██║██║   ██║██╔══██╗██║  ██║██╔══██║██║╚██╔╝██║██╔══╝  ██║╚██╗██║  ██║  \n");
+    printf(ANSI_COLOR_BLUE   "╚███╔███╔╝╚██████╔╝██║  ██║██████╔╝██║  ██║██║ ╚═╝ ██║███████╗██║ ╚████║  ██║  \n");
+    printf(ANSI_COLOR_MAGENTA" ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝  ╚═╝  \n\n" ANSI_COLOR_RESET);
+
+    char b = ' ';
+    if (pil == 1) {b = '='; printf(ANSI_COLOR_CYAN_BOLD); }
+    printf("                                 %c%c PLAY GAME %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 2) {b = '='; printf(ANSI_COLOR_MAGENTA_BOLD); }
+    printf("                               %c%c SELECT BOARD %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 3) {b = '='; printf(ANSI_COLOR_RED_BOLD); }
+    printf("                               %c%c MY HIGHSCORES %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 4) {b = '='; printf(ANSI_COLOR_YELLOW_BOLD); }
+    printf("                            %c%c VIEW ALL HIGHSCORES %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 5) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    printf("                              %c%c VIEW STATISTIC %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
+    b = ' ';
+    if (pil == 6) {b = '='; printf(ANSI_COLOR_WHITE_BOLD); }
+    printf("                                  %c%c LOGOUT %c%c \n" ANSI_COLOR_RESET, b,b,b,b);
+
+    printf("\n\n                        Hint: Use W/A/S/D to navigate...\n");
+
+}
+
+void PreparationMenu()
+{
+    int pilboard = 0;
+    selectedMenu = 1;
+    UpdatePrepMenu();
+    getch();
+    initTermios();
+    char cc = '\0';
+    while (cc != '\n')
+    {
+        if (kbhit())
+        {
+            resetTermios();
+            cc = getch();
+            switch(cc)
+            {
+                case 'a' :
+                case 'w' : if (selectedMenu > 1)
+                                selectedMenu--;
+                           break;
+                case 'd' :
+                case 's' : if (selectedMenu < 6)
+                                selectedMenu++;
+                           break;
+            }
+
+            UpdatePrepMenu();
+            initTermios();
+        }
+    }
+    resetTermios();
+    switch (selectedMenu)
         {
         case 1 :
             Play(playTime);
@@ -597,16 +711,13 @@ void PreparationMenu ()
             AllHighScoreMenu();
             break;
         case 5 :
+            Statistic();
+            break;
+        case 6 :
             MainMenu();
             break;
-        default:
-            printf("ERROR: Masukan salah, coba ulangi!\n");
-            getch();
-            PauseScreen(1);
 
         }
-    }
-    while (pil < 1 || pil > 5);
 }
 
 void ResultMenu ()
@@ -734,7 +845,10 @@ void Register (Kata *namauser)
         PreparationMenu();
     }
     else
+    {
+        getch();
         MainMenu();
+    }
 }
 
 void SalinKeEks(TabK users)
@@ -805,7 +919,11 @@ void Login (Kata *namauser)
         if (pil=='y')
             Register(namauser);
         else
+        {
+            getch();
             MainMenu();
+        }
+
     }
     else
         PreparationMenu();
@@ -813,12 +931,12 @@ void Login (Kata *namauser)
 
 void About()
 {
-    getch();
     printf("=================================== About ====================================\n\n");
-    printf("Thank you for playing Wordament-0!\n");
-    printf("This application was made to simulate Wordament.\n\n");
-    printf("CREDITS\n13513010 Zulva Fachrina\n13513038 Tjan Marco Orlando\n13513066 Dininta Annisa\n");
-    printf("13513070 Natan\n13513076 Lie, Albert Tri Adrian\n13513080 Luminto\n");
+    printf("  Thank you for playing Wordament-0!\n");
+    printf("  This application was made to simulate Wordament.\n\n");
+    printf("  CREDITS\n  13513010 Zulva Fachrina\n  13513038 Tjan Marco Orlando\n  13513066 Dininta Annisa\n");
+    printf("  13513070 Natan\n  13513076 Lie, Albert Tri Adrian\n  13513080 Luminto\n");
+    printf("\n  >> Press ENTER to continue...");
     getch();
     clrscr();
     MainMenu();
@@ -826,13 +944,20 @@ void About()
 
 void PauseScreen (int seconds)
 {
+    initTermios();
     const double TIME_LIMIT = seconds * CLOCKS_PER_SEC;
     clock_t startTime = clock();
     //CreateEmptyStack(&StackKata);
     while ((clock() - startTime) <= TIME_LIMIT)
     {
-
+        if (kbhit())
+        {
+            getch();
+            resetTermios();
+            initTermios();
+        }
     }
+    resetTermios();
 }
 
 void InitScoreMap()
@@ -937,6 +1062,19 @@ void PutarBoard(MATRIKS *M)
         }
     }
     CopyMATRIKS(Mputar, M);
+}
+
+void Statistic()
+{
+    clrscr();
+    printf("==============================================================================\n");
+    printf("==========================HIGHSCORE for BOARD No. %d===========================\n",selectedBoard);
+    printf("==============================================================================\n");
+    ViewStatistic(HighScoreList,selectedBoard);
+    printf("\n >> Press ENTER to return...");
+    getch();
+    getch();
+    PreparationMenu();
 }
 
 int main()

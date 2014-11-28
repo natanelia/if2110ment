@@ -16,5 +16,8 @@ natan
 EEXIT
 sdasdsda
 ssss
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 .
