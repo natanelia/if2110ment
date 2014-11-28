@@ -78,10 +78,12 @@ void InitBoard();
 void UpdateLayout();
 void ReadBoards();
 void ReadDictionary();
-void clrscr(void);
+void clrscr();
 void DisplayBoard();
 void MainMenu();
+void UpdateMainMenu();
 void PreparationMenu ();
+void UpdatePrepMenu();
 void ResultMenu();
 void ReadUser();
 void Register (Kata *namauser);
@@ -99,8 +101,22 @@ void AllHighScoreMenu ();
 void Statistic();
 
 
-static struct termios old_termios, new_termios;
+static struct termios old_termios, new_termios,oldest_termios;
 /* restore new terminal i/o settings */
+void superResetTermios()
+{
+    tcsetattr(0,TCSANOW,&oldest_termios);
+}
+
+void superInitTermios()
+{
+    tcgetattr(0,&oldest_termios); // store old terminal
+    new_termios = oldest_termios; // assign to new setting
+    new_termios.c_lflag &= ~ICANON; // disable buffer i/o
+    new_termios.c_lflag &= ~ECHO; // disable echo mode
+    tcsetattr(0,TCSANOW,&new_termios); // use new terminal setting
+}
+
 void resetTermios()
 {
     tcsetattr(0,TCSANOW,&old_termios);
@@ -560,6 +576,7 @@ void MainMenu()
 {
     selectedMenu = 1;
     UpdateMainMenu();
+    superInitTermios();
     initTermios();
     char cc = '\0';
     while (cc != '\n')
@@ -586,6 +603,8 @@ void MainMenu()
     }
     resetTermios();
     cc = '\0';
+    
+	superResetTermios();
     switch (selectedMenu)
     {
         case 1:
@@ -661,6 +680,7 @@ void UpdatePrepMenu()
 
 void PreparationMenu()
 {
+	superInitTermios();
     int pilboard = 0;
     selectedMenu = 1;
     UpdatePrepMenu();
@@ -690,6 +710,7 @@ void PreparationMenu()
         }
     }
     resetTermios();
+    superResetTermios();
     switch (selectedMenu)
         {
         case 1 :
@@ -714,6 +735,7 @@ void PreparationMenu()
             Statistic();
             break;
         case 6 :
+			selectedBoard = 0;
             MainMenu();
             break;
 
