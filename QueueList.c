@@ -8,23 +8,23 @@
 #include <stdio.h>
 
 /**** Prototype manajemen memori ****/
-void AlokasiQueue (address *P, infoqtype X)
+void AlokasiQueue (qaddress *P, infoqtype X)
 /* I.S. P sembarang, X terdefinisi */
-/* F.S. Alamat P dialokasi, jika berhasil maka Info(P) = X dan Next(P) = Nil */
+/* F.S. Alamat P dialokasi, jika berhasil maka InfoQ(P) = X dan NextQQ(P) = Nil */
 /* P = Nil jika alokasi gagal */
 {/* Kamus Lokal */
 /* Algoritma */
 	//Algortima
-	*P = (address)malloc(sizeof(ElmtQueue));
+	*P = (qaddress)malloc(sizeof(ElmtQueue));
 	if (P != Nil) {
-		Info(*P) = X;
-		Next(*P) = Nil;
+		InfoQ(*P) = X;
+		NextQ(*P) = Nil;
 	}
 	else 
 		P = Nil;
 }
 
-void DealokasiQueue (address P)
+void DealokasiQueue (qaddress P)
 /* I.S. P adalah hasil alokasi, P <> Nil */
 /* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 { /* Kamus Lokal */
@@ -44,13 +44,13 @@ int NBElmtQueue (Queue Q)
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
 { /* Kamus Lokal */
 	int count;
-	address P;
+	qaddress P;
 /* Algoritma */
 	count=0;
 	P=Head(Q);
 	while(P!=Nil) {
 		count=count+1;
-		P=Next(P);
+		P=NextQ(P);
 	}
 	return(count);
 }
@@ -72,7 +72,7 @@ berhasil; jika alokasi gagal Q tetap */
 /* I.S. Q mungkin kosong */
 /* F.S. X menjadi TAIL, TAIL "maju" */
 { /* Kamus Lokal*/
-	address Pt;
+	qaddress Pt;
 /* Algoritma */
 	AlokasiQueue(&Pt,X);
 	if(Pt!=Nil) {
@@ -81,7 +81,7 @@ berhasil; jika alokasi gagal Q tetap */
 			Tail(*Q)=Pt;
 		}
 		else {
-			Next(Tail(*Q))=Pt;
+			NextQ(Tail(*Q))=Pt;
 			Tail(*Q)=Pt;
 		}
 	}
@@ -92,15 +92,15 @@ void DelQueue (Queue *Q, infoqtype *X)
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "mundur" */
 { /* Kamus Lokal */
-	address Pt;
+	qaddress Pt;
 /* Algoritma */
 	Pt=Head(*Q);
 	*X=InfoHead(*Q);
-	if(Next(Pt)==Nil) {
+	if(NextQ(Pt)==Nil) {
 		Tail(*Q)=Nil;
 	}
-	Head(*Q)=Next(Pt);
-	Next(Pt)=Nil;
+	Head(*Q)=NextQ(Pt);
+	NextQ(Pt)=Nil;
 	DealokasiQueue(Pt);
 }
 
@@ -111,17 +111,36 @@ void PrintInfoQueue (Queue Q)
 /* Semua info yg disimpan pada elemen list diprint */
 /* Jika list kosong, hanya menuliskan "list kosong" */
 {/*Kamus Lokal */
-	address P;
+	qaddress P;
 /* Algoritma */
-	if(IsQueueEmpty(Q)) printf("Queue kosong\n");
+	if(IsQueueEmpty(Q)) {}
 	else {
 		P=Head(Q);
 		while(P!=Nil) {
-			printf("%d ",Info(P));
-			P=Next(P);
+			printKata(InfoQ(P)); printf(" ");
+			P=NextQ(P);
 		}
 		printf("\n");
 	}
 }
 
+boolean SearchQueue(Queue Q, infoqtype Kata)
+/* Mencari apakah ada elemen list yang beralamat P */
+/* Mengirimkan true jika ada, false jika tidak ada */
+{/* Kamus Lokal */
+	boolean found;
+	qaddress P;
+/* Algoritma */
+	P=Head(Q);
+	found=false;
+	while(P!=Nil && !found) {
+		if(IsKataSama(InfoQ(P),Kata)) {
+			found=true;
+		}
+		else {
+			P=NextQ(P);
+		}
+	}
+	return(found);
+}
 

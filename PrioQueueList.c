@@ -128,7 +128,7 @@ void PrintInfoPrioPrio (PrioQueue Q)
 {/*Kamus Lokal */
 	addressprio P;
 /* Algoritma */
-	if(IsPrioQueueEmpty(Q)) printf("Queue kosong\n");
+	if(IsPrioQueueEmpty(Q)) {}
 	else {
 		P=HeadPrio(Q);
 		while(P!=Nil) {

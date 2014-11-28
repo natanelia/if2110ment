@@ -1,6 +1,7 @@
 #include "mesinkata1.h"
 #include <stdio.h>
 boolean EndKata;
+boolean EndLine;
 Kata CKata;
 void IgnoreBlank()
 /* Mengabaikan satu atau beberapa BLANK
@@ -9,6 +10,7 @@ F.S. : CC
 ≠ BLANK atau CC = MARK */
 { /* Kamus Lokal */
 /* Algoritma */
+	
     while (((CC == BLANK) || (CC == ENTER)) && (CC != MARK)) {
         ADV();
     } /* CC != BLANK or CC = MARK */

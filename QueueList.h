@@ -5,6 +5,7 @@
 #ifndef _QueueList_H
 #define _QueueList_H
 #include "boolean.h"
+#include "mesinkata1.h"
 #include <stdlib.h>
 
 /*** KAMUS UMUM ***/
@@ -12,17 +13,17 @@
 #define Nil NULL
 
 /*** Definisi Type Queue ***/
-typedef int infoqtype;
-typedef struct tElmtQueue *address;
+typedef Kata infoqtype;
+typedef struct tElmtQueue *qaddress;
 typedef struct tElmtQueue {
 		infoqtype info;
-		address next;
+		qaddress next;
 } ElmtQueue;
 
 /* Type Queue dengan ciri HEAD dan TAIL */
 typedef struct {
-	address HEAD;
-	address TAIL;
+	qaddress HEAD;
+	qaddress TAIL;
 } Queue;
 
 /* Selektor */
@@ -30,15 +31,15 @@ typedef struct {
 #define Tail(Q) (Q).TAIL
 #define InfoHead(Q) (Q).HEAD->info
 #define InfoTail(Q) (Q).TAIL->info
-#define Next(P) (P)->next
-#define Info(P) (P)->info
+#define NextQ(P) (P)->next
+#define InfoQ(P) (P)->info
 
 /**** Prototype manajemen memori ****/
-void AlokasiQueue (address *P, infoqtype X);
+void AlokasiQueue (qaddress *P, infoqtype X);
 /* I.S. P sembarang, X terdefinisi */
 /* F.S. Alamat P dialokasi, jika berhasil maka Info(P) = X dan Next(P) = Nil */
 /* P = Nil jika alokasi gagal */
-void DealokasiQueue (address P);
+void DealokasiQueue (qaddress P);
 /* I.S. P adalah hasil alokasi, P <> Nil */
 /* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 
@@ -70,5 +71,10 @@ void PrintInfoQueue (Queue Q);
 /* F.S. Jika queue tidak kosong, */
 /* Semua info yg disimpan pada elemen queue diprint */
 /* Jika queue kosong, hanya menuliskan "queue kosong" */
+
+/**** Searching *****/
+boolean SearchQueue(Queue Q, infoqtype Kata);
+/* Mencari apakah ada elemen list yang beralamat P */
+/* Mengirimkan true jika ada, false jika tidak ada */
 
 #endif

@@ -12,6 +12,7 @@ typedef struct {
 
 /* State Mesin Kata */
 extern boolean EndKata;
+extern boolean EndLine;
 extern Kata CKata;
 
 void IgnoreBlank();
