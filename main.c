@@ -16,6 +16,9 @@
 #include "map.h"
 #include "set.h"
 #include "PrioQueueList.h"
+#include "QueueList.h"
+
+
 
 #define ANSI_BACKGROUND_BLACK "\e[37m\e[40m"
 #define ANSI_BACKGROUND_RED "\e[37m\e[41m"
@@ -63,7 +66,10 @@ Kata AcceptedKata;
 Map M;
 Set S1;
 List HighScoreList;
-PrioQueue PQ;
+PrioQueue PQ; //Menyimpan kata yang sudah dibentuk terurut berdasarkan score tertinggi
+Queue QSuggest[10]; //Menyimpan Kata-kata yang pernah dibentuk user pada permainan sebelumnya 
+Kata KataS; //Kata yang di-suggest
+static struct termios old_termios, new_termios,oldest_termios; //restore new terminal i/o settings
 
 
 // FUNGSI DAN PROSEDUR
@@ -80,10 +86,20 @@ void ReadBoards();
 void ReadDictionary();
 void clrscr();
 void DisplayBoard();
+/* I.S Boards terdefinisi
+   F.S Menampilkan pilihan board dari 0..9 ke layar */
 void MainMenu();
+/* I.S Sembarang
+   F.S Menampilkan main menu dengan pilihan menu yang sudah mengarah ke prosedur masing-masing */
 void UpdateMainMenu();
+/* I.S Main Menu Terdefinisi
+   F.S Menampilkan main menu dengan GUI yang sudah dimodifikasi */
 void PreparationMenu ();
+/* I.S Sembarang
+   F.S Menampilkan preparation menu dengan pilihan menu yang sudah mengarah ke prosedur masing-masing */
 void UpdatePrepMenu();
+/* I.S Preperation Menu Terdefinisi
+   F.S Menampilkan preparation menu dengan GUI yang sudah dimodifikasi */
 void ResultMenu();
 void ReadUser();
 void Register (Kata *namauser);
@@ -92,19 +108,32 @@ void About();
 void HowToPlay();
 void PrintBoardForTutorial(POINT sel, int pil);
 void SalinKeEks(TabK users);
+/* I.S users terdefinisi
+   F.S users disalin ke file eksternal */
 void InitScoreMap();
 void PrintChosenWords(PrioQueue PQ);
 int TotalScore();
 int Score (Kata K);
 void PutarBoard (MATRIKS *M);
+/* I.S Board terdefinisi sebagai matriks
+   F.S Board diputar 90 derajat clockwise */
 void InsertPrioQueue (Set S, PrioQueue *PQ);
+/* I.S S terdefinisi 
+   F.S PQ terbentuk dengan elemen merupakan yang berasal dari S terurut score mengecil */
 void MyHighScoreMenu ();
 void AllHighScoreMenu ();
 void Statistic();
+void MoveToQueue();
+/* I.S Sembarang
+   F.S QSuggest terbentuk, berisi kata-kata yang pernah terbentuk pada permainan sebelumnya */
+void MoveQueueToEks();
+/* I.S QSuggest terdefinisi
+   F.S Memindahkan isi QSuggest ke file eksternal */
+Kata Suggestion(int i, Kata K);
+/* Menghasilkan Kata yang di-suggest dari board i berdasarkan kata yang sedang dibentuk player (K) */
 
 
-static struct termios old_termios, new_termios,oldest_termios;
-/* restore new terminal i/o settings */
+
 void superResetTermios()
 {
     tcsetattr(0,TCSANOW,&oldest_termios);
@@ -154,7 +183,8 @@ void Play(double seconds)
     char word;
     int stackPop;
     int i;
-
+	
+    MoveToQueue();
     InitBoard();
     InsertedKata.Length = 0;
     initTermios(); // initailize new terminal setting to make kbhit() and getch() work
@@ -291,7 +321,7 @@ void Play(double seconds)
                             InsertedKata.TabKata[InsertedKata.Length] = word;
                             P.neff = 0;
                         }
-                        if (IsInDictionary(InsertedKata))
+                        if (IsInDictionary(InsertedKata) && !IsSetMember(S1,InsertedKata))
                         {
                             //acceptedKataNeff++;
                             CopyKata(InsertedKata,&AcceptedKata);
@@ -329,6 +359,12 @@ void InitBoard()
     chosen.X = 0;
     chosen.Y = 0;
     //acceptedKataNeff = 0;
+    char word;
+    
+	while(!IsEmptyStack(StackKata))
+	{
+	    Pop(&StackKata,&word);
+        }
     CreateEmptySet(&S1);
     InitScoreMap();
 
@@ -380,6 +416,18 @@ void UpdateLayout()
     printf(" ");
     PrintStack(reverseStack(StackKata));
     printKata(InsertedKata);
+    //Menampilkan suggestion
+    if(!IsQueueEmpty(QSuggest[selectedBoard])) {
+	CopyKata(Suggestion(selectedBoard,AcceptedKata),&KataS);	
+    	printf("[Suggestion] Try This One : "); 
+	if(KataS.TabKata[1]=='0') {
+		printf(" ");
+	}
+	else {
+		printKata(KataS);
+	}
+	printf("\n\n");
+    }
     if (SetNbElmt(S1)>=1)
     {
         printf(" GOT ");
@@ -463,11 +511,13 @@ boolean IsInDictionary(Kata K)
 
 void clrscr(void)
 {
-    //system("clear");
-    printf("\033\143");
+    system("clear");
+    //printf("\033\143");
 }
 
 void DisplayBoard()
+/* I.S Boards terdefinisi
+   F.S Menampilkan pilihan board dari 0..9 ke layar */
 {
     /* KAMUS LOKAL */
     int i,j;
@@ -540,6 +590,8 @@ void DisplayBoard()
 
 int selectedMenu = 1;
 void UpdateMainMenu()
+/* I.S Main Menu Terdefinisi
+   F.S Menampilkan main menu dengan GUI yang sudah dimodifikasi */
 {
     /* Kamus Lokal */
     int pil = selectedMenu;
@@ -575,6 +627,8 @@ void UpdateMainMenu()
 }
 
 void MainMenu()
+/* I.S Sembarang
+   F.S Menampilkan main menu dengan pilihan menu yang sudah mengarah ke prosedur masing-masing */
 {
     selectedMenu = 1;
     UpdateMainMenu();
@@ -642,6 +696,8 @@ void MainMenu()
 }
 
 void UpdatePrepMenu()
+/* I.S Preparation Menu Terdefinisi
+   F.S Menampilkan preaparatiom menu dengan GUI yang sudah dimodifikasi */
 {
     /* Kamus Lokal */
     int pil = selectedMenu;
@@ -681,6 +737,8 @@ void UpdatePrepMenu()
 }
 
 void PreparationMenu()
+/* I.S Sembarang
+   F.S Menampilkan preparation menu dengan pilihan menu yang sudah mengarah ke prosedur masing-masing */
 {
 	superInitTermios();
     int pilboard = 0;
@@ -758,6 +816,7 @@ void ResultMenu ()
     printf("  Your Score : %d\n", TotalScore());
     printf("  Words Found:\n");
     PrintChosenWords(PQ);
+    MoveQueueToEks();
 
     //Save Result to File
     RecordType NewRecord;
@@ -824,7 +883,7 @@ void Register (Kata *namauser)
 
     int i=1;
     FILE *fileku;
-    char filename[20];
+    char filename[30];
 
     /* ALGORITMA */
     do
@@ -862,9 +921,16 @@ void Register (Kata *namauser)
     {
         AddAsLastEl(&users,*namauser);
         SalinKeEks(users);
-        strcpy(filename, nama);
+	//Membentuk file user baru
+	strcpy(filename, "users/");
+        strcat(filename, nama);
         strcat(filename, ".txt");
         fileku=fopen(filename, "w");
+	for(i=0; i<=9; i++) {
+		fputs(",", fileku);
+		fputs("\n",fileku);
+	}
+	fputs(".",fileku);
         fclose(fileku);
         PreparationMenu();
     }
@@ -899,7 +965,6 @@ void SalinKeEks(TabK users)
 void Login (Kata *namauser)
 {
     /* KAMUS */
-    char nama[15];
     int i=1;
     int count=0;
     char pil;
@@ -1135,6 +1200,8 @@ int Score (Kata K)
 }
 
 void InsertPrioQueue (Set S, PrioQueue *PQ)
+/* I.S S terdefinisi 
+   F.S PQ terbentuk dengan elemen merupakan yang berasal dari S terurut score mengecil */
 {
     /* Kamus Lokal */
     int nilai;
@@ -1175,6 +1242,8 @@ void PrintChosenWords(PrioQueue PQ)
 }
 
 void PutarBoard(MATRIKS *M)
+/* I.S Board terdefinisi sebagai matriks
+   F.S Board diputar 90 derajat clockwise */
 {
     /* Kamus Lokal */
     MATRIKS Mputar;
@@ -1205,6 +1274,103 @@ void Statistic()
     getch();
     PreparationMenu();
 }
+
+void MoveToQueue () 
+/* I.S Sembarang
+   F.S QSuggest terbentuk, berisi kata-kata yang pernah terbentuk pada permainan sebelumnya */
+{/* Kamus Lokal */
+	char filename[30];
+	int i;
+/* Algoritma */
+	for(i=0;i<=9;i++) {
+		CreateQueueEmpty(&QSuggest[i]);
+	}
+	strcpy(filename, "users/");
+	strcat(filename, nama);
+        strcat(filename, ".txt");
+	STARTKATA(filename);
+	i=0;
+	while (!EndKata) {
+		while(CKata.TabKata[1]!=',') {
+			AddQueue(&QSuggest[i],CKata);
+  		      	ADVKATA();
+		}
+		i++;
+		ADVKATA();	
+	}
+}
+
+void MoveQueueToEks()
+/* I.S QSuggest terdefinisi
+   F.S Memindahkan isi QSuggest ke file eksternal */
+{/* Kamus Lokal */
+	static FILE *fileku;
+	static int retval;
+	int i,j;
+	qaddress P;
+	char filename[30];
+    
+
+/* Algoritma */
+        for(i=1;i<=SetNbElmt(S1);i++) {
+		if(!(SearchQueue(QSuggest[selectedBoard], S1.T[i]))) {
+			AddQueue (&QSuggest[selectedBoard], S1.T[i]);
+		}
+	}
+	strcpy(filename, "users/");
+	strcat(filename, nama);
+        strcat(filename, ".txt");
+	fileku = fopen(filename,"w+");
+	for (i=0; i<=9; i++)
+	{
+		P=Head(QSuggest[i]);
+	        while(P!=Nil) {
+	        	for(j=1;j<=InfoQ(P).Length;j++) {
+				retval=fprintf(fileku, "%c", InfoQ(P).TabKata[j] );
+			}
+			P=NextQ(P);
+			fputs(" ", fileku);	
+		}
+	fputs(",", fileku);
+	fputs("\n", fileku);
+        }	
+	fputs(".", fileku);      	
+	fclose(fileku);
+}
+
+Kata Suggestion(int i, Kata K)
+/* Menghasilkan Kata yang di-suggest dari board i berdasarkan kata yang sedang dibentuk player (K) */
+{/* Kamus Lokal */
+	Kata KSuggest, S, Kosong, K1;
+	//KSuggest=Kata yang di-suggest, S=Kata yang dipindah, K1=Kata pada InfoHead
+/* Algoritma */
+	Kosong.TabKata[1]='0'; // Inisialisasi kata kosong, diisi jika suggestion habis
+	Kosong.Length=1;
+	CopyKata(InfoHead(QSuggest[i]),&K1);
+	if(!(IsKataSama(InfoHead(QSuggest[i]),K))) { //acceptedKata!=InfoHead(Q)
+		CopyKata(InfoHead(QSuggest[i]),&KSuggest);
+	}
+	else {
+		DelQueue(&QSuggest[i], &S);
+		AddQueue (&QSuggest[i], S);
+		if(IsKataSama(InfoHead(QSuggest[i]),K1)) { //InfoHead(Q)==K1, semua kata sudah di display
+			CopyKata(Kosong,&KSuggest);
+		}
+		else {
+			while(IsSetMember(S1, InfoHead(QSuggest[i])) && !IsKataSama(InfoHead(QSuggest[i]),K1)) { 
+				DelQueue(&QSuggest[i], &S);
+				AddQueue (&QSuggest[i], S);
+			} //InfoHead(Q) tidak ada di Set atau Suggestion sudah habis
+			if(IsKataSama(InfoHead(QSuggest[i]),K1)) {
+				CopyKata(Kosong,&KSuggest);
+			}
+			else {
+				CopyKata(InfoHead(QSuggest[i]),&KSuggest);
+			}
+		}
+	}
+	return(KSuggest);
+}			
 
 int main()
 {
