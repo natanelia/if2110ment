@@ -622,6 +622,10 @@ int AvgScoreBoard (List L, BoardType Board)
 	{
 		return 0;
 	}
+	else if (NbBoardRecord(L,Board) == 1 )
+	{
+		return (SumBoardRecord(L, Board);
+	}
 	else
 	{
 		return (SumBoardRecord(L, Board)/ NbBoardRecord(L, Board));
