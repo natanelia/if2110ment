@@ -1,11 +1,3 @@
-/*
-	NIM/Nama	: 13513070/Natan
-	Nama file	: point.c
-	Topik		: ADT Point - Body
-	Tanggal		: 3 September 2014
-	Deskripsi	: Badan dari ADT Point
-*/
-
 #include<stdio.h>
 #include "point.h"
 #include<math.h>
@@ -123,96 +115,7 @@ int Point_Kuadran (POINT P)
 	}
 }
 
-/* Kelompok operasi lain terhadap type */
-POINT Point_NextX (POINT P)
-// { Mengirim salinan P dengan absis ditambah satu }
-{
-	return MakePoint(P.X+1, P.Y);
-}
 
-POINT Point_NextY (POINT P)
-// { Mengirim salinan P dengan ordinat ditambah satu }
-{
-	return MakePoint(P.X, P.Y+1);
-}
-
-POINT Point_PlusDelta (POINT P, point_infotype deltaX, point_infotype deltaY)
-// { Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah
-// Ordinat(P) + deltaY }
-{
-	return MakePoint(P.X+deltaX, P.Y+deltaY);
-}
-
-POINT Point_MirrorOf (POINT P, boolean SbX)
-// { Menghasilkan salinan P yang dicerminkan terhadap salah satu sumbu }
-// { Jika SbX bernilai true, maka dicerminkan terhadap sumbu X }
-// { Jika SbX bernilai false, maka dicerminkan terhadap sumbu Y }
-{
-	if (SbX == true) {
-		return MakePoint(P.X,0-P.Y);
-	} else {
-		return MakePoint(0-P.X,P.Y);
-	}
-}
-
-float Point_Jarak0 (POINT P)
-// { Menghitung jarak P ke (0,0) secara skalar }
-{
-	return sqrt(pow(P.X,2)+pow(P.Y,2));
-}
-
-float Point_Panjang (POINT P1, POINT P2)
-// { Menghitung panjang garis yang dibentuk P1 dan P2 }
-// { Menghitung jarak titik P1 ke titik P2 secara skalar }
-{
-	return sqrt(pow(P2.X-P1.X,2)+pow(P2.Y-P1.Y,2));
-}
-
-void Point_Geser (POINT *P, point_infotype deltaX, point_infotype deltaY)
-// { I.S. P terdefinisi }
-// { F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY }
-{
-	*P = Point_PlusDelta(*P, deltaX, deltaY);
-}
-
-void Point_GeserKeSbX (POINT *P)
-// { I.S. P terdefinisi }
-// { F.S. P berada pada sumbu X dengan absis sama dengan absis semula. }
-// { Proses : P digeser ke sumbu X. }
-// { Contoh : Jika koordinat semula (9,9), maka menjadi (9,0) }
-{
-	SetOrdinat(P,0);
-}
-
-void Point_GeserKeSbY (POINT *P)
-// { I.S. P terdefinisi}
-// { F.S. P berada pada sumbu Y dengan ordinat yang sama dengan semula. }
-// { Proses : P digeser ke sumbu Y. }
-// { Contoh : Jika koordinat semula (9,9), maka menjadi (0,9) }
-{
-	SetAbsis(P,0);
-}
-
-void Point_Mirror (POINT *P, boolean SbX)
-// { I.S. P terdefinisi }
-// { F.S. P dicerminkan tergantung nilai SbX atau SbY }
-// { Jika SbX true maka dicerminkan terhadap sumbu X }
-// { Jika SbX false maka dicerminkan terhadap sumbu Y }
-{
-	*P = Point_MirrorOf (*P, SbX);
-}
-
-void Point_Putar (POINT *P, point_infotype Sudut)
-// { I.S. P terdefinisi }
-// { F.S. P digeser sebesar Sudut derajat dengan sumbu titik (0,0) }
-{
-	float X,Y;
-	float radian = Sudut*PI/180;
-	X = (GetAbsis(*P))*(cos(radian)) - (GetOrdinat(*P))*(sin(radian));
-	Y = (GetAbsis(*P))*(sin(radian)) + (GetOrdinat(*P))*(cos(radian));
-	SetAbsis(P, X);
-	SetOrdinat(P, Y);
-}
 
 boolean IsPointSama(POINT P1, POINT P2)
 //Mengecek apakah kedua pont merupakan point yang sama atau tidak
