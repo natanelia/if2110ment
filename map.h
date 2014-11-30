@@ -37,4 +37,16 @@ infomaptype ValueOfMap (keytype K, Map M);
 //Mengembalikan value dari pasangan dengan nilai key = K
 
 void TulisMap(Map M);
+/* I.S Sembarang
+   F.S Mencetak isi Map ke layar */
+
+void InitScoreMap();
+/* I.S. M Terdefinisi
+   F.S. M berisi map huruf ke skornya */
+
+int Score (Kata K);
+// Mengeluarkan skor yang dihasilkan dari kata K
+
+int TotalScore();
+// Mengeluarkan total skor dari seluruh kata dalam Set S1
 #endif // map_h
