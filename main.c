@@ -903,7 +903,6 @@ void Login (Kata *namauser)
     /* ALGORITMA */
     do
     {
-	printf("\____/\____/\____\\_/\_/  \|\n"); */
 	clear();
 	printf(ANSI_COLOR_CYAN_BOLD "=================================== LOGIN ====================================\n\n\n" ANSI_COLOR_RESET);
    	printf(
