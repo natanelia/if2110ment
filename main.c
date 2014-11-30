@@ -888,7 +888,11 @@ void Register (Kata *namauser)
     /* ALGORITMA */
     do
     {
-        printf("REGISTER\n\n");
+	/*printf(" ____   ____   ___   __   ____   ____  ____   __  ____  __  __   __ _  \n"); 
+	printf("(  _ \ (  __) / __) (  ) / ___) (_  _)(  _ \ / _\(_  _)(  )/  \ (  ( \ \n");
+	printf(" )   /  ) _) ( (_ \  )(  \___ \   )(   )   //    \ )(   )((  O )/    / \n");
+	printf("(__\_) (____) \___/ (__) (____/  (__) (__\_)\_/\_/(__) (__)\__/ \_)__) \n");*/
+        printf(ANSI_COLOR_BLUE"==============================REGISTER==================================\n\n" ANSI_COLOR_RESET);
         printf("Type your name (one word): ");
         scanf("%s",nama);
         (*namauser).Length=strlen(nama);
@@ -972,7 +976,13 @@ void Login (Kata *namauser)
     /* ALGORITMA */
     do
     {
-        printf(ANSI_COLOR_CYAN "LOGIN\n\n" ANSI_COLOR_RESET);
+	/*printf(" _     ____  _____ _  _     \n");
+	printf("/ \   /  _ \/  __// \/ \  /|\n");
+	printf("| |   | / \|| |  _| || |\ ||\n");
+	printf("| |_/\| \_/|| |_//| || | \||\n");
+	printf("\____/\____/\____\\_/\_/  \|\n");*/
+                            
+	printf(ANSI_BACKGROUND_GREEN ANSI_COLOR_YELLOW_BOLD "=================================== LOGIN ====================================\n\n" ANSI_COLOR_RESET);
         printf("Type your name: ");
         scanf("%s",nama);
         (*namauser).Length=strlen(nama);
