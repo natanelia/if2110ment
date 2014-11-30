@@ -692,8 +692,16 @@ void PreparationMenu()
         DisplayBoard();
         printf("Masukkan pilihan board: ");
         scanf("%d",&pilboard);
-        clrscr();
-        selectedBoard=pilboard;
+        if ((pilboard<0) || (pilboard>9))
+	{
+		printf("Board not found!\n");
+		printf("--- Press Enter to continue ---");
+		getch();
+		getch();
+	} else {
+       		selectedBoard=pilboard;
+	}
+	clrscr();
         PreparationMenu();
         break;
     case 3 :
