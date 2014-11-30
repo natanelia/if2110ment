@@ -1,6 +1,7 @@
 #ifndef map_h
 #define map_h
 #include "mesinkata1.h"
+#include "set.h"
 #include "boolean.h"
 
 #define MaxEl 100
