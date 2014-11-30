@@ -1276,7 +1276,7 @@ void Statistic()
 {
     clrscr();
     printf("==============================================================================\n");
-    printf("==========================HIGHSCORE for BOARD No. %d===========================\n",selectedBoard);
+    printf("==========================STATISTIC for BOARD No. %d===========================\n",selectedBoard);
     printf("==============================================================================\n");
     ViewStatistic(HighScoreList,selectedBoard);
     printf("\n >> Press ENTER to return...");
