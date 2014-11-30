@@ -903,10 +903,6 @@ void Login (Kata *namauser)
     /* ALGORITMA */
     do
     {
-	/* printf(" _     ____  _____ _  _     \n");
-	printf("/ \   /  _ \/  __// \/ \  /|\n");
-	printf("| |   | / \|| |  _| || |\ ||\n");
-	printf("| |_/\| \_/|| |_//| || | \||\n");
 	printf("\____/\____/\____\\_/\_/  \|\n"); */
 	clear();
 	printf(ANSI_COLOR_CYAN_BOLD "=================================== LOGIN ====================================\n\n\n" ANSI_COLOR_RESET);
@@ -1189,7 +1185,6 @@ void Statistic()
     printf("==============================================================================\n");
     ViewStatistic(HighScoreList,selectedBoard);
     printf("\n >> Press ENTER to return...");
-    getch();
     getch();
     PreparationMenu();
 }

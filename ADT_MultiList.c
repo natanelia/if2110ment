@@ -540,8 +540,8 @@ void ViewStatistic(List L,BoardType Board)
 	else
 	{
 		printf("Jumlah user berbeda yang pernah memainkan board ini: %d \n", Tnew.TNeff);
-		printf("rata-rata skor dari seluruh user yang pernah memainkan board ini: %d \n", AvgScoreBoard(L,Board));
-		printf("ranking kesulitan board berdasarkan rata-rata skor user: %d \n", RankingBoard(L,Board));
+		printf("Rata-rata skor dari seluruh user yang pernah memainkan board ini: %d \n", AvgScoreBoard(L,Board));
+		printf("Ranking kesulitan board berdasarkan rata-rata skor user: %d \n", RankingBoard(L,Board));
 		printf(        " ┌──────┬─────────────┬───────────────┐\n");
         printf(        " │ Rank │ User Name   │ Average Score │\n");
         printf(        " ├──────┼─────────────┼───────────────┼\n");

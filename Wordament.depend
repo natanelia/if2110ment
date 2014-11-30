@@ -492,3 +492,42 @@
 	"mesinkata1.h"
 	<stdlib.h>
 
+1417354836 source:/home/nim_13513070/Documents/if2110ment/map.c
+	"map.h"
+	"boolean.h"
+	<stdio.h>
+
+1417354764 source:/home/nim_13513070/Documents/if2110ment/PrioQueueList.c
+	"PrioQueueList.h"
+	"boolean.h"
+	<stdlib.h>
+	<stdio.h>
+
+1417354764 source:/home/nim_13513070/Documents/if2110ment/QueueList.c
+	"QueueList.h"
+	"boolean.h"
+	<stdlib.h>
+	<stdio.h>
+
+1417354764 source:/home/nim_13513070/Documents/if2110ment/set.c
+	"set.h"
+	"boolean.h"
+	"mesinkata1.h"
+	<stdio.h>
+
+1417354764 source:/home/nim_13513070/Documents/if2110ment/stacklist.c
+	"stacklist.h"
+	"boolean.h"
+	<stdlib.h>
+	<stdio.h>
+
+1417354764 source:/home/nim_13513070/Documents/if2110ment/tanggal.c
+	"tanggal.h"
+	"boolean.h"
+	<stdio.h>
+
+1417354764 source:/home/nim_13513070/Documents/if2110ment/waktu.c
+	"boolean.h"
+	"waktu.h"
+	<stdio.h>
+
