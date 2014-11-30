@@ -41,6 +41,8 @@
 #define ANSI_COLOR_CYAN_BOLD "\x1b[36;1m"
 #define ANSI_COLOR_WHITE_BOLD "\x1b[37;1m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
+#define clear() printf("\033[H\033[J")
+#define gotoxy(x,y) printf("\033[%d;%dH", (x), (y))
 
 //gcc -o coba ADT_MultiList.c ArrayOfKata.c jam.c main.c map.c matriks.c mesinkar.c mesinkata1.c point.c PrioQueueList.c QueueList.c set.c stacklist.c tanggal.c waktu.c -lm
 
@@ -383,43 +385,43 @@ void UpdateLayout()
     //Print Matriks
     int i,j;
     POINT sel;
-    printf("\n" "        " ANSI_BACKGROUND_BLACK "                  " ANSI_COLOR_RESET "\n");
+    printf("\n\n" "             " ANSI_BACKGROUND_BLACK "                        " ANSI_COLOR_RESET "\n");
     for (i=FirstIdxBrs(boards[selectedBoard]); i<=LastIdxBrs(boards[selectedBoard]); i++)
     {
 
-        printf("       " ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
+        printf("             " ANSI_BACKGROUND_BLACK "  " ANSI_COLOR_RESET);
         for (j=FirstIdxKol(boards[selectedBoard]); j<=LastIdxKol(boards[selectedBoard]); j++)
         {
             sel.X = i;
             sel.Y = j;
             if (chosen.X == i && chosen.Y == j)
             {
-                printf(ANSI_BACKGROUND_RED " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+                printf(ANSI_BACKGROUND_RED "  %c  " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
             else if (SearchArrayPoint(P,sel) != -1)
             {
-                printf(ANSI_BACKGROUND_MAGENTA " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+                printf(ANSI_BACKGROUND_MAGENTA "  %c  " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
             else if (kursor.X == i && kursor.Y == j)
             {
-                printf(ANSI_BACKGROUND_CYAN " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+                printf(ANSI_BACKGROUND_CYAN "  %c  " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
             else
             {
-                printf(ANSI_BACKGROUND_BLACK " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
+                printf(ANSI_BACKGROUND_BLACK "  %c  " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
             }
         }
-        printf(ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
+        printf(ANSI_BACKGROUND_BLACK "  " ANSI_COLOR_RESET);
         printf("\n");
+	printf("             " ANSI_BACKGROUND_BLACK "                        \n" ANSI_COLOR_RESET);
     }
-    printf("        " ANSI_BACKGROUND_BLACK "                  " ANSI_COLOR_RESET "\n\n");
-    printf(" ");
-    PrintStack(reverseStack(StackKata));
-    printKata(InsertedKata);
+    printf("\n\n");
+    printf("                "); PrintStack(reverseStack(StackKata));
+    ;printKata(InsertedKata);
     //Menampilkan suggestion
     if(!IsQueueEmpty(QSuggest[selectedBoard])) {
 	CopyKata(Suggestion(selectedBoard,AcceptedKata),&KataS);	
-    	printf("[Suggestion] Try This One : "); 
+    	printf("          [Suggestion] Try This One : "); 
 	if(KataS.TabKata[1]=='0') {
 		printf(" ");
 	}
@@ -808,14 +810,15 @@ void ResultMenu ()
     time_t t = time(0);
     struct tm *infoTime = localtime(&t);
 
-    clrscr();
+ 
+    gotoxy(2,49);
     printf(" ==TIME UP, " ANSI_COLOR_CYAN);
     printKata(namauser);
     printf(ANSI_COLOR_RESET "!==\n");
-    printf("  Board No.  : %d\n", selectedBoard);
-    printf("  Your Score : %d\n", TotalScore());
-    printf("  Words Found:\n");
-    PrintChosenWords(PQ);
+    gotoxy(4,46); printf("  Board No.  : %d\n", selectedBoard);
+    gotoxy(5,46); printf("  Your Score : %d\n", TotalScore());
+    gotoxy(6,46); printf("  Words Found:\n");
+    gotoxy(7,46); PrintChosenWords(PQ);
     MoveQueueToEks();
 
     //Save Result to File
@@ -833,7 +836,7 @@ void ResultMenu ()
     TulisDataBaseScore(HighScoreList);
 
 
-    printf("\n >> Press ENTER to continue...");
+ //   printf("\n >> Press ENTER to continue...");
     getch();
     PreparationMenu();
 }
@@ -892,27 +895,34 @@ void Register (Kata *namauser)
 	printf("(  _ \ (  __) / __) (  ) / ___) (_  _)(  _ \ / _\(_  _)(  )/  \ (  ( \ \n");
 	printf(" )   /  ) _) ( (_ \  )(  \___ \   )(   )   //    \ )(   )((  O )/    / \n");
 	printf("(__\_) (____) \___/ (__) (____/  (__) (__\_)\_/\_/(__) (__)\__/ \_)__) \n");*/
-        printf(ANSI_COLOR_BLUE"==============================REGISTER==================================\n\n" ANSI_COLOR_RESET);
-        printf("Type your name (one word): ");
+	clear();
+        printf(ANSI_COLOR_BLUE"================================= REGISTER =====================================\n\n\n" ANSI_COLOR_RESET);
+	printf(
+        "                    Enter your name in the box below (one word): \n"
+        "                           +-------------------+\n"
+        "                           |                   |\n"
+        "                           +-------------------+\n"
+    	);
+    	gotoxy(6, 30);
         scanf("%s",nama);
         (*namauser).Length=strlen(nama);
         for (i=1; i<=(*namauser).Length; i++)
             (*namauser).TabKata[i]=nama[i-1];
         if (SearchB (users, *namauser))
         {
-            printf("\n");
-            printf(ANSI_BACKGROUND_RED "                                            \n" ANSI_COLOR_RESET);
-            printf(ANSI_BACKGROUND_RED "   ERROR: Your name has been registered!    \n" ANSI_COLOR_RESET);
-            printf(ANSI_BACKGROUND_RED "   Type 'EXIT' to return...                 \n" ANSI_COLOR_RESET);
-            printf(ANSI_BACKGROUND_RED "                                            \n" ANSI_COLOR_RESET);
+            printf("\n\n\n");
+            printf("                   " ANSI_BACKGROUND_RED "                                            \n" ANSI_COLOR_RESET);
+            printf("                   " ANSI_BACKGROUND_RED "   ERROR: Your name has been registered!    \n" ANSI_COLOR_RESET);
+            printf("                   " ANSI_BACKGROUND_RED "   Type 'EXIT' to return...                 \n" ANSI_COLOR_RESET);
+            printf("                   " ANSI_BACKGROUND_RED "                                            \n" ANSI_COLOR_RESET);
             PauseScreen(2);
         }
         else
         {
             if (strcmp(nama,"EXIT"))
             {
-                printf("\n");
-                printf(ANSI_COLOR_RED "Welcome ");
+                printf("\n\n");
+                printf("                              " ANSI_COLOR_RED "Welcome ");
                 printKata(*namauser);
                 printf("!" ANSI_COLOR_RESET "\n");
                 PauseScreen(1);
@@ -976,31 +986,37 @@ void Login (Kata *namauser)
     /* ALGORITMA */
     do
     {
-	/*printf(" _     ____  _____ _  _     \n");
+	/* printf(" _     ____  _____ _  _     \n");
 	printf("/ \   /  _ \/  __// \/ \  /|\n");
 	printf("| |   | / \|| |  _| || |\ ||\n");
 	printf("| |_/\| \_/|| |_//| || | \||\n");
-	printf("\____/\____/\____\\_/\_/  \|\n");*/
-                            
-	printf(ANSI_BACKGROUND_GREEN ANSI_COLOR_YELLOW_BOLD "=================================== LOGIN ====================================\n\n" ANSI_COLOR_RESET);
-        printf("Type your name: ");
+	printf("\____/\____/\____\\_/\_/  \|\n"); */
+	clear();
+	printf(ANSI_COLOR_CYAN_BOLD "=================================== LOGIN ====================================\n\n\n" ANSI_COLOR_RESET);
+   	printf(
+        "                        Enter your name in the box below\n"
+        "                             +-------------------+\n"
+        "                             |                   |\n"
+        "                             +-------------------+\n"
+    	);
+    	gotoxy(6, 32);
         scanf("%s",nama);
         (*namauser).Length=strlen(nama);
         for (i=1; i<=(*namauser).Length; i++)
             (*namauser).TabKata[i]=nama[i-1];
         if (!(SearchB (users, *namauser)))
         {
-            printf("\n");
-            printf(ANSI_BACKGROUND_RED "                                              \n" ANSI_COLOR_RESET);
-            printf(ANSI_BACKGROUND_RED "   ERROR! Your name has not been registered!  \n" ANSI_COLOR_RESET);
-            printf(ANSI_BACKGROUND_RED "                                              \n" ANSI_COLOR_RESET);
+            printf("\n\n\n");
+            printf("                " ANSI_BACKGROUND_RED "                                              \n" ANSI_COLOR_RESET);
+            printf("                " ANSI_BACKGROUND_RED "   ERROR! Your name has not been registered!  \n" ANSI_COLOR_RESET);
+            printf("                " ANSI_BACKGROUND_RED "                                              \n" ANSI_COLOR_RESET);
             PauseScreen(1);
             count++;
         }
         else
         {
-            printf("\n");
-            printf(ANSI_COLOR_CYAN "Welcome ");
+            printf("\n\n");
+            printf(ANSI_COLOR_CYAN "                                 Welcome ");
             printKata(*namauser);
             printf("!" ANSI_COLOR_RESET "\n");
             PauseScreen(1);
@@ -1233,20 +1249,23 @@ void PrintChosenWords(PrioQueue PQ)
 {
     /* Kamus Lokal */
     addressprio P;
+    int i;
     /* Algoritma */
     if (IsPrioQueueEmpty(PQ))
         printf("-\n");
     else
     {
         P=HeadPrio(PQ);
+	i=9;
         while(P!=Nil)
         {
-            printf("    %2d ", Prio(P));
+            gotoxy(i,46); printf("    %2d ", Prio(P));
             printKata(InfoPrio(P));
             printf("\n");
             P=NextPrio(P);
+	    i++;
         }
-        //printf(" Press ENTER to continue...");
+        gotoxy(i+1,46); printf(" Press ENTER to continue...");
     }
 
 }
