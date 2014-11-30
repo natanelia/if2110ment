@@ -1,140 +1,6 @@
-#include<stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/select.h>
-#include <termios.h>
-#include <time.h>
-#include "boolean.h"
-#include "matriks.h" //untuk merepresentasikan board permainan
-#include "mesinkar.h" //untuk mesinkata
-#include "mesinkata1.h" //untuk membaca kamus data dan file eksternal
-#include "point.h"
-#include "stacklist.h"
-#include "ADT_MultiList.h"
-#include "ArrayOfKata.h" //untuk membaca file berisi nama-nama user dan menyimpannya di array
-#include "map.h"
-#include "set.h"
-#include "PrioQueueList.h"
-#include "QueueList.h"
-
-
-
-#define ANSI_BACKGROUND_BLACK "\e[37m\e[40m"
-#define ANSI_BACKGROUND_RED "\e[37m\e[41m"
-#define ANSI_BACKGROUND_GREEN "\e[37m\e[42m"
-#define ANSI_BACKGROUND_YELLOW "\e[37m\e[43m"
-#define ANSI_BACKGROUND_BLUE "\e[37m\e[44m"
-#define ANSI_BACKGROUND_MAGENTA "\e[37m\e[45m"
-#define ANSI_BACKGROUND_CYAN "\e[37m\e[46m"
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_RED_BOLD "\x1b[31;1m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_GREEN_BOLD "\x1b[32;1m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_YELLOW_BOLD "\x1b[33;1m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_BLUE_BOLD "\x1b[34;1m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_MAGENTA_BOLD "\x1b[35;1m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_CYAN_BOLD "\x1b[36;1m"
-#define ANSI_COLOR_WHITE_BOLD "\x1b[37;1m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
-#define clear() printf("\033[H\033[J")
-#define gotoxy(x,y) printf("\033[%d;%dH", (x), (y))
+#include "main.h"
 
 //gcc -o coba ADT_MultiList.c ArrayOfKata.c jam.c main.c map.c matriks.c mesinkar.c mesinkata1.c point.c PrioQueueList.c QueueList.c set.c stacklist.c tanggal.c waktu.c -lm
-
-//KAMUS GLOBAL
-MATRIKS boards[10];
-Kata kamusKata[109000];
-int kamusKataNeff;
-int selectedBoard;
-POINT kursor;
-POINT kursorTemp;
-POINT chosen;
-int tempTime; //sisa waktu dalam sekon
-int playTime; //waktu permainan dalam sekon
-TabK users;	//array of Kata, isinya nama-nama user yg udah pernah diregister-in
-Kata namauser;	//nama user yang saat ini sedang log in
-short isSHit; // Counter penghitung tombol 's' sudah dipencet berapa kali
-Stack StackKata;
-Kata InsertedKata;
-ARRAYPOINT P;
-char nama[15];
-Kata AcceptedKata;
-//int acceptedKataNeff;
-Map M;
-Set S1;
-List HighScoreList;
-PrioQueue PQ; //Menyimpan kata yang sudah dibentuk terurut berdasarkan score tertinggi
-Queue QSuggest[10]; //Menyimpan Kata-kata yang pernah dibentuk user pada permainan sebelumnya 
-Kata KataS; //Kata yang di-suggest
-static struct termios old_termios, new_termios,oldest_termios; //restore new terminal i/o settings
-
-
-// FUNGSI DAN PROSEDUR
-void resetTermios();
-void initTermios();
-int kbhit();
-char getch();
-boolean IsInDictionary(Kata K);
-void PauseScreen();
-void Play(double seconds);
-void InitBoard();
-void UpdateLayout();
-void ReadBoards();
-void ReadDictionary();
-void clrscr();
-void DisplayBoard();
-/* I.S Boards terdefinisi
-   F.S Menampilkan pilihan board dari 0..9 ke layar */
-void MainMenu();
-/* I.S Sembarang
-   F.S Menampilkan main menu dengan pilihan menu yang sudah mengarah ke prosedur masing-masing */
-void UpdateMainMenu();
-/* I.S Main Menu Terdefinisi
-   F.S Menampilkan main menu dengan GUI yang sudah dimodifikasi */
-void PreparationMenu ();
-/* I.S Sembarang
-   F.S Menampilkan preparation menu dengan pilihan menu yang sudah mengarah ke prosedur masing-masing */
-void UpdatePrepMenu();
-/* I.S Preperation Menu Terdefinisi
-   F.S Menampilkan preparation menu dengan GUI yang sudah dimodifikasi */
-void ResultMenu();
-void ReadUser();
-void Register (Kata *namauser);
-void Login (Kata *namauser);
-void About();
-void HowToPlay();
-void PrintBoardForTutorial(POINT sel, int pil);
-void SalinKeEks(TabK users);
-/* I.S users terdefinisi
-   F.S users disalin ke file eksternal */
-void InitScoreMap();
-void PrintChosenWords(PrioQueue PQ);
-int TotalScore();
-int Score (Kata K);
-void PutarBoard (MATRIKS *M);
-/* I.S Board terdefinisi sebagai matriks
-   F.S Board diputar 90 derajat clockwise */
-void InsertPrioQueue (Set S, PrioQueue *PQ);
-/* I.S S terdefinisi 
-   F.S PQ terbentuk dengan elemen merupakan yang berasal dari S terurut score mengecil */
-void MyHighScoreMenu ();
-void AllHighScoreMenu ();
-void Statistic();
-void MoveToQueue();
-/* I.S Sembarang
-   F.S QSuggest terbentuk, berisi kata-kata yang pernah terbentuk pada permainan sebelumnya */
-void MoveQueueToEks();
-/* I.S QSuggest terdefinisi
-   F.S Memindahkan isi QSuggest ke file eksternal */
-Kata Suggestion(int i, Kata K);
-/* Menghasilkan Kata yang di-suggest dari board i berdasarkan kata yang sedang dibentuk player (K) */
-
-
 
 void superResetTermios()
 {
@@ -181,11 +47,13 @@ char getch()
 }
 /* skeleton program for play */
 void Play(double seconds)
+/* I.S matriks boards terisi, int selectedBoard terisi, seconds terdefinisi
+   F.S melakukan permainan board wordament selama seconds detik. */
 {
     char word;
     int stackPop;
     int i;
-	
+
     MoveToQueue();
     InitBoard();
     InsertedKata.Length = 0;
@@ -354,6 +222,8 @@ void Play(double seconds)
 }
 
 void InitBoard()
+/* I.S sembarang
+   F.S semua variabel yang digunakan dalam permainan direset dan disesuaikan */
 {
     kursor = MakePoint(1,1);
     isSHit = 0;
@@ -362,11 +232,11 @@ void InitBoard()
     chosen.Y = 0;
     //acceptedKataNeff = 0;
     char word;
-    
-	while(!IsEmptyStack(StackKata))
-	{
-	    Pop(&StackKata,&word);
-        }
+
+    while(!IsEmptyStack(StackKata))
+    {
+        Pop(&StackKata,&word);
+    }
     CreateEmptySet(&S1);
     InitScoreMap();
 
@@ -374,6 +244,8 @@ void InitBoard()
 }
 
 void UpdateLayout()
+/* I.S sembarang
+   F.S memperbarui tampilan board yang sedang dimainkan secara berkala */
 {
     clrscr();
     printf("\n");
@@ -420,8 +292,8 @@ void UpdateLayout()
     ;printKata(InsertedKata);
     //Menampilkan suggestion
     if(!IsQueueEmpty(QSuggest[selectedBoard])) {
-	CopyKata(Suggestion(selectedBoard,AcceptedKata),&KataS);	
-    	printf("          [Suggestion] Try This One : "); 
+	CopyKata(Suggestion(selectedBoard,AcceptedKata),&KataS);
+    	printf("          [Suggestion] Try This One : ");
 	if(KataS.TabKata[1]=='0') {
 		printf(" ");
 	}
@@ -435,20 +307,9 @@ void UpdateLayout()
         printf(" GOT ");
         printKata(AcceptedKata);
         printf("!\n");
-        printf(" Total Score : %d\n",TotalScore());
+        printf(" Total Score : %d\n",TotalScore(S1));
     }
     printf(" ");
-}
-
-int TotalScore()
-{
-    int i;
-    int skortot = 0;
-    for (i=1; i<=SetNbElmt(S1); i++)
-    {
-        skortot = skortot + Score(S1.T[i]);
-    }
-    return skortot;
 }
 
 void ReadBoards()
@@ -496,7 +357,7 @@ void ReadDictionary()
 
 boolean IsInDictionary(Kata K)
 {
-//Mencari kata K dalam kamus dan return true bila ada.
+//menghasilkan true bila K ada di dalam kamus
     int i = 0;
     boolean found = false;
     while (i<=kamusKataNeff && !found)
@@ -513,8 +374,8 @@ boolean IsInDictionary(Kata K)
 
 void clrscr(void)
 {
-    system("clear");
-    //printf("\033\143");
+    //system("clear");
+    printf("\033\143");
 }
 
 void DisplayBoard()
@@ -590,7 +451,6 @@ void DisplayBoard()
     printf(ANSI_COLOR_MAGENTA "                       Board 8                Board 9\n\n" ANSI_COLOR_RESET);
 }
 
-int selectedMenu = 1;
 void UpdateMainMenu()
 /* I.S Main Menu Terdefinisi
    F.S Menampilkan main menu dengan GUI yang sudah dimodifikasi */
@@ -608,19 +468,39 @@ void UpdateMainMenu()
     printf(ANSI_COLOR_MAGENTA" ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝  ╚═╝  \n\n" ANSI_COLOR_RESET);
 
     char b = ' ';
-    if (pil == 1) {b = '='; printf(ANSI_COLOR_RED_BOLD); }
+    if (pil == 1)
+    {
+        b = '=';
+        printf(ANSI_COLOR_RED_BOLD);
+    }
     printf("                                %c%c REGISTER %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 2) {b = '='; printf(ANSI_COLOR_YELLOW_BOLD); }
+    if (pil == 2)
+    {
+        b = '=';
+        printf(ANSI_COLOR_YELLOW_BOLD);
+    }
     printf("                                  %c%c LOGIN %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 3) {b = '='; printf(ANSI_COLOR_CYAN_BOLD); }
+    if (pil == 3)
+    {
+        b = '=';
+        printf(ANSI_COLOR_CYAN_BOLD);
+    }
     printf("                               %c%c HOW TO PLAY %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 4) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 4)
+    {
+        b = '=';
+        printf(ANSI_COLOR_GREEN_BOLD);
+    }
     printf("                                  %c%c ABOUT %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 5) {b = '='; printf(ANSI_COLOR_MAGENTA_BOLD); }
+    if (pil == 5)
+    {
+        b = '=';
+        printf(ANSI_COLOR_MAGENTA_BOLD);
+    }
     printf("                                  %c%c QUIT %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
 
     printf("\n                      " ANSI_BACKGROUND_BLUE "                                    " ANSI_COLOR_RESET);
@@ -645,14 +525,16 @@ void MainMenu()
             cc = getch();
             switch(cc)
             {
-                case 'a' :
-                case 'w' : if (selectedMenu > 1)
-                                selectedMenu--;
-                           break;
-                case 'd' :
-                case 's' : if (selectedMenu < 5)
-                                selectedMenu++;
-                           break;
+            case 'a' :
+            case 'w' :
+                if (selectedMenu > 1)
+                    selectedMenu--;
+                break;
+            case 'd' :
+            case 's' :
+                if (selectedMenu < 5)
+                    selectedMenu++;
+                break;
             }
 
             UpdateMainMenu();
@@ -661,39 +543,39 @@ void MainMenu()
     }
     resetTermios();
     cc = '\0';
-    
-	superResetTermios();
+
+    superResetTermios();
     switch (selectedMenu)
     {
-        case 1:
-        {
-            clrscr();
-            Register(&namauser);
-            break;
-        }
-        case 2:
-        {
-            clrscr();
-            Login(&namauser);
-            break;
-        }
-        case 3:
-        {
-            clrscr();
-            HowToPlay();
-            break;
-        }
-        case 4:
-        {
-            clrscr();
-            About();
-            break;
-        }
-        case 5:
-        {
-            clrscr();
-            break;
-        }
+    case 1:
+    {
+        clrscr();
+        Register(&namauser);
+        break;
+    }
+    case 2:
+    {
+        clrscr();
+        Login(&namauser);
+        break;
+    }
+    case 3:
+    {
+        clrscr();
+        HowToPlay();
+        break;
+    }
+    case 4:
+    {
+        clrscr();
+        About();
+        break;
+    }
+    case 5:
+    {
+        clrscr();
+        break;
+    }
     }
 }
 
@@ -705,7 +587,8 @@ void UpdatePrepMenu()
     int pil = selectedMenu;
     /* Algoritma */
     clrscr();
-    printf("User: "); printKata(namauser);
+    printf("User: ");
+    printKata(namauser);
     printf("                                                  Selected Board: %d\n\n",selectedBoard);
 
     printf(ANSI_COLOR_RED    "██╗    ██╗ ██████╗ ██████╗ ██████╗  █████╗ ███╗   ███╗███████╗███╗   ██╗██████╗\n");
@@ -716,22 +599,46 @@ void UpdatePrepMenu()
     printf(ANSI_COLOR_MAGENTA" ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝  ╚═╝  \n\n" ANSI_COLOR_RESET);
 
     char b = ' ';
-    if (pil == 1) {b = '='; printf(ANSI_COLOR_CYAN_BOLD); }
+    if (pil == 1)
+    {
+        b = '=';
+        printf(ANSI_COLOR_CYAN_BOLD);
+    }
     printf("                                 %c%c PLAY GAME %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 2) {b = '='; printf(ANSI_COLOR_MAGENTA_BOLD); }
+    if (pil == 2)
+    {
+        b = '=';
+        printf(ANSI_COLOR_MAGENTA_BOLD);
+    }
     printf("                               %c%c SELECT BOARD %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 3) {b = '='; printf(ANSI_COLOR_RED_BOLD); }
+    if (pil == 3)
+    {
+        b = '=';
+        printf(ANSI_COLOR_RED_BOLD);
+    }
     printf("                               %c%c MY HIGHSCORES %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 4) {b = '='; printf(ANSI_COLOR_YELLOW_BOLD); }
+    if (pil == 4)
+    {
+        b = '=';
+        printf(ANSI_COLOR_YELLOW_BOLD);
+    }
     printf("                            %c%c VIEW ALL HIGHSCORES %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 5) {b = '='; printf(ANSI_COLOR_GREEN_BOLD); }
+    if (pil == 5)
+    {
+        b = '=';
+        printf(ANSI_COLOR_GREEN_BOLD);
+    }
     printf("                              %c%c VIEW STATISTIC %c%c \n\n" ANSI_COLOR_RESET, b,b,b,b);
     b = ' ';
-    if (pil == 6) {b = '='; printf(ANSI_COLOR_WHITE_BOLD); }
+    if (pil == 6)
+    {
+        b = '=';
+        printf(ANSI_COLOR_WHITE_BOLD);
+    }
     printf("                                  %c%c LOGOUT %c%c \n" ANSI_COLOR_RESET, b,b,b,b);
 
     printf("\n\n                        Hint: Use W/A/S/D to navigate...\n");
@@ -742,7 +649,7 @@ void PreparationMenu()
 /* I.S Sembarang
    F.S Menampilkan preparation menu dengan pilihan menu yang sudah mengarah ke prosedur masing-masing */
 {
-	superInitTermios();
+    superInitTermios();
     int pilboard = 0;
     selectedMenu = 1;
     UpdatePrepMenu();
@@ -757,14 +664,16 @@ void PreparationMenu()
             cc = getch();
             switch(cc)
             {
-                case 'a' :
-                case 'w' : if (selectedMenu > 1)
-                                selectedMenu--;
-                           break;
-                case 'd' :
-                case 's' : if (selectedMenu < 6)
-                                selectedMenu++;
-                           break;
+            case 'a' :
+            case 'w' :
+                if (selectedMenu > 1)
+                    selectedMenu--;
+                break;
+            case 'd' :
+            case 's' :
+                if (selectedMenu < 6)
+                    selectedMenu++;
+                break;
             }
 
             UpdatePrepMenu();
@@ -774,49 +683,50 @@ void PreparationMenu()
     resetTermios();
     superResetTermios();
     switch (selectedMenu)
-        {
-        case 1 :
-            Play(playTime);
-            break;
-        case 2 :
-            clrscr();
-            DisplayBoard();
-            printf("Masukkan pilihan board: ");
-            scanf("%d",&pilboard);
-            clrscr();
-            selectedBoard=pilboard;
-            PreparationMenu();
-            break;
-        case 3 :
-            MyHighScoreMenu();
-            break;
-        case 4 :
-            AllHighScoreMenu();
-            break;
-        case 5 :
-            Statistic();
-            break;
-        case 6 :
-			selectedBoard = 0;
-            MainMenu();
-            break;
+    {
+    case 1 :
+        Play(playTime);
+        break;
+    case 2 :
+        clrscr();
+        DisplayBoard();
+        printf("Masukkan pilihan board: ");
+        scanf("%d",&pilboard);
+        clrscr();
+        selectedBoard=pilboard;
+        PreparationMenu();
+        break;
+    case 3 :
+        MyHighScoreMenu();
+        break;
+    case 4 :
+        AllHighScoreMenu();
+        break;
+    case 5 :
+        Statistic();
+        break;
+    case 6 :
+        selectedBoard = 0;
+        MainMenu();
+        break;
 
-        }
+    }
 }
 
 void ResultMenu ()
 {
-//Shows complete statistic including username, score, date, board, words formed, and top 5 high scores for that board.
+/* I.S Sembarang
+   F.S Menampilkan menu hasil permainan user */
     time_t t = time(0);
     struct tm *infoTime = localtime(&t);
 
- 
+
     gotoxy(2,49);
     printf(" ==TIME UP, " ANSI_COLOR_CYAN);
     printKata(namauser);
     printf(ANSI_COLOR_RESET "!==\n");
     gotoxy(4,46); printf("  Board No.  : %d\n", selectedBoard);
-    gotoxy(5,46); printf("  Your Score : %d\n", TotalScore());
+    gotoxy(5,46); printf("  Your Score : %d\n", TotalScore(S1));
     gotoxy(6,46); printf("  Words Found:\n");
     gotoxy(7,46); PrintChosenWords(PQ);
     MoveQueueToEks();
@@ -825,7 +735,7 @@ void ResultMenu ()
     RecordType NewRecord;
 
     NewRecord.UserName = namauser;
-    NewRecord.Score = TotalScore();
+    NewRecord.Score = TotalScore(S1);
     Day(NewRecord.Time) = infoTime->tm_mday;
     Month(NewRecord.Time) = infoTime->tm_mon;
     Year(NewRecord.Time) = infoTime->tm_year+1900;
@@ -835,13 +745,13 @@ void ResultMenu ()
     InsertGameScore(&HighScoreList, selectedBoard, NewRecord);
     TulisDataBaseScore(HighScoreList);
 
-
- //   printf("\n >> Press ENTER to continue...");
     getch();
     PreparationMenu();
 }
 
-void MyHighScoreMenu ()
+void MyHighScoreMenu()
+/* I.S List HighScoreList terisi
+   F.S Menampilkan Top Ten High Score dari user yang login untuk board yang dipilih */
 {
     clrscr();
     printf("==============================================================================\n");
@@ -850,11 +760,12 @@ void MyHighScoreMenu ()
     ViewMyHighscore(HighScoreList,selectedBoard,namauser);
     printf("\n >> Press ENTER to return...");
     getch();
-    getch();
     PreparationMenu();
 }
 
 void AllHighScoreMenu()
+/* I.S List HighScoreList terisi
+   F.S Menampilkan Top Ten High Score untuk board yang dipilih. */
 {
     clrscr();
     printf("==============================================================================\n");
@@ -862,7 +773,6 @@ void AllHighScoreMenu()
     printf("==============================================================================\n");
     ViewAllHighscore(HighScoreList,selectedBoard);
     printf("\n >> Press ENTER to return...");
-    getch();
     getch();
     PreparationMenu();
 }
@@ -881,6 +791,10 @@ void ReadUser()
 }
 
 void Register (Kata *namauser)
+/* I.S namauser terdefinisi
+   F.S bila namauser belum terdaftar di NamaUser.txt, ditambahkan ke file tsb dan keluarkan pesan Welcome
+       bila namauser sudah terdaftar, keluarkan pesan error
+       bila namauser berisi EXIT, mengembalikan user ke menu utama */
 {
     /* KAMUS */
 
@@ -891,18 +805,14 @@ void Register (Kata *namauser)
     /* ALGORITMA */
     do
     {
-	/*printf(" ____   ____   ___   __   ____   ____  ____   __  ____  __  __   __ _  \n"); 
-	printf("(  _ \ (  __) / __) (  ) / ___) (_  _)(  _ \ / _\(_  _)(  )/  \ (  ( \ \n");
-	printf(" )   /  ) _) ( (_ \  )(  \___ \   )(   )   //    \ )(   )((  O )/    / \n");
-	printf("(__\_) (____) \___/ (__) (____/  (__) (__\_)\_/\_/(__) (__)\__/ \_)__) \n");*/
-	clear();
+        clear();
         printf(ANSI_COLOR_BLUE"================================= REGISTER =====================================\n\n\n" ANSI_COLOR_RESET);
-	printf(
-        "                    Enter your name in the box below (one word): \n"
-        "                           +-------------------+\n"
-        "                           |                   |\n"
-        "                           +-------------------+\n"
-    	);
+        printf(
+            "                    Enter your name in the box below (one word): \n"
+            "                           +-------------------+\n"
+            "                           |                   |\n"
+            "                           +-------------------+\n"
+            );
     	gotoxy(6, 30);
         scanf("%s",nama);
         (*namauser).Length=strlen(nama);
@@ -931,20 +841,22 @@ void Register (Kata *namauser)
         clrscr();
     }
     while (SearchB (users, *namauser));
+
     if (strcmp(nama,"EXIT"))
     {
         AddAsLastEl(&users,*namauser);
         SalinKeEks(users);
-	//Membentuk file user baru
-	strcpy(filename, "users/");
+        //Membentuk file user baru
+        strcpy(filename, "users/");
         strcat(filename, nama);
         strcat(filename, ".txt");
         fileku=fopen(filename, "w");
-	for(i=0; i<=9; i++) {
-		fputs(",", fileku);
-		fputs("\n",fileku);
-	}
-	fputs(".",fileku);
+        for(i=0; i<=9; i++)
+        {
+            fputs(",", fileku);
+            fputs("\n",fileku);
+        }
+        fputs(".",fileku);
         fclose(fileku);
         PreparationMenu();
     }
@@ -956,6 +868,8 @@ void Register (Kata *namauser)
 }
 
 void SalinKeEks(TabK users)
+/* I.S users terdefinisi
+   F.S users disalin ke file eksternal */
 {
     /* KAMUS */
     static FILE *fileku;
@@ -977,6 +891,9 @@ void SalinKeEks(TabK users)
 }
 
 void Login (Kata *namauser)
+/* I.S namauser terdefinisi
+   F.S bila namauser sudah terdaftar, memanggil fungsi PreparationMenu()
+       bila namauser belum terdaftar, keluarkan pesan error. Bila terjadi 3x, menanyakan user apakah ingin register */
 {
     /* KAMUS */
     int i=1;
@@ -1024,6 +941,7 @@ void Login (Kata *namauser)
         clrscr();
     }
     while ((!SearchB(users, *namauser))&&(count<3));
+
     if (count==3)
     {
         printf(ANSI_COLOR_CYAN "LOGIN\n\n" ANSI_COLOR_RESET);
@@ -1045,6 +963,8 @@ void Login (Kata *namauser)
 }
 
 void About()
+/* I.S sembarang
+   F.S menampilkan credits tentang pembuat */
 {
     printf("=================================== About ====================================\n\n");
     printf("  Thank you for playing Wordament-0!\n");
@@ -1058,9 +978,11 @@ void About()
 }
 
 void PrintBoardForTutorial(POINT kursor, int pil)
+/* I.S sembarang
+   F.S menampilkan board untuk tutorial HowToPlay() */
 {
     //Print Matriks
-	int i,j;
+    int i,j;
     printf("\n" "        " ANSI_BACKGROUND_BLACK "                  " ANSI_COLOR_RESET "\n");
     for (i=FirstIdxBrs(boards[selectedBoard]); i<=LastIdxBrs(boards[selectedBoard]); i++)
     {
@@ -1068,7 +990,7 @@ void PrintBoardForTutorial(POINT kursor, int pil)
         printf("       " ANSI_BACKGROUND_BLACK "    " ANSI_COLOR_RESET);
         for (j=FirstIdxKol(boards[selectedBoard]); j<=LastIdxKol(boards[selectedBoard]); j++)
         {
-            
+
             if ((kursor.X == i && kursor.Y == j)&&(pil==2))
             {
                 printf(ANSI_BACKGROUND_RED " %c " ANSI_COLOR_RESET, GetElmt(boards[selectedBoard],i,j));
@@ -1094,67 +1016,72 @@ void PrintBoardForTutorial(POINT kursor, int pil)
 }
 
 void HowToPlay()
+/* I.S sembarang
+   F.S menampilkan cara bermain wordament yang bergerak secara otomatis */
 {
-	printf("================================= HOW TO PLAY ================================\n");
-	printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(1,1),1);
-	getch();getch();clrscr();
-	printf("================================= HOW TO PLAY ================================\n");
-    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(2,1),1);
-	printf("           Pressed 'x'\n");
-	PauseScreen(1);
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press ENTER to start tutorial.\n");
+    PrintBoardForTutorial(MakePoint(1,1),1);
+    getch();
     clrscr();
     printf("================================= HOW TO PLAY ================================\n");
     printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(2,2),1);
-	printf("           Pressed 'd'\n");
-	PauseScreen(1);
+    PrintBoardForTutorial(MakePoint(2,1),1);
+    printf("           Pressed 'x'\n");
+    PauseScreen(1);
     clrscr();
     printf("================================= HOW TO PLAY ================================\n");
     printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(3,3),1);
-	printf("           Pressed 'c'\n");
-	PauseScreen(1);
+    PrintBoardForTutorial(MakePoint(2,2),1);
+    printf("           Pressed 'd'\n");
+    PauseScreen(1);
     clrscr();
     printf("================================= HOW TO PLAY ================================\n");
     printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(3,2),1);
-	printf("           Pressed 'a'\n");
-	PauseScreen(1);
+    PrintBoardForTutorial(MakePoint(3,3),1);
+    printf("           Pressed 'c'\n");
+    PauseScreen(1);
     clrscr();
     printf("================================= HOW TO PLAY ================================\n");
     printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(4,1),1);
-	printf("           Pressed 'z'\n");
-	PauseScreen(1);
-    clrscr(); 
+    PrintBoardForTutorial(MakePoint(3,2),1);
+    printf("           Pressed 'a'\n");
+    PauseScreen(1);
+    clrscr();
     printf("================================= HOW TO PLAY ================================\n");
     printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(3,2),1);
-	printf("           Pressed 'e'\n");
-	PauseScreen(1);
-	printf("================================= HOW TO PLAY ================================\n");
-    clrscr();printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(2,2),1);
-	printf("           Pressed 'w'\n");
-	PauseScreen(1);
-	printf("================================= HOW TO PLAY ================================\n");
-    clrscr();printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
-	PrintBoardForTutorial(MakePoint(1,1),1);
-	printf("           Pressed 'q'\n");
-	PauseScreen(1);
+    PrintBoardForTutorial(MakePoint(4,1),1);
+    printf("           Pressed 'z'\n");
+    PauseScreen(1);
     clrscr();
-	printf("================================= HOW TO PLAY ================================\n");
+    printf("================================= HOW TO PLAY ================================\n");
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+    PrintBoardForTutorial(MakePoint(3,2),1);
+    printf("           Pressed 'e'\n");
+    PauseScreen(1);
+    printf("================================= HOW TO PLAY ================================\n");
+    clrscr();
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+    PrintBoardForTutorial(MakePoint(2,2),1);
+    printf("           Pressed 'w'\n");
+    PauseScreen(1);
+    printf("================================= HOW TO PLAY ================================\n");
+    clrscr();
+    printf("\n Press q,w,e,a,d,z,x,c to move the cursor\n");
+    PrintBoardForTutorial(MakePoint(1,1),1);
+    printf("           Pressed 'q'\n");
+    PauseScreen(1);
+    clrscr();
+    printf("================================= HOW TO PLAY ================================\n");
     printf("\n Press 's' to select your word\n");
     PrintBoardForTutorial(MakePoint(2,2),1);
-	getch();
+    PauseScreen(1);
     clrscr();
     printf("================================= HOW TO PLAY ================================\n");
     printf("\n Press 's' to select your word\n");
     PrintBoardForTutorial(MakePoint(2,2),2);
     printf("           Pressed 's'\n");
-	getch();
+    PauseScreen(2);
     clrscr();
     printf("================================= HOW TO PLAY ================================\n");
     printf("\n\n Find as many words as you can\n\n Have fun!");
@@ -1163,6 +1090,8 @@ void HowToPlay()
 }
 
 void PauseScreen (int seconds)
+/* I.S sembarang
+   F.S mendisable input user dan mengefreeze layar selama seconds */
 {
     initTermios();
     const double TIME_LIMIT = seconds * CLOCKS_PER_SEC;
@@ -1180,53 +1109,8 @@ void PauseScreen (int seconds)
     resetTermios();
 }
 
-void InitScoreMap()
-{
-    CreateEmptyMap(&M);
-    InsertMap('E',1,&M);
-    InsertMap('A',2,&M);
-    InsertMap('I',2,&M);
-    InsertMap('N',2,&M);
-    InsertMap('O',2,&M);
-    InsertMap('R',2,&M);
-    InsertMap('S',2,&M);
-    InsertMap('T',2,&M);
-    InsertMap('C',3,&M);
-    InsertMap('D',3,&M);
-    InsertMap('L',3,&M);
-    InsertMap('G',4,&M);
-    InsertMap('H',4,&M);
-    InsertMap('M',4,&M);
-    InsertMap('P',4,&M);
-    InsertMap('U',4,&M);
-    InsertMap('B',5,&M);
-    InsertMap('F',5,&M);
-    InsertMap('Y',5,&M);
-    InsertMap('K',6,&M);
-    InsertMap('V',6,&M);
-    InsertMap('W',6,&M);
-    InsertMap('Z',8,&M);
-    InsertMap('X',9,&M);
-    InsertMap('J',10,&M);
-    InsertMap('Q',10,&M);
-}
-
-int Score (Kata K)
-{
-    int nilai = 0;
-    int i = 1;
-    while (i <= K.Length)
-    {
-        nilai = nilai + ValueOfMap(K.TabKata[i],M);
-        i++;
-    }
-    if (K.Length >= 10)
-        nilai = nilai + 100;
-    return nilai;
-}
-
 void InsertPrioQueue (Set S, PrioQueue *PQ)
-/* I.S S terdefinisi 
+/* I.S S terdefinisi
    F.S PQ terbentuk dengan elemen merupakan yang berasal dari S terurut score mengecil */
 {
     /* Kamus Lokal */
@@ -1246,6 +1130,8 @@ void InsertPrioQueue (Set S, PrioQueue *PQ)
 
 
 void PrintChosenWords(PrioQueue PQ)
+/* I.S PQ terdefinisi
+   F.S Menulis kata-kata yang sudah dibentuk ke layar */
 {
     /* Kamus Lokal */
     addressprio P;
@@ -1292,10 +1178,14 @@ void PutarBoard(MATRIKS *M)
 }
 
 void Statistic()
+/* I.S List HighScoreList terisi
+   F.S Menampilkan jumlah user berbeda yang pernah memainkan board terpilih,
+       rata-rata skor dari seluruh user yang pernah memainkan board tersebut,
+       dan ranking kesulitan board berdasarkan rata-rata tsb. */
 {
     clrscr();
     printf("==============================================================================\n");
-    printf("==========================STATISTIC for BOARD No. %d===========================\n",selectedBoard);
+    printf("==========================HIGHSCORE for BOARD No. %d===========================\n",selectedBoard);
     printf("==============================================================================\n");
     ViewStatistic(HighScoreList,selectedBoard);
     printf("\n >> Press ENTER to return...");
@@ -1304,106 +1194,123 @@ void Statistic()
     PreparationMenu();
 }
 
-void MoveToQueue () 
+void MoveToQueue ()
 /* I.S Sembarang
    F.S QSuggest terbentuk, berisi kata-kata yang pernah terbentuk pada permainan sebelumnya */
-{/* Kamus Lokal */
-	char filename[30];
-	int i;
-/* Algoritma */
-	for(i=0;i<=9;i++) {
-		CreateQueueEmpty(&QSuggest[i]);
-	}
-	strcpy(filename, "users/");
-	strcat(filename, nama);
-        strcat(filename, ".txt");
-	STARTKATA(filename);
-	i=0;
-	while (!EndKata) {
-		while(CKata.TabKata[1]!=',') {
-			AddQueue(&QSuggest[i],CKata);
-  		      	ADVKATA();
-		}
-		i++;
-		ADVKATA();	
-	}
+{
+    /* Kamus Lokal */
+    char filename[30];
+    int i;
+    /* Algoritma */
+    for(i=0; i<=9; i++)
+    {
+        CreateQueueEmpty(&QSuggest[i]);
+    }
+    strcpy(filename, "users/");
+    strcat(filename, nama);
+    strcat(filename, ".txt");
+    STARTKATA(filename);
+    i=0;
+    while (!EndKata)
+    {
+        while(CKata.TabKata[1]!=',')
+        {
+            AddQueue(&QSuggest[i],CKata);
+            ADVKATA();
+        }
+        i++;
+        ADVKATA();
+    }
 }
 
 void MoveQueueToEks()
 /* I.S QSuggest terdefinisi
    F.S Memindahkan isi QSuggest ke file eksternal */
-{/* Kamus Lokal */
-	static FILE *fileku;
-	static int retval;
-	int i,j;
-	qaddress P;
-	char filename[30];
-    
+{
+    /* Kamus Lokal */
+    static FILE *fileku;
+    static int retval;
+    int i,j;
+    qaddress P;
+    char filename[30];
 
-/* Algoritma */
-        for(i=1;i<=SetNbElmt(S1);i++) {
-		if(!(SearchQueue(QSuggest[selectedBoard], S1.T[i]))) {
-			AddQueue (&QSuggest[selectedBoard], S1.T[i]);
-		}
-	}
-	strcpy(filename, "users/");
-	strcat(filename, nama);
-        strcat(filename, ".txt");
-	fileku = fopen(filename,"w+");
-	for (i=0; i<=9; i++)
-	{
-		P=Head(QSuggest[i]);
-	        while(P!=Nil) {
-	        	for(j=1;j<=InfoQ(P).Length;j++) {
-				retval=fprintf(fileku, "%c", InfoQ(P).TabKata[j] );
-			}
-			P=NextQ(P);
-			fputs(" ", fileku);	
-		}
-	fputs(",", fileku);
-	fputs("\n", fileku);
-        }	
-	fputs(".", fileku);      	
-	fclose(fileku);
+
+    /* Algoritma */
+    for(i=1; i<=SetNbElmt(S1); i++)
+    {
+        if(!(SearchQueue(QSuggest[selectedBoard], S1.T[i])))
+        {
+            AddQueue (&QSuggest[selectedBoard], S1.T[i]);
+        }
+    }
+    strcpy(filename, "users/");
+    strcat(filename, nama);
+    strcat(filename, ".txt");
+    fileku = fopen(filename,"w+");
+    for (i=0; i<=9; i++)
+    {
+        P=Head(QSuggest[i]);
+        while(P!=Nil)
+        {
+            for(j=1; j<=InfoQ(P).Length; j++)
+            {
+                retval=fprintf(fileku, "%c", InfoQ(P).TabKata[j] );
+            }
+            P=NextQ(P);
+            fputs(" ", fileku);
+        }
+        fputs(",", fileku);
+        fputs("\n", fileku);
+    }
+    fputs(".", fileku);
+    fclose(fileku);
 }
 
 Kata Suggestion(int i, Kata K)
 /* Menghasilkan Kata yang di-suggest dari board i berdasarkan kata yang sedang dibentuk player (K) */
-{/* Kamus Lokal */
-	Kata KSuggest, S, Kosong, K1;
-	//KSuggest=Kata yang di-suggest, S=Kata yang dipindah, K1=Kata pada InfoHead
-/* Algoritma */
-	Kosong.TabKata[1]='0'; // Inisialisasi kata kosong, diisi jika suggestion habis
-	Kosong.Length=1;
-	CopyKata(InfoHead(QSuggest[i]),&K1);
-	if(!(IsKataSama(InfoHead(QSuggest[i]),K))) { //acceptedKata!=InfoHead(Q)
-		CopyKata(InfoHead(QSuggest[i]),&KSuggest);
-	}
-	else {
-		DelQueue(&QSuggest[i], &S);
-		AddQueue (&QSuggest[i], S);
-		if(IsKataSama(InfoHead(QSuggest[i]),K1)) { //InfoHead(Q)==K1, semua kata sudah di display
-			CopyKata(Kosong,&KSuggest);
-		}
-		else {
-			while(IsSetMember(S1, InfoHead(QSuggest[i])) && !IsKataSama(InfoHead(QSuggest[i]),K1)) { 
-				DelQueue(&QSuggest[i], &S);
-				AddQueue (&QSuggest[i], S);
-			} //InfoHead(Q) tidak ada di Set atau Suggestion sudah habis
-			if(IsKataSama(InfoHead(QSuggest[i]),K1)) {
-				CopyKata(Kosong,&KSuggest);
-			}
-			else {
-				CopyKata(InfoHead(QSuggest[i]),&KSuggest);
-			}
-		}
-	}
-	return(KSuggest);
-}			
+{
+    /* Kamus Lokal */
+    Kata KSuggest, S, Kosong, K1;
+    //KSuggest=Kata yang di-suggest, S=Kata yang dipindah, K1=Kata pada InfoHead
+    /* Algoritma */
+    Kosong.TabKata[1]='0'; // Inisialisasi kata kosong, diisi jika suggestion habis
+    Kosong.Length=1;
+    CopyKata(InfoHead(QSuggest[i]),&K1);
+    if(!(IsKataSama(InfoHead(QSuggest[i]),K)))   //acceptedKata!=InfoHead(Q)
+    {
+        CopyKata(InfoHead(QSuggest[i]),&KSuggest);
+    }
+    else
+    {
+        DelQueue(&QSuggest[i], &S);
+        AddQueue (&QSuggest[i], S);
+        if(IsKataSama(InfoHead(QSuggest[i]),K1))   //InfoHead(Q)==K1, semua kata sudah di display
+        {
+            CopyKata(Kosong,&KSuggest);
+        }
+        else
+        {
+            while(IsSetMember(S1, InfoHead(QSuggest[i])) && !IsKataSama(InfoHead(QSuggest[i]),K1))
+            {
+                DelQueue(&QSuggest[i], &S);
+                AddQueue (&QSuggest[i], S);
+            } //InfoHead(Q) tidak ada di Set atau Suggestion sudah habis
+            if(IsKataSama(InfoHead(QSuggest[i]),K1))
+            {
+                CopyKata(Kosong,&KSuggest);
+            }
+            else
+            {
+                CopyKata(InfoHead(QSuggest[i]),&KSuggest);
+            }
+        }
+    }
+    return(KSuggest);
+}
 
 int main()
 {
-    playTime = 30;
+    playTime = 120;
 
     selectedBoard = 0;
     ReadBoards();
@@ -1412,8 +1319,6 @@ int main()
     BacaDataBaseScore(&HighScoreList);
     clrscr();
     MainMenu();
-
-
 
     return 0;
 }
