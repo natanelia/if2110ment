@@ -458,41 +458,17 @@ void BacaDataBaseScore (List *L)
 
 
 
-
-
-
-void SortTabUniqueRecord (TabRecord *T)
-/* I.S. TabRecord T mungkin kosong */
-/* F.S. Elemen-elemen dalam TabRecord T sudah terurut berdasarkan Record.Score */
-{
-	//KAMUS LOKAL
-	RecordType Max;
-	int i,j,idx; //untuk proses transversal
-	int idxmax = (T->TNeff);
-
-	//ALGORITMA
-	for(i=1;i<=idxmax;i++)
-	{
-		Max= T->TR[i];
-		idx = i;
-		for (j=i;j<=idxmax;j++)
-		{
-			if(T->TR[j].Score >= Max.Score)
-			{
-				Max = T->TR[j];
-				idx = j;
-			}
-		}
-        T->TR[idx] = T->TR[i];
-        T->TR[i] = Max;
-	}
-}
-
-void SearchUserInArray(TabRecord T, Kata User,boolean *found,int *indexFound){
+void SearchUserInArray(TabRecord T, UserNameType User,boolean *found,int *indexFound)
+/* I.S. Tab Mungkin kosong
+ * F.S. found bernilai true jika User ditemukan dalam TabRecord.
+ * indexFound akan berisi nilai indeks ditemukannya user dalam TabRecord Tersebut */
+ {
+	//kamus
 	int i = 1;
-	*found = false;
 	int Last = T.TNeff;
-	while(i<= Last && !found){
+	
+	*found = false;
+	while(i<= Last && !(*found)){
 		if (IsKataSama(User,T.TR[i].UserName)){
 			*found = true;
 		}
@@ -503,59 +479,67 @@ void SearchUserInArray(TabRecord T, Kata User,boolean *found,int *indexFound){
 	*indexFound = i;
 }
 
-void ChangeTabtoTabUnique(TabRecord T,TabRecord *Tnew){
+void ChangeTabtoTabUnique(TabRecord T,TabRecord *Tnew)
+/* I.S. TabRecord T mungkin kosong
+ * F.S. Tnew adalah TabRecord yang unik. record pada user yang sama akan dijadikan menjadi satu indeks array dengan score merupakan
+ * semua penjumlahan dari score user tersebut.*/
+{
 	int i = 1;
-	int counter = 1;
 	int Last = T.TNeff;
 	boolean found;
 	int indexFound;
 
-    printf("testing 1");
-	while (counter <= Last ){
-        printf("testing 2");
-		if ( Tnew->TNeff != 0){
-            printf("testing 3");
-			SearchUserInArray(*Tnew,T.TR[i].UserName,&found,&indexFound);
-			if (found){
-				Tnew->TR[indexFound].Score += T.TR[i].Score;
-			}
-			else
-			{
-                Tnew->TNeff++;
-				Tnew->TR[Tnew->TNeff] = T.TR[i];
-			}
-			i++;
+
+    //algoritma
+		MakeTabRecordEmpty(T.TNeff, Tnew);
+		// Ketika awal , yaitu TNew.Neff = 0
+		Tnew -> TR[i] = T.TR[i];
+		i++;
+		Tnew->TNeff++;	
+    
+	while (i <= Last )
+	{ 
+		SearchUserInArray(*Tnew,T.TR[i].UserName,&found,&indexFound);
+		if (found){
+			Tnew->TR[indexFound].Score = ((Tnew->TR[indexFound].Score+ T.TR[i].Score)/2);
 		}
-		else{
-            printf("testing 4");
-			// Ketika awal , yaitu T.Neff = 0
-			Tnew -> TR[i] = T.TR[i];
-			i++;
+		else
+		{
 			Tnew->TNeff++;
+			Tnew->TR[Tnew->TNeff] = T.TR[i];
 		}
-		counter++;
+		i++;
+		
 	}
 }
 
-void ViewStatistic(List L,BoardType Board){
+void ViewStatistic(List L,BoardType Board)
+/*I.S.List Mungkin kosong
+ * F.S. Menampilkan ranking dari tiap user berdasarkan score rata-rata (average score)
+ * proses:
+ * -memindahkan list ke tabrecord
+ * -menjadikan tabrecord menjadi UniqeTabRecord
+ * -sorting UniqueTabRecord berdasarkan nilai tertinggi*/
+{
 	//kamus
 	int i = 1;
-	int Number;
+	int Number =1;
 	int Last;
-	int j;
+	int j,k;
 	char username[11];
 	TabRecord T,Tnew;
 
 	//algoritma
 	MoveBoardRecordToArray(L, Board, &T);
 	ChangeTabtoTabUnique(T,&Tnew);
-	SortTabUniqueRecord(&Tnew);
+	k = 1; Last = Tnew.TNeff;
+	SortTabRecord(&Tnew);
 	Last = Tnew.TNeff;
 	if (i>Last)
         printf("  No one has played the board yet.\n");
 	else
 	{
-        printf(        " ┌──────┬─────────────┬───────────────┐\n");
+		printf(        " ┌──────┬─────────────┬───────────────┐\n");
         printf(        " │ Rank │ User Name   │ Average Score │\n");
         printf(        " ├──────┼─────────────┼───────────────┼\n");
         while (i <= Last)
@@ -565,17 +549,37 @@ void ViewStatistic(List L,BoardType Board){
             for (j=0;j<=10;j++)
                 username[j] = ' ';
 
-            for (j=1;j<=T.TR[i].UserName.Length;j++)
+            for (j=1;j<=Tnew.TR[i].UserName.Length;j++)
                 username[j-1] = Tnew.TR[i].UserName.TabKata[j];
 
             for (j=0;j<=10;j++)
                 printf("%c", username[j]);
 
 
-            printf(" │ %5d │ ", Tnew.TR[i].Score);
+            printf(							" │ %7d	      │ \n", (Tnew.TR[i].Score));
+            Number++;
             i++;
         }
         printf(        " └──────┴─────────────┴───────────────┘\n");
     }
+}
+
+int NumberOfUserRecord (TabRecord T, UserNameType User)
+/*mengembalikan jumlah record dari seorang User pada TabRecord T */
+/*TabRecord mungkin kosong*/
+{
+	//kamus
+	int i = 1;
+	int Last = T.TNeff;
+	int count =0;
+	
+	//algoritma
+	while(i<= Last){
+		if (IsKataSama(User,T.TR[i].UserName)){
+			count++;
+		}
+		i++;	
+	}
+return count;
 }
 

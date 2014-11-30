@@ -184,14 +184,27 @@ void TulisDataBaseScore (List L);
  /*akhir file txt ditandai dengan '.' */
 
 
-
-
-
-
-void ViewStatistic();
+void SearchUserInArray(TabRecord T, UserNameType User,boolean *found,int *indexFound);
+/* I.S. Tab Mungkin kosong
+ * F.S. found bernilai true jika User ditemukan dalam TabRecord.
+ * indexFound akan berisi nilai indeks ditemukannya user dalam TabRecord Tersebut */
+ 
 void ChangeTabtoTabUnique(TabRecord T,TabRecord *Tnew);
-void SearchUserInArray(TabRecord T, Kata User,boolean *found,int *indexFound);
-void SortTabUniqueRecord (TabRecord *T);
+/* I.S. TabRecord T mungkin kosong
+ * F.S. Tnew adalah TabRecord yang unik. record pada user yang sama akan dijadikan menjadi satu indeks array dengan score merupakan
+ * semua penjumlahan dari score user tersebut.*/
+ 
+void ViewStatistic(List L,BoardType Board);
+/*I.S.List Mungkin kosong
+ * F.S. Menampilkan ranking dari tiap user berdasarkan score rata-rata (average score)
+ * proses:
+ * -memindahkan list ke tabrecord
+ * -menjadikan tabrecord menjadi UniqeTabRecord
+ * -sorting UniqueTabRecord berdasarkan nilai tertinggi*/
+ 
+int NumberOfUserRecord (TabRecord T, UserNameType User);
+/*mengembalikan jumlah record dari seorang User pada TabRecord T */
+/*TabRecord mungkin kosong*/
 #endif
 
 
