@@ -19,6 +19,8 @@ typedef struct
     int NbMapElmt;
 } Map;
 
+extern Map M;
+
 boolean IsMapEmpty(Map M);
 //Tes terhadap M : true jika M kosong, false jika M tidak kosong
 

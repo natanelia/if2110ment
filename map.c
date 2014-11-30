@@ -1,6 +1,9 @@
 #include "map.h"
 #include "boolean.h"
 #include <stdio.h>
+
+Map M;
+
 boolean IsMapEmpty(Map M)
 {
     return (M.NbMapElmt == 0);

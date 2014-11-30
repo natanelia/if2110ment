@@ -466,7 +466,7 @@ void SearchUserInArray(TabRecord T, UserNameType User,boolean *found,int *indexF
 	//kamus
 	int i = 1;
 	int Last = T.TNeff;
-	
+
 	*found = false;
 	while(i<= Last && !(*found)){
 		if (IsKataSama(User,T.TR[i].UserName)){
@@ -495,10 +495,10 @@ void ChangeTabtoTabUnique(TabRecord T,TabRecord *Tnew)
 		// Ketika awal , yaitu TNew.Neff = 0
 		Tnew -> TR[i] = T.TR[i];
 		i++;
-		Tnew->TNeff++;	
-    
+		Tnew->TNeff++;
+
 	while (i <= Last )
-	{ 
+	{
 		SearchUserInArray(*Tnew,T.TR[i].UserName,&found,&indexFound);
 		if (found){
 			Tnew->TR[indexFound].Score = ((Tnew->TR[indexFound].Score+ T.TR[i].Score)/2);
@@ -509,7 +509,7 @@ void ChangeTabtoTabUnique(TabRecord T,TabRecord *Tnew)
 			Tnew->TR[Tnew->TNeff] = T.TR[i];
 		}
 		i++;
-		
+
 	}
 }
 
@@ -541,7 +541,7 @@ void ViewStatistic(List L,BoardType Board)
 	{
 		printf("Jumlah user berbeda yang pernah memainkan board ini: %d \n", Tnew.TNeff);
 		printf("rata-rata skor dari seluruh user yang pernah memainkan board ini: %d \n", AvgScoreBoard(L,Board));
-		printf("ranking kesulitan board berdasarkan rata-rata skor user: %d \n", RankingBoard(L,Board));		
+		printf("ranking kesulitan board berdasarkan rata-rata skor user: %d \n", RankingBoard(L,Board));
 		printf(        " ┌──────┬─────────────┬───────────────┐\n");
         printf(        " │ Rank │ User Name   │ Average Score │\n");
         printf(        " ├──────┼─────────────┼───────────────┼\n");
@@ -575,13 +575,13 @@ int NumberOfUserRecord (TabRecord T, UserNameType User)
 	int i = 1;
 	int Last = T.TNeff;
 	int count =0;
-	
+
 	//algoritma
 	while(i<= Last){
 		if (IsKataSama(User,T.TR[i].UserName)){
 			count++;
 		}
-		i++;	
+		i++;
 	}
 return count;
 }
@@ -624,7 +624,7 @@ int AvgScoreBoard (List L, BoardType Board)
 	}
 	else if (NbBoardRecord(L,Board) == 1 )
 	{
-		return (SumBoardRecord(L, Board);
+		return (SumBoardRecord(L, Board));
 	}
 	else
 	{
@@ -641,7 +641,7 @@ int RankingBoard (List L, BoardType Board)
 	 int ranking;
 	 int i;
 	 int AvgBoard;
-	 
+
 	 //algoritma
 	 AvgBoard = AvgScoreBoard(L,Board); /*Avg board adlah nilai rata-rata score pada board tertentu */
 	 ranking = 1; /*Board diasumsikan merupakan board paling sulit */
@@ -654,7 +654,7 @@ int RankingBoard (List L, BoardType Board)
 	}
 	return ranking;
 }
-	 
+
 
 
 

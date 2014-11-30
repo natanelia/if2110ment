@@ -32,51 +32,43 @@
 	"mesinkar.h"
 	"mesinkata1.h"
 
-1415635431 source:/home/nim_13513070/Documents/if2110ment/main.c
+1417354764 source:/home/nim_13513070/Documents/if2110ment/main.c
+	"main.h"
+
+1417354764 /home/nim_13513070/Documents/if2110ment/boolean.h
+
+1417354764 /home/nim_13513070/Documents/if2110ment/matriks.h
 	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	<unistd.h>
-	<sys/select.h>
-	<termios.h>
-	<time.h>
-	"boolean.h"
-	"matriks.h"
-	"mesinkar.h"
-	"mesinkata1.h"
 	"point.h"
-
-1415622072 /home/nim_13513070/Documents/if2110ment/boolean.h
-
-1415622072 /home/nim_13513070/Documents/if2110ment/matriks.h
-	<stdio.h>
 	"boolean.h"
 
-1415632552 /home/nim_13513070/Documents/if2110ment/mesinkar.h
+1417354764 /home/nim_13513070/Documents/if2110ment/mesinkar.h
 	"boolean.h"
 
-1415622072 /home/nim_13513070/Documents/if2110ment/mesinkata1.h
+1417354764 /home/nim_13513070/Documents/if2110ment/mesinkata1.h
 	"mesinkar.h"
+	<stdio.h>
 
-1415622745 source:/home/nim_13513070/Documents/if2110ment/matriks.c
+1417354764 source:/home/nim_13513070/Documents/if2110ment/matriks.c
 	<stdio.h>
 	<math.h>
 	"boolean.h"
 	"matriks.h"
 
-1415632671 source:/home/nim_13513070/Documents/if2110ment/mesinkar.c
+1417354764 source:/home/nim_13513070/Documents/if2110ment/mesinkar.c
 	<stdio.h>
 	"mesinkar.h"
 
-1415622072 source:/home/nim_13513070/Documents/if2110ment/mesinkata1.c
+1417354764 source:/home/nim_13513070/Documents/if2110ment/mesinkata1.c
 	"mesinkata1.h"
+	<stdio.h>
 
-1415633993 source:/home/nim_13513070/Documents/if2110ment/point.c
+1417354764 source:/home/nim_13513070/Documents/if2110ment/point.c
 	<stdio.h>
 	"point.h"
 	<math.h>
 
-1415633939 /home/nim_13513070/Documents/if2110ment/point.h
+1417354764 /home/nim_13513070/Documents/if2110ment/point.h
 	"boolean.h"
 
 1416667802 source:/Users/zulvafachrina/Documents/if2110ment/matriks.c
@@ -417,4 +409,86 @@
 	"boolean.h"
 	"mesinkata1.h"
 	<stdio.h>
+
+1417354814 source:/home/nim_13513070/Documents/if2110ment/ADT_MultiList.c
+	"ADT_MultiList.h"
+	"boolean.h"
+	<stdio.h>
+
+1417354764 /home/nim_13513070/Documents/if2110ment/ADT_MultiList.h
+	"boolean.h"
+	<stdlib.h>
+	"waktu.h"
+	"mesinkar.h"
+	"mesinkata1.h"
+
+1417354764 /home/nim_13513070/Documents/if2110ment/waktu.h
+	"boolean.h"
+	"jam.h"
+	"tanggal.h"
+
+1417354764 /home/nim_13513070/Documents/if2110ment/jam.h
+	"boolean.h"
+
+1417354764 /home/nim_13513070/Documents/if2110ment/tanggal.h
+	"boolean.h"
+
+1417354764 source:/home/nim_13513070/Documents/if2110ment/ArrayOfKata.c
+	"ArrayOfKata.h"
+	"mesinkata1.h"
+	<stdio.h>
+	"boolean.h"
+
+1417354764 /home/nim_13513070/Documents/if2110ment/ArrayOfKata.h
+	"boolean.h"
+	"mesinkata1.h"
+
+1417354764 source:/home/nim_13513070/Documents/if2110ment/jam.c
+	"jam.h"
+	"boolean.h"
+	<stdio.h>
+
+1417354764 /home/nim_13513070/Documents/if2110ment/main.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<sys/select.h>
+	<termios.h>
+	<time.h>
+	"boolean.h"
+	"matriks.h"
+	"mesinkar.h"
+	"mesinkata1.h"
+	"point.h"
+	"stacklist.h"
+	"ADT_MultiList.h"
+	"ArrayOfKata.h"
+	"map.h"
+	"set.h"
+	"PrioQueueList.h"
+	"QueueList.h"
+
+1417354764 /home/nim_13513070/Documents/if2110ment/stacklist.h
+	"boolean.h"
+	<stdlib.h>
+
+1417354846 /home/nim_13513070/Documents/if2110ment/map.h
+	"mesinkata1.h"
+	"set.h"
+	"boolean.h"
+
+1417354764 /home/nim_13513070/Documents/if2110ment/set.h
+	"mesinkata1.h"
+	"boolean.h"
+
+1417354764 /home/nim_13513070/Documents/if2110ment/PrioQueueList.h
+	"boolean.h"
+	"mesinkata1.h"
+	<stdlib.h>
+
+1417354764 /home/nim_13513070/Documents/if2110ment/QueueList.h
+	"boolean.h"
+	"mesinkata1.h"
+	<stdlib.h>
 
