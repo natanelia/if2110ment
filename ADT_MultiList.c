@@ -539,6 +539,9 @@ void ViewStatistic(List L,BoardType Board)
         printf("  No one has played the board yet.\n");
 	else
 	{
+		printf("Jumlah user berbeda yang pernah memainkan board ini: %d \n", Tnew.TNeff);
+		printf("rata-rata skor dari seluruh user yang pernah memainkan board ini: %d \n", AvgScoreBoard(L,Board));
+		printf("ranking kesulitan board berdasarkan rata-rata skor user: %d \n", RankingBoard(L,Board));		
 		printf(        " ┌──────┬─────────────┬───────────────┐\n");
         printf(        " │ Rank │ User Name   │ Average Score │\n");
         printf(        " ├──────┼─────────────┼───────────────┼\n");
@@ -582,4 +585,76 @@ int NumberOfUserRecord (TabRecord T, UserNameType User)
 	}
 return count;
 }
+
+
+int SumBoardRecord (List L, BoardType Board)
+/* mengembalikan jumlah score semua Record yang ada pada board tertentu */
+/*Jika Board tidak ada dalam list, maka akan mengembalikan 0 */
+{
+	//Kamus
+	AdrBoard P;
+	AdrRecord PRecord;
+	int SumScore = 0;
+
+	//Algoritma
+	P = SearchBoard(L,Board);
+	if (P == Nil) //Board tidak ada dalam List
+	{
+		return 0;
+	}
+	else
+	{
+		PRecord = FirstRecord(P);
+		while (PRecord != Nil)
+		{
+			SumScore += InfoRecord(PRecord).Score;
+			PRecord = NextRecord(PRecord);
+		}
+		return SumScore;
+	}
+}
+
+int AvgScoreBoard (List L, BoardType Board)
+/* mengembalikan rata-rata score dari semua record pada board tertentu */
+/* mengembalikan nol jika jumlah record pada board tersebut 0 (board belum pernah dimainkan) */
+{
+	if (NbBoardRecord(L,Board) == 0 )
+	{
+		return 0;
+	}
+	else
+	{
+		return (SumBoardRecord(L, Board)/ NbBoardRecord(L, Board));
+	}
+}
+
+int RankingBoard (List L, BoardType Board)
+/*mengembalikan rangking board berdasarkan ranking keesulitannya.
+ * board rangking 1 adalah board paling sulit
+ * board paling sulit adlah board dengan average score paling kecil daripada board yang lainnya
+ */
+ {
+	 int ranking;
+	 int i;
+	 int AvgBoard;
+	 
+	 //algoritma
+	 AvgBoard = AvgScoreBoard(L,Board); /*Avg board adlah nilai rata-rata score pada board tertentu */
+	 ranking = 1; /*Board diasumsikan merupakan board paling sulit */
+	 for (i=0; i<=9 ; i++)
+	 {
+		 if (AvgScoreBoard(L, i) > AvgBoard)
+		 {
+			 ranking++; /*ranking board turun karena ada board lain yang lebih sulit */
+		}
+	}
+	return ranking;
+}
+	 
+
+
+
+
+
+
 

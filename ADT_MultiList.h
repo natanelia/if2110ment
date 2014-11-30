@@ -205,6 +205,20 @@ void ViewStatistic(List L,BoardType Board);
 int NumberOfUserRecord (TabRecord T, UserNameType User);
 /*mengembalikan jumlah record dari seorang User pada TabRecord T */
 /*TabRecord mungkin kosong*/
+
+int SumBoardRecord (List L, BoardType Board);
+/* mengembalikan jumlah score semua Record yang ada pada board tertentu */
+/*Jika Board tidak ada dalam list, maka akan mengembalikan 0 */
+
+int AvgScoreBoard (List L, BoardType Board);
+/* mengembalikan rata-rata score dari semua record pada board tertentu */
+/* mengembalikan nol jika jumlah record pada board tersebut 0 (board belum pernah dimainkan) */
+
+int RankingBoard (List L, BoardType Board);
+/*mengembalikan rangking board berdasarkan ranking keesulitannya.
+ * board rangking 1 adalah board paling sulit
+ * board paling sulit adlah board dengan average score paling kecil daripada board yang lainnya
+ */
 #endif
 
 
